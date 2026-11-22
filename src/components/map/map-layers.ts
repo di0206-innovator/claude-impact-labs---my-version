@@ -8,6 +8,7 @@ import { readMarkerColors } from "@/components/map/map-style";
 
 export const POINT_LAYER = "rb-points";
 export const COUNT_LAYER = "rb-cluster-count";
+export const PULSE_HALO_LAYER = "rb-points-pulse-halo";
 
 /**
  * Draw one dot larger. A report id marks that report; otherwise every dot at
@@ -36,6 +37,15 @@ export function paintSelectedLocation(
     4,
     2,
   ] as ExpressionSpecification);
+
+  if (map.getLayer(PULSE_HALO_LAYER)) {
+    map.setPaintProperty(PULSE_HALO_LAYER, "circle-radius", [
+      "case",
+      marked,
+      20,
+      13,
+    ] as ExpressionSpecification);
+  }
 }
 
 export function ensureReportLayers(map: MapLibreMap) {
@@ -83,6 +93,25 @@ export function ensureReportLayers(map: MapLibreMap) {
       "text-font": ["Open Sans Semibold"],
     },
     paint: { "text-color": mark.card },
+  });
+
+  map.addLayer({
+    id: PULSE_HALO_LAYER,
+    type: "circle",
+    source: REPORT_SOURCE,
+    filter: [
+      "all",
+      ["!", ["has", "point_count"]],
+      ["in", ["get", "issueType"], ["literal", ["pothole", "road_cave_in"]]],
+    ],
+    paint: {
+      "circle-color": mark.oxide,
+      "circle-radius": 13,
+      "circle-opacity": 0.22,
+      "circle-stroke-width": 1.5,
+      "circle-stroke-color": mark.oxide,
+      "circle-stroke-opacity": 0.45,
+    },
   });
 
   map.addLayer({

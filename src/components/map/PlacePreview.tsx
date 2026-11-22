@@ -75,10 +75,15 @@ export function PlacePreview({
 
       <div className="ux4g-card-body">
         <p className="flex items-baseline gap-2">
-          <span className="ux4g-heading-l-strong">{place.reportCount}</span>
+          <span className="ux4g-heading-l-strong rb-tabular-nums">{place.reportCount}</span>
           <span className="ux4g-text ux4g-text-neutral-secondary">
             {place.reportCount === 1 ? "report" : "reports"}
-            {place.recurring ? ", and it keeps coming back" : ""}
+            {place.recurring ? (
+              <>
+                {", and it keeps coming back"}
+                <span className="rb-pulse-dot ml-1.5 align-middle" aria-hidden="true" />
+              </>
+            ) : ""}
           </span>
         </p>
 

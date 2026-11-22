@@ -72,6 +72,11 @@
   border: 0;
   background: none;
   cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.rb-sheet-handle:active {
+  transform: scale(0.95);
 }
 
 .rb-sheet-handle span {
@@ -79,6 +84,12 @@
   height: 4px;
   border-radius: 2px;
   background: var(--ux4g-border-color-neutral-default);
+  transition: background-color var(--transition-fast), width var(--transition-fast);
+}
+
+.rb-sheet-handle:hover span {
+  background: var(--ux4g-text-neutral-secondary);
+  width: 3rem;
 }
 
 .rb-sheet-head {
@@ -168,6 +179,7 @@
 .rb-band-high {
   background: var(--failed);
   color: var(--ux4g-text-neutral-inverse);
+  box-shadow: 0 0 0 2px var(--lane), 0 0 12px rgb(176 40 31 / 0.45);
 }
 
 .rb-row-text {

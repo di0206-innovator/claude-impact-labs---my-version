@@ -7,7 +7,7 @@ export function PassportHeader({ data }: { data: RoadPassportData }) {
   const { road, summary } = data;
 
   return (
-    <header className="rb-passport-header ux4g-card ux4g-card-solid p-6 border border-[var(--rule)]">
+    <header className="rb-passport-header ux4g-card ux4g-card-solid rb-glass-card rb-parallax-hero p-6 border border-[var(--rule)]">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-2">

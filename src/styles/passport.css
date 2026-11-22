@@ -121,9 +121,11 @@
   margin-inline: auto;
   padding: 1.75rem;
   border-radius: var(--ux4g-radius-lg, 0.75rem);
-  background: var(--card);
-  border: 1px solid var(--rule);
-  box-shadow: var(--card-shadow);
+  background: var(--glass-bg-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-floating);
 }
 
 .rb-step-chain {
@@ -162,10 +164,12 @@
 
 .rb-step-node-missing::before {
   background: var(--failed);
+  box-shadow: 0 0 8px rgb(176 40 31 / 0.45);
 }
 
 .rb-step-node-verified::before {
   background: var(--held);
+  box-shadow: 0 0 8px rgb(18 122 82 / 0.45);
 }
 
 .rb-scenario-grid {
@@ -183,13 +187,6 @@
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
-}
-
-.rb-action-item:hover {
-  border-color: var(--rule-firm);
-  box-shadow: var(--card-shadow-hover);
-  transform: translateY(-2px);
 }
 
 .rb-action-item[data-priority="critical"] {

@@ -45,7 +45,7 @@ export function PlaceList({
               className="rb-row touch-target"
             >
               <span
-                className={`rb-row-count rb-band-${band(place.reportCount)}`}
+                className={`rb-row-count rb-band-${band(place.reportCount)} ${band(place.reportCount) === "high" || place.recurring ? "rb-pulse-beacon" : ""}`}
                 aria-hidden="true"
               >
                 {place.reportCount}

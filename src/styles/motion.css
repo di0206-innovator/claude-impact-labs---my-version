@@ -22,6 +22,15 @@
     box-shadow: var(--glass-shadow-floating);
   }
 
+  .rb-glass-floating {
+    background: var(--glass-bg-elevated) !important;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow-floating);
+    border-radius: var(--ux4g-radius-lg, 0.75rem);
+  }
+
   .rb-glass-card {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
@@ -43,7 +52,7 @@
 
   .rb-interactive-card:hover {
     transform: translateY(-2px);
-    box-shadow: var(--card-shadow-hover);
+    box-shadow: 0 12px 28px -6px rgb(16 24 40 / 0.1), 0 0 0 1px var(--rule-firm);
     border-color: var(--rule-firm);
   }
 
@@ -69,7 +78,9 @@
   }
 
   .rb-action-item:hover {
-    transform: translateY(-1.5px);
+    transform: translateY(-2px);
+    border-color: var(--rule-firm);
+    box-shadow: var(--card-shadow-hover);
   }
 
   .rb-action-item[data-priority="critical"]:hover {
@@ -93,6 +104,12 @@
     letter-spacing: -0.015em;
   }
 
+  .rb-font-mono {
+    font-family: var(--font-figure);
+    font-variant-numeric: tabular-nums lining-nums;
+    letter-spacing: -0.02em;
+  }
+
   /* Fluid entry animations */
   .rb-motion-fade-in {
     animation: rb-fade-in-up 400ms var(--ease-spring) both;
@@ -103,6 +120,29 @@
   .rb-motion-stagger > *:nth-child(3) { animation-delay: 120ms; }
   .rb-motion-stagger > *:nth-child(4) { animation-delay: 160ms; }
   .rb-motion-stagger > *:nth-child(5) { animation-delay: 200ms; }
+
+  /* Smooth accordion expansion & spring transition */
+  .rb-accordion details[open] > .ux4g-accordion__body,
+  .ux4g-accordion details[open] > .ux4g-accordion__body {
+    animation: rb-accordion-expand 240ms var(--ease-spring);
+    transform-origin: top;
+  }
+
+  .ux4g-accordion__item {
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .ux4g-accordion__item:hover {
+    border-color: var(--rule-firm);
+  }
+
+  .ux4g-accordion__button {
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .ux4g-accordion__button::after {
+    transition: transform var(--transition-fast);
+  }
 
   /* Map beacon pulse on high priority road corridors */
   .rb-pulse-beacon {
@@ -130,11 +170,59 @@
   }
 }
 
+/* Scroll-driven parallax effects (Linear / Apple caliber) */
+@supports (animation-timeline: scroll()) {
+  .rb-parallax-hero {
+    animation: rb-parallax-float linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0px 320px;
+  }
+
+  .rb-parallax-card {
+    animation: rb-parallax-subtle linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 25%;
+  }
+}
+
 /* Keyframe specifications */
 @keyframes rb-fade-in-up {
   0% {
     opacity: 0;
     transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rb-parallax-float {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(16px);
+    opacity: 0.95;
+  }
+}
+
+@keyframes rb-parallax-subtle {
+  from {
+    opacity: 0.8;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rb-accordion-expand {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
   }
   100% {
     opacity: 1;
@@ -174,7 +262,10 @@
   .rb-interactive-card,
   .rb-stat-card,
   .rb-action-item,
-  .rb-glass-card {
+  .rb-glass-card,
+  .rb-glass-floating,
+  .rb-parallax-hero,
+  .rb-parallax-card {
     animation: none !important;
     transition: none !important;
     transform: none !important;
@@ -182,6 +273,11 @@
 
   .rb-pulse-beacon::after,
   .rb-pulse-dot {
+    animation: none !important;
+  }
+
+  .rb-accordion details[open] > .ux4g-accordion__body,
+  .ux4g-accordion details[open] > .ux4g-accordion__body {
     animation: none !important;
   }
 }

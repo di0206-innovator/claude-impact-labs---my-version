@@ -34,7 +34,7 @@ export default async function AccountabilityPage({ searchParams }: PageProps) {
 
   return (
     <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
-      <header className="space-y-2">
+      <header className="space-y-2 rb-parallax-hero">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Audit Screening Engine</span>
           <span className="rb-chip rb-chip-flagged">{flags.length} Audit Candidates</span>

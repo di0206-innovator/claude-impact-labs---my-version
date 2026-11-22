@@ -42,7 +42,7 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
 
   return (
     <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
-      <header className="space-y-2">
+      <header className="space-y-2 rb-parallax-hero">
         <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Road Explorer & Reliability Passports</h1>
         <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">
           Every road segment in Mumbai with traceable citizen complaints, billed repair amounts, 30-day durability rates, and audit flags.
