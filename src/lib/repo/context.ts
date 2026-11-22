@@ -29,7 +29,7 @@ export function getRepository(): RastabaazRepository {
   if (override) return override;
   if (
     wantsMemoryRepository() ||
-    (!process.env.RASTABAAZ_TABLE_NAME && process.env.NODE_ENV !== "production" && process.env.RASTABAAZ_REPO !== "dynamo")
+    (!process.env.RASTABAAZ_TABLE_NAME && process.env.RASTABAAZ_REPO !== "dynamo")
   ) {
     if (!holder.__rastabaazMemoryRepository) {
       const repo = new MemoryRastabaazRepository({ strictPhoto: true });

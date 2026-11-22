@@ -49,7 +49,7 @@ vi.mock("@/components/map/CityMap", () => ({
 }));
 
 import MapPage from "@/app/map/page";
-import HomePage from "@/app/page";
+import ReportPage from "@/app/report/page";
 import NotFound from "@/app/not-found";
 import NewReportPage from "@/app/report/new/page";
 import { HomeIssueLinks } from "@/components/home/HomeIssueLinks";
@@ -105,9 +105,9 @@ function stubMap(places: PlaceSummary[] = [place]) {
   vi.mocked(getMapInsights).mockResolvedValue(insights);
 }
 
-describe("home report-first experience", () => {
+describe("report page experience", () => {
   it("opens on the report form", async () => {
-    render(await HomePage({ searchParams: Promise.resolve({}) }));
+    render(await ReportPage({ searchParams: Promise.resolve({}) }));
     expect(
       screen.getByRole("heading", { level: 1, name: "Report a road problem" }),
     ).toBeInTheDocument();
@@ -260,7 +260,7 @@ describe("not-found and new-report pages", () => {
 
   it("passes a valid searchParams type into the guided form", async () => {
     render(
-      await HomePage({
+      await ReportPage({
         searchParams: Promise.resolve({ type: "pothole" }),
       }),
     );
@@ -278,7 +278,7 @@ describe("not-found and new-report pages", () => {
 
   it("ignores an invalid type and leaves the picker empty", async () => {
     render(
-      await HomePage({
+      await ReportPage({
         searchParams: Promise.resolve({ type: "not-an-issue" }),
       }),
     );

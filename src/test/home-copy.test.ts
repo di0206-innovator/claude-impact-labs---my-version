@@ -31,20 +31,23 @@ function lines(path: string): number {
 }
 
 describe("home page copy", () => {
-  it("leads with the report form and the reporting title", () => {
-    const source = readFileSync("src/app/page.tsx", "utf8");
-    expect(source).toMatch(/Report a road problem/);
-    expect(source).toMatch(/Photograph a pothole/);
-    expect(source).toMatch(/ReportForm/);
-    expect(source).not.toMatch(/deva pointer-events-none absolute right-2/);
+  it("leads with the landing scenes on home and report form on /report", () => {
+    const home = readFileSync("src/app/page.tsx", "utf8");
+    const report = readFileSync("src/app/report/page.tsx", "utf8");
+    expect(home).toMatch(/SceneHero/);
+    expect(home).not.toMatch(/ReportForm/);
+    expect(report).toMatch(/Report a road problem/);
+    expect(report).toMatch(/Photograph a pothole/);
+    expect(report).toMatch(/ReportForm/);
+    expect(home).not.toMatch(/deva pointer-events-none absolute right-2/);
   });
 
-  it("keeps the map on its own page, after the report form", () => {
-    const home = read("src/app/page.tsx");
+  it("keeps the map on its own page, separate from the landing and report pages", () => {
+    const report = read("src/app/report/page.tsx");
     const map = read("src/app/map/page.tsx");
-    expect(home).toMatch(/ReportForm/);
-    expect(home).toMatch(/parseIssueType/);
-    expect(home).not.toMatch(/MapFilters|HomeIssueLinks|#records/);
+    expect(report).toMatch(/ReportForm/);
+    expect(report).toMatch(/parseIssueType/);
+    expect(report).not.toMatch(/MapFilters|HomeIssueLinks|#records/);
     expect(map).toMatch(/Map of reports/);
     expect(map).toMatch(/MapFilters/);
     expect(map).toMatch(/dynamic = "force-dynamic"/);
@@ -70,14 +73,14 @@ describe("home page copy", () => {
 
 describe("report-first public pages", () => {
   it("parses Next 15 searchParams.type on the report page and redirects the old URL", () => {
-    const home = read("src/app/page.tsx");
+    const report = read("src/app/report/page.tsx");
     const legacy = read("src/app/report/new/page.tsx");
-    expect(home).toMatch(/searchParams:\s*Promise</);
-    expect(home).toMatch(/await searchParams/);
-    expect(home).toMatch(/parseIssueType/);
-    expect(home).toMatch(/initialIssueType/);
-    expect(home).toMatch(/ReportForm/);
-    expect(home).toMatch(/Report a road problem/);
+    expect(report).toMatch(/searchParams:\s*Promise</);
+    expect(report).toMatch(/await searchParams/);
+    expect(report).toMatch(/parseIssueType/);
+    expect(report).toMatch(/initialIssueType/);
+    expect(report).toMatch(/ReportForm/);
+    expect(report).toMatch(/Report a road problem/);
     expect(legacy).toMatch(/\/\?type=\$\{encodeURIComponent\(value\)\}/);
     expect(legacy).not.toMatch(/from ["']ux4g-web-components/);
   });

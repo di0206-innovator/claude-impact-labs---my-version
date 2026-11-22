@@ -13,7 +13,7 @@ import {
 } from "@/components/site/nav-icons";
 
 const PRIMARY_NAV = [
-  { href: "/", label: "Report", Icon: ReportTabIcon },
+  { href: "/", label: "Home", Icon: ReportTabIcon },
   { href: "/map", label: "Map", Icon: MapTabIcon },
   { href: "/roads", label: "Roads", Icon: RoadsTabIcon },
   { href: "/wards", label: "Wards", Icon: WardsTabIcon },
@@ -45,7 +45,7 @@ const MORE_GROUPS = [
 const MORE_HREFS = MORE_GROUPS.flatMap((g) => g.links.map((l) => l.href));
 
 function isActive(pathname: string, href: string): boolean {
-  if (href === "/") return pathname === "/" || pathname === "/report" || pathname.startsWith("/report/");
+  if (href === "/") return pathname === "/";
   if (href === "/map" && /^\/(reports|places)\//.test(pathname)) return true;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
@@ -179,12 +179,10 @@ export function SiteHeader() {
 
             <Link
               href="/report"
-              aria-label="File pothole complaint"
               className="rb-nav-cta rb-cta-vermilion touch-target hidden sm:inline-flex"
               onClick={() => setMoreOpen(false)}
             >
-              <span className="rb-pulse-vermilion mr-1" aria-hidden="true" />
-              <span aria-hidden="true">Report Pothole</span>
+              Report Pothole
             </Link>
           </div>
         </div>

@@ -167,10 +167,13 @@
 }
 
 .rb-wordmark {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: var(--ux4g-text-neutral-primary);
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  color: var(--teal-deep);
 }
 
 /* The road's centre line: the one decorative device on the site. */

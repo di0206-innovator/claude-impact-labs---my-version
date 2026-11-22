@@ -19,15 +19,15 @@ describe("SiteHeader", () => {
     render(<SiteHeader />);
     // disclaimer removed from topbar in Rastabaaz header
     expect(document.querySelector(".ux4g-navbar")).not.toBeNull();
-    const record = screen.getByRole("link", { name: /report/i });
-    expect(record).toHaveAttribute("aria-current", "page");
-    expect(record.className).toMatch(/touch-target/);
+    const home = screen.getByRole("link", { name: /^home$/i });
+    expect(home).toHaveAttribute("aria-current", "page");
+    expect(home.className).toMatch(/touch-target/);
     expect(document.querySelector(".ux4g-navbar-wrap")).not.toBeNull();
     const wordmark = screen.getByRole("link", { name: /rastabaaz/i });
     expect(wordmark.className).toMatch(/rb-wordmark/);
     expect(wordmark.className).toMatch(/touch-target/);
     expect(wordmark.textContent).toContain("रस्ताबाज");
-    expect(record.className).toMatch(/ux4g-text-link-neutral-m/);
+    expect(home.className).toMatch(/ux4g-text-link-neutral-m/);
     const map = screen.getByRole("link", { name: /^map$/i });
     expect(map).toHaveAttribute("href", "/map");
     expect(map.className).toMatch(/ux4g-text-link-neutral-m/);

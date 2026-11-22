@@ -55,12 +55,12 @@ export function SceneHero({
 
           {/* Immediate Dual CTAs */}
           <div className="flex flex-wrap items-center gap-4 mb-14">
-            <a
-              href="#report-entry"
+            <Link
+              href="/report"
               className="inline-flex items-center justify-center rounded-full bg-[#E85D4A] px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-[#E85D4A]/25 transition-all hover:bg-[#d84e3b] hover:shadow-xl active:scale-95"
             >
               Report a Pothole
-            </a>
+            </Link>
             <Link
               href="/wards"
               className="inline-flex items-center justify-center rounded-full border border-white/30 bg-white/5 px-7 py-3.5 text-sm font-medium text-white backdrop-blur-sm transition-all hover:bg-white/15 hover:border-white/50 active:scale-95"
