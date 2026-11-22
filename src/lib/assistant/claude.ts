@@ -6,6 +6,7 @@ import { executeAssistantTool } from "./tools/executor";
 import { ASSISTANT_TOOLS } from "./tools/definitions";
 import type { AssistantLanguage, AssistantStructuredResponse, EvidenceBundle } from "./types";
 import { generateFactualFallbackAnswer, validateAndSanitizeResponse } from "./response-schema";
+import { isMockLLMEnabled, simulateMockLLMMessage } from "./mock-llm";
 
 const PRIMARY_MODEL = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-5";
 const FALLBACK_MODEL = "claude-haiku-4-5";
@@ -21,9 +22,14 @@ RULES:
 5. NEVER accuse anyone of fraud, crime, or corruption; say "needs an explanation" and cite exact IDs and ₹ figures.
 6. Keep answers crisp, structured, and easy to read on a phone. Respond in the requested language (en, hi, or mr).`;
 
-export function hasAnthropicCredentials(): boolean {
-  if (process.env.VITEST) return false;
-  return Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
+export function hasAnthropicCredentials(allowMock = false): boolean {
+  if (process.env.VITEST && !allowMock && !isMockLLMEnabled()) return false;
+  return Boolean(
+    process.env.ANTHROPIC_API_KEY ||
+      process.env.ANTHROPIC_AUTH_TOKEN ||
+      isMockLLMEnabled() ||
+      allowMock,
+  );
 }
 
 export type ClaudeOrchestrationOptions = {
@@ -31,6 +37,7 @@ export type ClaudeOrchestrationOptions = {
   toolCtx: ToolContext;
   language: AssistantLanguage;
   maxTurns?: number;
+  useMock?: boolean;
 };
 
 async function createWithFallback(
@@ -65,9 +72,10 @@ export async function queryClaudeAssistant(
   citizenQuery: string,
   options: ClaudeOrchestrationOptions,
 ): Promise<AssistantStructuredResponse> {
-  const { evidence, toolCtx, language, maxTurns = 5 } = options;
+  const { evidence, toolCtx, language, maxTurns = 5, useMock: explicitMock } = options;
+  const useMock = explicitMock ?? isMockLLMEnabled();
 
-  if (!hasAnthropicCredentials()) {
+  if (!hasAnthropicCredentials(useMock)) {
     return validateAndSanitizeResponse(
       {
         answer: evidence ? generateFactualFallbackAnswer(evidence, language) : "No records found matching your query.",
@@ -79,7 +87,7 @@ export async function queryClaudeAssistant(
   }
 
   try {
-    const client = new Anthropic();
+    const client = useMock ? (null as unknown as Anthropic) : new Anthropic();
     const messages: Anthropic.MessageParam[] = [
       {
         role: "user",
@@ -89,7 +97,9 @@ export async function queryClaudeAssistant(
 
     const usedTools: string[] = [];
     for (let turn = 0; turn < maxTurns; turn++) {
-      const response = await createWithFallback(client, messages);
+      const response = useMock
+        ? (simulateMockLLMMessage(messages, ASSISTANT_TOOLS, language) as unknown as Anthropic.Message)
+        : await createWithFallback(client, messages);
 
       if (response.stop_reason === "tool_use") {
         messages.push({ role: "assistant", content: response.content });

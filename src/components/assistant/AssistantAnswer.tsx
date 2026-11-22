@@ -5,11 +5,31 @@ function aboutARecord(data: AssistantStructuredResponse): boolean {
   return Boolean(data.linkedIssueReference || data.workOrderReferences.length || data.costInr != null);
 }
 
+function detectExportTargets(text: string, data?: AssistantStructuredResponse) {
+  const roadMatch = text.match(/\b(RD\d{4})\b/i);
+  const roadId = roadMatch ? roadMatch[1].toUpperCase() : null;
+
+  const contractorMatch = text.match(/\b(CT\d{2})\b/i);
+  let contractorId = contractorMatch ? contractorMatch[1].toUpperCase() : null;
+  if (!contractorId && data?.contractorName) {
+    const cMatch = data.contractorName.match(/\b(CT\d{2})\b/i);
+    if (cMatch) contractorId = cMatch[1].toUpperCase();
+  }
+
+  const wardMatch = text.match(/\bWard\s+([A-Z]\/[A-Z]|[A-Z]\b)/i) || text.match(/\b([A-Z]\/[A-Z])\s+ward\b/i);
+  const wardCode = wardMatch ? wardMatch[1].toUpperCase() : null;
+
+  return { roadId, contractorId, wardCode };
+}
+
 /**
  * One answer, set as plain text (no bubble): a row of facts about the
- * record, the answer itself, the next step, and the records it checked.
+ * record, the answer itself, the next step, export actions, and the records it checked.
  */
 export function AssistantAnswer({ text, data }: { text: string; data?: AssistantStructuredResponse }) {
+  const exports = detectExportTargets(text, data);
+  const hasExports = Boolean(exports.roadId || exports.contractorId || exports.wardCode);
+
   return (
     <article className="rb-chat-answer">
       <p className="rb-chat-who">
@@ -31,6 +51,45 @@ export function AssistantAnswer({ text, data }: { text: string; data?: Assistant
       ) : null}
 
       <div className="rb-chat-text">{text}</div>
+
+      {hasExports ? (
+        <div className="rb-chat-exports" aria-label="Export related evidence pack">
+          <span className="rb-chat-exports-title">Export Evidence Dossier:</span>
+          {exports.roadId ? (
+            <span className="rb-chat-export-group">
+              <span className="rb-chat-export-label">{exports.roadId}</span>
+              <a href={`/api/export/road/${exports.roadId}?format=pdf`} download className="rb-export-chip touch-target">
+                PDF
+              </a>
+              <a href={`/api/export/road/${exports.roadId}?format=csv`} download className="rb-export-chip touch-target">
+                CSV
+              </a>
+            </span>
+          ) : null}
+          {exports.contractorId ? (
+            <span className="rb-chat-export-group">
+              <span className="rb-chat-export-label">{exports.contractorId}</span>
+              <a href={`/api/export/contractor/${exports.contractorId}?format=pdf`} download className="rb-export-chip touch-target">
+                PDF
+              </a>
+              <a href={`/api/export/contractor/${exports.contractorId}?format=csv`} download className="rb-export-chip touch-target">
+                CSV
+              </a>
+            </span>
+          ) : null}
+          {exports.wardCode ? (
+            <span className="rb-chat-export-group">
+              <span className="rb-chat-export-label">Ward {exports.wardCode}</span>
+              <a href={`/api/export/ward/${encodeURIComponent(exports.wardCode.replace(/\//g, "-"))}?format=pdf`} download className="rb-export-chip touch-target">
+                PDF
+              </a>
+              <a href={`/api/export/ward/${encodeURIComponent(exports.wardCode.replace(/\//g, "-"))}?format=csv`} download className="rb-export-chip touch-target">
+                CSV
+              </a>
+            </span>
+          ) : null}
+        </div>
+      ) : null}
 
       {data?.nextAction ? (
         <div className="rb-chat-next">
