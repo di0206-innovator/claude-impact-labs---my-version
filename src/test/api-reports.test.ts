@@ -197,6 +197,42 @@ describe("/api/reports endpoint", () => {
       expect(json.location.ward).toBe("A");
       expect(json.roadTrail?.contractorName).toBe("Eagle Infra India Ltd");
     });
+
+    it("successfully creates a report from FormData payload", async () => {
+      createReport.mockResolvedValueOnce({
+        report: {
+          id: "rpt_form_1", locationId: "loc_1", issueType: "waterlogging",
+          lat: VALID_LAT, lng: VALID_LNG, noticedAt: "2026-11-22",
+          noticedWindow: "today", recurs: true, accident: "near_miss",
+          description: null, isSample: false, createdAt: "2026-11-22T12:00:00.000Z",
+        },
+        location: {
+          id: "loc_1", name: "Colaba", slug: "colaba", issueType: "waterlogging",
+          lat: VALID_LAT, lng: VALID_LNG, street: "Colaba Causeway",
+          ward: "A", roadId: "RD0001", createdAt: "2026-11-22T12:00:00.000Z",
+        },
+        connectedCount: 2,
+      });
+
+      const formData = new FormData();
+      formData.set("issueType", "waterlogging");
+      formData.set("lat", String(VALID_LAT));
+      formData.set("lng", String(VALID_LNG));
+      formData.set("photo", VALID_PHOTO);
+      formData.set("recurs", "true");
+      formData.set("accident", "near_miss");
+
+      const request = new Request("http://localhost/api/reports", {
+        method: "POST",
+        body: formData,
+      });
+
+      const response = await POST(request);
+      expect(response.status).toBe(201);
+      const json = await response.json();
+      expect(json.ok).toBe(true);
+      expect(json.reportId).toBe("rpt_form_1");
+    });
   });
 
   describe("GET /api/reports", () => {

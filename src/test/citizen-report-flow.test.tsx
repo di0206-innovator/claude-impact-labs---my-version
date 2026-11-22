@@ -38,7 +38,7 @@ vi.mock("@/components/report/PinMap", () => ({
   ),
 }));
 
-import ReportPage from "@/app/report/page";
+import ReportPage, { metadata as reportMetadata } from "@/app/report/page";
 import ReportNewPage from "@/app/report/new/page";
 import ReportIdRedirectPage from "@/app/report/[id]/page";
 import { LocationStep } from "@/components/report/LocationStep";
@@ -50,6 +50,11 @@ afterEach(() => {
 });
 
 describe("Citizen Report Flow Pages", () => {
+  it("exports appropriate metadata for civic reporting pages", () => {
+    expect(reportMetadata.title).toContain("Report a Road Problem");
+    expect(reportMetadata.description).toBeDefined();
+  });
+
   it("renders the primary report page with heading and form", async () => {
     const page = await ReportPage({
       searchParams: Promise.resolve({ type: "pothole" }),
@@ -60,6 +65,16 @@ describe("Citizen Report Flow Pages", () => {
     const form = screen.getByTestId("report-form");
     expect(form).toBeInTheDocument();
     expect(form).toHaveAttribute("data-issue-type", "pothole");
+  });
+
+  it("handles array type in searchParams on /report", async () => {
+    const page = await ReportPage({
+      searchParams: Promise.resolve({ type: ["waterlogging", "extra"] }),
+    });
+    render(page);
+
+    const form = screen.getByTestId("report-form");
+    expect(form).toHaveAttribute("data-issue-type", "waterlogging");
   });
 
   it("handles missing searchParams gracefully on /report", async () => {
