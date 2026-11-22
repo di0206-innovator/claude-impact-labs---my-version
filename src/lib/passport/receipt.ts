@@ -1,50 +1,9 @@
 import { expectedCostInr } from "../rupee/audit";
 import { getRupee } from "../rupee/index";
 import { getRoadPassport } from "./aggregate";
+import type { PotholeReceiptData, RupeeReceiptData } from "./types";
 
-export type RupeeReceiptData = {
-  complaintId: string;
-  receivedAt: string;
-  channel: string;
-  category: string;
-  description: string;
-  locality: string;
-  ward: string;
-  road: {
-    id: string;
-    name: string;
-    surface: string;
-    underDlp: boolean;
-  } | null;
-  workOrder: {
-    id: string;
-    assignedAt: string;
-    startedAt: string;
-    completedAt: string;
-    slaHours: number;
-    slaMet: boolean;
-    reopened: boolean;
-    areaSqm: number;
-    amountBilledInr: number;
-    expectedCostInr: number;
-    contractorName: string;
-    method: string;
-    engineerRemark: string;
-  } | null;
-  auditStatus: {
-    hasFlag: boolean;
-    flags: string[];
-  };
-  missingRecords: string[];
-  citizenObservation: {
-    verifiedByCitizen: boolean;
-    verificationStatus: string;
-  };
-  provenance: {
-    algorithmVersion: string;
-    dataIntegrityNotice: string;
-  };
-};
+export type { PotholeReceiptData, RupeeReceiptData };
 
 export function getPotholeReceipt(complaintId: string): RupeeReceiptData | null {
   const { ds, flags } = getRupee();

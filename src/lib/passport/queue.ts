@@ -1,5 +1,7 @@
 import { getRupee } from "../rupee/index";
-import type { ActionQueueItem } from "./types";
+import type { ActionQueueCategory, ActionQueueItem, ActionQueueSummary } from "./types";
+
+export type { ActionQueueCategory, ActionQueueItem, ActionQueueSummary };
 
 export function listActionQueueItems(wardFilter?: string): ActionQueueItem[] {
   const { ds, flags } = getRupee();
@@ -160,6 +162,7 @@ export function getActionQueueSummary(wardFilter?: string) {
     mediumCount: items.filter((i) => i.priority === "medium").length,
     totalAtRiskInr: items.reduce((sum, i) => sum + i.amountAtRiskInr, 0),
     byCategory: {
+      high_defect_recurrence: items.filter((i) => i.category === "high_defect_recurrence").length,
       potential_dlp_conflict: items.filter((i) => i.category === "potential_dlp_conflict").length,
       repeat_work_cluster: items.filter((i) => i.category === "repeat_work_cluster").length,
       sla_breach: items.filter((i) => i.category === "sla_breach").length,

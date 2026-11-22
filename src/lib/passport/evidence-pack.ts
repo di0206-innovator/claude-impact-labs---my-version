@@ -1,18 +1,9 @@
 import { getRoadPassport } from "./aggregate";
-import type { RoadPassportData } from "./types";
+import type { EvidencePackMetadata, RoadEvidencePack, RoadPassportData } from "./types";
 
-export type EvidencePackMetadata = {
-  dossierTitle: string;
-  roadId: string;
-  roadName: string;
-  ward: string;
-  generatedAt: string;
-  algorithmVersion: string;
-  dataClassification: string;
-  privacyDisclaimer: string;
-};
+export type { EvidencePackMetadata, RoadEvidencePack };
 
-export function buildEvidencePack(roadId: string) {
+export function buildEvidencePack(roadId: string): RoadEvidencePack | null {
   const passport = getRoadPassport(roadId);
   if (!passport) return null;
 

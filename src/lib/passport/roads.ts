@@ -1,34 +1,8 @@
 import { getRupee } from "../rupee/index";
 import type { Road } from "../rupee/types";
+import type { RoadExplorerFilter, RoadExplorerStats, RoadListItem } from "./types";
 
-export type RoadListItem = {
-  id: string;
-  name: string;
-  ward: string;
-  roadType: string;
-  surface: string;
-  lanes: number;
-  lengthM: number;
-  underDlp: boolean;
-  lastResurfaced: string;
-  busRoute: boolean;
-  totalBilledInr: number;
-  orderCount: number;
-  reopenCount: number;
-  reopenRate: number;
-  flagCount: number;
-  openComplaintCount: number;
-  status: "held" | "under_review" | "flagged" | "high_risk";
-};
-
-export type RoadExplorerFilter = {
-  ward?: string;
-  surface?: string;
-  underDlp?: boolean;
-  hasFlags?: boolean;
-  query?: string;
-  sortBy?: "billed_desc" | "orders_desc" | "reopen_desc" | "name_asc";
-};
+export type { RoadExplorerFilter, RoadExplorerStats, RoadListItem };
 
 export function listRoadSummaries(filter?: RoadExplorerFilter): RoadListItem[] {
   const { ds, flags } = getRupee();

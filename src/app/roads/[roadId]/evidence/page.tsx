@@ -3,18 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { PrintButton } from "@/components/passport/PrintButton";
-import { buildEvidencePack } from "@/lib/passport/evidence-pack";
+import { passportService } from "@/lib/passport/service";
 import { formatInr } from "@/lib/rupee/format";
 
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ roadId: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const pack = buildEvidencePack(id);
+  const { roadId } = await params;
+  const pack = passportService.buildEvidencePack(roadId);
   if (!pack) return { title: "Dossier Not Found" };
   return {
     title: `Audit-Ready Evidence Pack: ${pack.metadata.roadName}`,
@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function EvidencePackPage({ params }: PageProps) {
-  const { id } = await params;
-  const pack = buildEvidencePack(id);
+  const { roadId } = await params;
+  const pack = passportService.buildEvidencePack(roadId);
   if (!pack) notFound();
 
   return (

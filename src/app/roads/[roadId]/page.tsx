@@ -9,18 +9,18 @@ import { PassportHeader } from "@/components/passport/PassportHeader";
 import { PassportLifecycle } from "@/components/passport/PassportLifecycle";
 import { PassportMoneyTrail } from "@/components/passport/PassportMoneyTrail";
 import { PassportTimeline } from "@/components/passport/PassportTimeline";
-import { getRoadPassport } from "@/lib/passport/aggregate";
+import { passportService } from "@/lib/passport/service";
 import { wardSlug } from "@/lib/rupee/slug";
 
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ roadId: string }>;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  const data = getRoadPassport(id);
+  const { roadId } = await params;
+  const data = passportService.getRoadPassport(roadId);
   if (!data) return { title: "Road Not Found" };
   return {
     title: `${data.road.name} (${data.road.id}) — Road Reliability Passport`,
@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function RoadPassportPage({ params }: PageProps) {
-  const { id } = await params;
-  const data = getRoadPassport(id);
+  const { roadId } = await params;
+  const data = passportService.getRoadPassport(roadId);
   if (!data) notFound();
 
   return (

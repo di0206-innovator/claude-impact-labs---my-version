@@ -166,7 +166,7 @@ export function rankRoadPriorities(
   return results;
 }
 
-export function generateBudgetScenarios(): BudgetScenario[] {
+export function generateBudgetScenarios(envelopeInr?: number): BudgetScenario[] {
   const allRanked = rankRoadPriorities();
 
   const runScenario = (
@@ -210,28 +210,28 @@ export function generateBudgetScenarios(): BudgetScenario[] {
       "pre_monsoon",
       "Pre-Monsoon Prevention",
       "Prioritises vulnerable surfaces and chronic flood hotspots before heavy monsoon showers begin.",
-      150000000, // ₹15 Cr
+      envelopeInr ? Math.round(envelopeInr * 0.6) : 150000000, // ₹15 Cr
       rankRoadPriorities({ vulnerability: 40, safety: 20, deficit: 15, burden: 15, equity: 10 }),
     ),
     runScenario(
       "balanced",
       "Balanced Ward Allocation",
       "Equitably balances service deficit, safety, and infrastructure vulnerability across all 24 wards.",
-      250000000, // ₹25 Cr
+      envelopeInr ?? 250000000, // ₹25 Cr
       allRanked,
     ),
     runScenario(
       "critical_safety",
       "High-Risk Public Safety First",
       "Targeted at corridors with recurring road accidents, hospital ambulance routes, and school transit zones.",
-      200000000, // ₹20 Cr
+      envelopeInr ? Math.round(envelopeInr * 0.8) : 200000000, // ₹20 Cr
       rankRoadPriorities({ safety: 45, vulnerability: 20, deficit: 15, burden: 10, equity: 10 }),
     ),
     runScenario(
       "monsoon_emergency",
       "Monsoon Emergency Response",
       "Rapid deployment focus for open citizen complaints, recurring failures, and inundated roadways.",
-      350000000, // ₹35 Cr
+      envelopeInr ? Math.round(envelopeInr * 1.4) : 350000000, // ₹35 Cr
       rankRoadPriorities({ deficit: 35, burden: 25, vulnerability: 25, safety: 10, equity: 5 }),
     ),
   ];
