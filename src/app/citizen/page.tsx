@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Citizen Transparency Hub — Rasta Hisaab 2.0",
+  title: "Citizen Transparency Hub — Rastabaaz",
   description:
     "Report road defects, track public work orders, inspect repair receipts, and verify road conditions across Mumbai.",
 };
@@ -45,7 +45,7 @@ export default function CitizenHubPage() {
       badge: "Passports",
     },
     {
-      title: "Ask Rasta Hisaab AI",
+      title: "Ask Rastabaaz AI",
       description: "Ask questions grounded in official municipal records, contractors, and costs.",
       href: "/assistant",
       cta: "Start AI Chat",

@@ -13,8 +13,10 @@ describe("git remote invariants & pre-push safety policy", () => {
   it("enforces git remotes point exclusively to di0206-innovator", () => {
     const remotes = execSync("git remote -v", { cwd: ROOT, encoding: "utf8" });
 
-    // Must have origin pointing to authorized URL
-    expect(remotes).toContain(AUTHORIZED_URL);
+    // Must have origin pointing to authorized URL (accepts with or without .git, HTTPS or SSH)
+    expect(remotes).toMatch(
+      /origin\s+(https:\/\/github\.com\/|git@github\.com:)di0206-innovator\/claude-impact-labs---my-version(\.git)?/
+    );
 
     // Must NOT contain forbidden account or repo
     expect(remotes).not.toContain(FORBIDDEN_SUBSTRING);
@@ -22,7 +24,7 @@ describe("git remote invariants & pre-push safety policy", () => {
     // Origin must be the only remote configured
     const lines = remotes.trim().split("\n");
     for (const line of lines) {
-      expect(line.startsWith("origin\t")).toBe(true);
+      expect(/^origin\s+/.test(line)).toBe(true);
     }
   });
 

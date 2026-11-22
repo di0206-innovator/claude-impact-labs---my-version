@@ -4,7 +4,7 @@ import { ReportForm } from "@/components/report/ReportForm";
 import { parseIssueType } from "@/lib/issue-type-param";
 
 export const metadata: Metadata = {
-  title: "Report a Road Problem — Rasta Hisaab",
+  title: "Report a Road Problem — Rastabaaz",
   description:
     "Photograph a pothole, waterlogging, or open manhole in Mumbai. Your report joins the ward's repair money trail.",
 };

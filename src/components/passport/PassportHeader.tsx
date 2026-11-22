@@ -47,7 +47,7 @@ export function PassportHeader({ data }: { data: RoadPassportData }) {
             href={`/assistant?roadId=${road.id}`}
             className="ux4g-btn ux4g-btn-m ux4g-btn-primary touch-target inline-flex items-center gap-1.5"
           >
-            <span>Ask Rasta Hisaab</span>
+            <span>Ask Rastabaaz</span>
           </Link>
         </div>
       </div>

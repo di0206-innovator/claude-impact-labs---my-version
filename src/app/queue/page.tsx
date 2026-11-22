@@ -59,8 +59,8 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
           <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{summary.highCount}</dd>
         </div>
         <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Billed Amount at Risk</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInr(summary.totalAtRiskInr)}</dd>
+          <dt className="rb-stat-label">Audit Amount at Risk</dt>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInr(summary.auditFlagAtRiskInr)}</dd>
         </div>
       </dl>
 

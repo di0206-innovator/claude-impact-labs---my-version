@@ -8,7 +8,7 @@ import { wardSlug } from "@/lib/rupee/slug";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Spend vs Need & Next Rupee — Rasta Hisaab 2.0",
+  title: "Spend vs Need & Next Rupee — Rastabaaz",
   description:
     "Transparent 5-dimension infrastructure prioritisation and budget scenario simulations for Mumbai's roads.",
 };

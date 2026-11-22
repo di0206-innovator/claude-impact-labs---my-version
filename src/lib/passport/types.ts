@@ -109,6 +109,7 @@ export type ActionQueueSummary = {
   highCount: number;
   mediumCount: number;
   totalAtRiskInr: number;
+  auditFlagAtRiskInr: number;
   byCategory: Record<ActionQueueCategory, number>;
 };
 

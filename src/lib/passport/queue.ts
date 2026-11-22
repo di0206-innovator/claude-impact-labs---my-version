@@ -153,14 +153,29 @@ export function listActionQueueItems(wardFilter?: string): ActionQueueItem[] {
   return queue;
 }
 
-export function getActionQueueSummary(wardFilter?: string) {
+export function getActionQueueSummary(wardFilter?: string): ActionQueueSummary {
   const items = listActionQueueItems(wardFilter);
+  const { flags } = getRupee();
+  const scopedFlags = wardFilter ? flags.filter((f) => f.ward === wardFilter) : flags;
+  const auditFlagAtRiskInr = scopedFlags.reduce((sum, f) => sum + f.amountAtRiskInr, 0);
+
+  // Deduplicate operational amount at risk per entity so a single work order
+  // flagged for both audit variance and SLA breach is not double-counted.
+  const maxRiskByEntity = new Map<string, number>();
+  for (const item of items) {
+    if (item.amountAtRiskInr <= 0) continue;
+    const prev = maxRiskByEntity.get(item.relatedEntityId) ?? 0;
+    if (item.amountAtRiskInr > prev) maxRiskByEntity.set(item.relatedEntityId, item.amountAtRiskInr);
+  }
+  const totalAtRiskInr = Array.from(maxRiskByEntity.values()).reduce((sum, v) => sum + v, 0);
+
   return {
     totalItems: items.length,
     criticalCount: items.filter((i) => i.priority === "critical").length,
     highCount: items.filter((i) => i.priority === "high").length,
     mediumCount: items.filter((i) => i.priority === "medium").length,
-    totalAtRiskInr: items.reduce((sum, i) => sum + i.amountAtRiskInr, 0),
+    totalAtRiskInr,
+    auditFlagAtRiskInr,
     byCategory: {
       high_defect_recurrence: items.filter((i) => i.category === "high_defect_recurrence").length,
       potential_dlp_conflict: items.filter((i) => i.category === "potential_dlp_conflict").length,

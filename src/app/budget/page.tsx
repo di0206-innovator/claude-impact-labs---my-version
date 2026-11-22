@@ -9,7 +9,7 @@ import { getSpendVsNeedReport } from "@/lib/priority/score";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Ward Spend vs Need & Fiscal Equity — Rasta Hisaab 2.0",
+  title: "Ward Spend vs Need & Fiscal Equity — Rastabaaz",
   description:
     "Deterministic analysis of municipal road repair spend allocation vs multi-factor citizen need across Mumbai's 24 administrative wards.",
 };

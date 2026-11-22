@@ -8,7 +8,7 @@ import { wardSlug } from "@/lib/rupee/slug";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Procurement & Accountability Intelligence — Rasta Hisaab 2.0",
+  title: "Procurement & Accountability Intelligence — Rastabaaz",
   description:
     "Systematic audit screening: cost variance against standard BMC rate cards, repeat repair clusters, and Defect Liability Period (DLP) flags.",
 };
