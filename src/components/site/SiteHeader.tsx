@@ -51,7 +51,8 @@ function isActive(pathname: string, href: string): boolean {
 }
 
 /**
- * UX4G navbar with 5 primary items and an organized More menu for citizen & BMC tools.
+ * Floating translucent glass pill nav with dual-circle logo, 5 primary links,
+ * More dropdown menu, and Signal Vermilion pill CTA.
  */
 export function SiteHeader() {
   const pathname = usePathname() ?? "/";
@@ -87,22 +88,32 @@ export function SiteHeader() {
 
   return (
     <header className="rb-header">
-      <nav className="ux4g-navbar" aria-label="Site">
+      <nav className="ux4g-navbar rb-glass-pill" aria-label="Site">
         <div className="ux4g-navbar-wrap shell">
           <div className="flex items-center gap-3">
             <Link href="/" className="rb-wordmark touch-target" onClick={() => setMoreOpen(false)}>
-              <span className="ux4g-heading-xs-strong">Rastabaaz</span>
-              <span lang="mr" className="ux4g-label-m-default ux4g-text-neutral-secondary">
+              <svg
+                className="rb-dual-circle-logo w-5 h-5 flex-shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <circle cx="8" cy="12" r="5" stroke="var(--teal-deep)" strokeWidth="2.2" />
+                <circle cx="16" cy="12" r="5" stroke="var(--vermilion)" strokeWidth="2.2" strokeDasharray="3 2" />
+                <circle cx="12" cy="12" r="1.5" fill="var(--vermilion)" />
+              </svg>
+              <span className="ux4g-heading-xs-strong font-serif tracking-tight">Rastabaaz</span>
+              <span lang="mr" className="ux4g-label-m-default ux4g-text-neutral-secondary font-sans">
                 रस्ताबाज
               </span>
             </Link>
-            <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.6875rem] font-medium bg-[var(--held-bg)] text-[var(--held-ink)] border border-[var(--held-border)]">
-              <span className="rb-pulse-dot" aria-hidden="true" />
+            <div className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.6875rem] font-medium bg-[var(--mint-tint)] text-[var(--teal-deep)] border border-[rgba(6,78,75,0.18)]">
+              <span className="rb-pulse-vermilion" aria-hidden="true" />
               <span>Civic Ledger 2.0</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             <ul className="ux4g-navbar-links rb-nav">
               {PRIMARY_NAV.map(({ href, label, Icon }) => (
                 <li key={href}>
@@ -165,6 +176,16 @@ export function SiteHeader() {
                 </div>
               ) : null}
             </div>
+
+            <Link
+              href="/report"
+              aria-label="File pothole complaint"
+              className="rb-nav-cta rb-cta-vermilion touch-target hidden sm:inline-flex"
+              onClick={() => setMoreOpen(false)}
+            >
+              <span className="rb-pulse-vermilion mr-1" aria-hidden="true" />
+              <span aria-hidden="true">Report Pothole</span>
+            </Link>
           </div>
         </div>
       </nav>

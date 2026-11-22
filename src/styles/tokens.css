@@ -1,63 +1,86 @@
-/* Hallmark · theme: civic-intelligence · genre: modern-minimal · floor: verified */
+/* Hallmark · theme: civic-intelligence · genre: swiss-editorial · floor: verified */
 /*
- * Rastabaaz tokens. UX4G 3.3.3 is the design system: its violet primary,
- * Noto Sans, neutrals, radii and spacing. The only additions are the asphalt
- * and lane yellow of the header band and the three outcome colours.
+ * Rastabaaz tokens: Swiss-editorial civic design system inspired by Polpharma Biologics.
+ * Unified palette, editorial serif display, UI sans, and tabular figures.
  */
 
 :root {
-  /* Brand marks UX4G does not have: the road surface and its lane paint. */
+  /* Unified Palette: Polpharma Biologics Swiss-Editorial Civic Authority */
+  --teal-deep: #064E4B;
+  --teal-abyss: #043937;
+  --canvas: #F7F9F8;
+  --card: #FFFFFF;
+  --mint-tint: #DDF4F1;
+  --vermilion: #E85D4A;
+  --ink: #0B2625;
+  --mist: #4A6361;
+  --rule: rgba(6, 78, 75, 0.14);
+  --rule-firm: rgba(6, 78, 75, 0.28);
+
+  /* Status Indicators (Semantic Civic Outcomes) */
+  --held-ink: #0E7C66;
+  --flagged-ink: #B45309;
+  --failed-ink: #C81E1E;
+
+  --held: #0E7C66;
+  --flagged: #B45309;
+  --failed: #C81E1E;
+
+  --held-bg: rgb(14 124 102 / 0.1);
+  --held-border: rgb(14 124 102 / 0.25);
+  --flagged-bg: rgb(180 83 9 / 0.1);
+  --flagged-border: rgb(180 83 9 / 0.25);
+  --failed-bg: rgb(200 30 30 / 0.1);
+  --failed-border: rgb(200 30 30 / 0.25);
+
+  /* Brand surface & legacy accents */
   --asphalt: #1d272d;
   --asphalt-lane: #2c3940;
   --lane: #f5c400;
 
-  /* Everything else is a UX4G 3.3.3 semantic token under a short local name. */
-  --overcast: var(--ux4g-bg-neutral-soft);
-  --card: var(--ux4g-bg-neutral-elevated);
-  --enamel: var(--ux4g-bg-primary-strong);
-  --enamel-soft: var(--ux4g-bg-primary-soft);
-  --enamel-press: var(--ux4g-bg-primary-subtle);
-  --ink: var(--ux4g-text-neutral-primary);
-  --mist: var(--ux4g-text-neutral-secondary);
-  --rule: var(--ux4g-border-color-neutral-subtle);
-  --rule-firm: var(--ux4g-border-color-neutral-default);
-  --sheet: var(--ux4g-bg-neutral-subtle);
+  /* Aliases mapped from UX4G / semantic primitives for compatibility */
+  --overcast: var(--canvas);
+  --paper: var(--canvas);
+  --sheet: var(--canvas);
+  --enamel: var(--ux4g-bg-primary-strong, var(--teal-deep));
+  --enamel-soft: var(--ux4g-bg-primary-soft, var(--mint-tint));
+  --enamel-press: var(--ux4g-bg-primary-subtle, #043937);
 
-  /* Outcome palette for the money bar, validated for colour-blind separation in this order. */
-  --held: #127a52;
-  --flagged: #e0a106;
-  --failed: #b0281f;
+  --marking: var(--lane);
+  --oxide: var(--failed);
+  --moss: var(--held);
 
-  /* Refined civic intelligence status tints */
-  --held-bg: rgb(18 122 82 / 0.1);
-  --held-border: rgb(18 122 82 / 0.25);
-  --held-ink: #0f6846;
-  --flagged-bg: rgb(224 161 6 / 0.1);
-  --flagged-border: rgb(224 161 6 / 0.25);
-  --flagged-ink: #8c6000;
-  --failed-bg: rgb(176 40 31 / 0.1);
-  --failed-border: rgb(176 40 31 / 0.25);
-  --failed-ink: #9c221a;
+  --gutter: var(--ux4g-padding-m, 1rem);
+
+  /* Typography tokens (attached via next/font in layout.tsx) */
+  --font-serif-family: var(--font-serif), Georgia, serif;
+  --font-sans-family: var(--font-sans), "Plus Jakarta Sans", "Noto Sans", system-ui, sans-serif;
+  --font-mono-family: var(--font-mono), "JetBrains Mono", monospace;
+
+  --font-ui: "Inter", var(--font-sans-family), system-ui, sans-serif;
+  --font-figure: "Geist Mono", var(--font-mono-family), monospace;
+  --font-editorial: var(--font-serif-family);
 
   /* Tactile surfaces & shadows */
-  --card-shadow: 0 1px 3px rgb(16 24 40 / 0.04), 0 1px 2px rgb(16 24 40 / 0.02);
-  --card-shadow-hover: 0 6px 16px -2px rgb(16 24 40 / 0.08), 0 2px 6px -1px rgb(16 24 40 / 0.04);
+  --card-shadow: 0 1px 3px rgb(6 78 75 / 0.04), 0 1px 2px rgb(6 78 75 / 0.02);
+  --card-shadow-hover: 0 8px 24px -4px rgb(6 78 75 / 0.08), 0 2px 6px -1px rgb(6 78 75 / 0.04);
   --card-radius: var(--ux4g-radius-md, 0.5rem);
 
-  /* Startup-grade glassmorphic tokens (Linear / Stripe caliber) */
-  --glass-bg: rgb(255 255 255 / 0.86);
+  /* Glassmorphism tokens */
+  --glass-bg: rgb(255 255 255 / 0.85);
   --glass-bg-elevated: rgb(255 255 255 / 0.94);
-  --glass-border: rgb(255 255 255 / 0.7);
-  --glass-border-subtle: rgb(16 24 40 / 0.08);
-  --glass-blur: blur(16px) saturate(180%);
-  --glass-shadow: 0 10px 30px -5px rgb(16 24 40 / 0.08), 0 0 0 1px rgb(16 24 40 / 0.04);
-  --glass-shadow-floating: 0 20px 40px -10px rgb(16 24 40 / 0.12), 0 0 0 1px rgb(16 24 40 / 0.06);
+  --glass-border: rgba(6, 78, 75, 0.14);
+  --glass-border-subtle: rgba(6, 78, 75, 0.08);
+  --glass-blur: blur(16px);
+  --glass-shadow: 0 8px 32px -4px rgb(6 78 75 / 0.08), 0 0 0 1px rgba(6, 78, 75, 0.06);
+  --glass-shadow-floating: 0 20px 40px -10px rgb(6 78 75 / 0.14), 0 0 0 1px rgba(6, 78, 75, 0.08);
 
-  /* Ambient edge-lighting / glow */
-  --glow-held: 0 0 20px -3px rgb(18 122 82 / 0.25);
-  --glow-flagged: 0 0 20px -3px rgb(224 161 6 / 0.25);
-  --glow-failed: 0 0 20px -3px rgb(176 40 31 / 0.25);
-  --glow-enamel: 0 0 20px -3px rgb(79 70 229 / 0.25);
+  /* Ambient glow effects */
+  --glow-held: 0 0 20px -3px rgb(14 124 102 / 0.25);
+  --glow-flagged: 0 0 20px -3px rgb(180 83 9 / 0.25);
+  --glow-failed: 0 0 20px -3px rgb(200 30 30 / 0.25);
+  --glow-enamel: 0 0 20px -3px rgb(6 78 75 / 0.25);
+  --glow-vermilion: 0 0 20px -2px rgb(232 93 74 / 0.35);
 
   /* Spring physics & transitions */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -65,53 +88,53 @@
   --transition-fast: 160ms var(--ease-spring);
   --transition-normal: 240ms var(--ease-spring);
   --transition-smooth: 380ms var(--ease-spring);
-
-  /* Older component names, kept so map and desk code reads the same tokens. */
-  --paper: var(--overcast);
-  --marking: var(--lane);
-  --oxide: var(--failed);
-  --moss: var(--held);
-
-  --gutter: var(--ux4g-padding-m);
-  --font-ui: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, var(--ux4g-font-family-base, "Noto Sans"), sans-serif;
-  --font-figure: "Geist Mono", "SF Mono", "Roboto Mono", "Source Code Pro", Menlo, Consolas, monospace;
 }
 
 @media (min-width: 48rem) {
   :root {
-    --gutter: var(--ux4g-padding-2xl);
+    --gutter: var(--ux4g-padding-2xl, 2rem);
   }
 }
 
 @theme inline {
-  --color-ink: var(--ink);
-  --color-paper: var(--paper);
+  --color-teal-deep: var(--teal-deep);
+  --color-teal-abyss: var(--teal-abyss);
+  --color-canvas: var(--canvas);
   --color-card: var(--card);
-  --color-asphalt: var(--asphalt);
-  --color-lane: var(--lane);
-  --color-enamel: var(--enamel);
+  --color-mint-tint: var(--mint-tint);
+  --color-vermilion: var(--vermilion);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-rule: var(--rule);
+  --color-rule-firm: var(--rule-firm);
+
   --color-held: var(--held);
   --color-held-bg: var(--held-bg);
   --color-held-border: var(--held-border);
   --color-held-ink: var(--held-ink);
-  --color-failed: var(--failed);
-  --color-failed-bg: var(--failed-bg);
-  --color-failed-border: var(--failed-border);
-  --color-failed-ink: var(--failed-ink);
+
   --color-flagged: var(--flagged);
   --color-flagged-bg: var(--flagged-bg);
   --color-flagged-border: var(--flagged-border);
   --color-flagged-ink: var(--flagged-ink);
-  --color-mist: var(--mist);
-  --color-sheet: var(--sheet);
-  --color-rule: var(--rule);
-  --color-rule-firm: var(--rule-firm);
-  /* Legacy names still used in map and desk markup. */
-  --color-marking: var(--lane);
-  --color-oxide: var(--failed);
-  --color-moss: var(--held);
 
-  --font-sans: var(--font-ui);
+  --color-failed: var(--failed);
+  --color-failed-bg: var(--failed-bg);
+  --color-failed-border: var(--failed-border);
+  --color-failed-ink: var(--failed-ink);
+
+  --color-paper: var(--paper);
+  --color-asphalt: var(--asphalt);
+  --color-lane: var(--lane);
+  --color-enamel: var(--enamel);
+  --color-sheet: var(--sheet);
+  --color-marking: var(--marking);
+  --color-oxide: var(--oxide);
+  --color-moss: var(--moss);
+
+  --font-serif: var(--font-serif-family);
+  --font-sans: var(--font-sans-family);
+  --font-mono: var(--font-mono-family);
   --font-figure: var(--font-figure);
   --font-deva: "Noto Sans", "Noto Sans Devanagari", var(--ux4g-font-family-base), sans-serif;
 }

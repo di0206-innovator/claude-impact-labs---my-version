@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { siteOrigin } from "@/lib/site-url";
+import { jetBrainsMono, newsreader, plusJakartaSans } from "./fonts";
 import "./globals.css";
 
 const title = "Rastabaaz";
@@ -40,7 +41,7 @@ export const viewport: Viewport = {
   // Android otherwise overlays the soft keyboard on the page instead of
   // resizing it, which hides the bottom of a focused form.
   interactiveWidget: "resizes-content",
-  themeColor: "#1d272d",
+  themeColor: "#064E4B",
 };
 
 export default function RootLayout({
@@ -49,7 +50,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${newsreader.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable}`}
+    >
       <body className="flex min-h-dvh flex-col antialiased">
         <a className="skip-link" href="#main">
           Skip to content
