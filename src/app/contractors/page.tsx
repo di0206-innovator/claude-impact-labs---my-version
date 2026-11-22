@@ -19,7 +19,7 @@ export default function ContractorsPage() {
   for (const flag of flags) flagsById.set(flag.contractorId, (flagsById.get(flag.contractorId) ?? 0) + 1);
 
   return (
-    <div className="shell rb-page rb-contractors">
+    <div className="shell rb-page rb-contractors rb-motion-fade-in">
       <h1 className="ux4g-display-xs-strong">Who did the work, and did it hold?</h1>
       <p className="ux4g-body-l-default ux4g-text-neutral-secondary ux4g-mt-xs rb-measure">
         {cards.length} contractors, scored against what is fair for the same work in the same conditions. 50 means

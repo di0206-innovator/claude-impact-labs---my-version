@@ -40,7 +40,7 @@ export default async function PotholeReceiptPage({ params }: PageProps) {
         />
       </div>
 
-      <div className="rb-receipt-card space-y-6">
+      <div className="rb-receipt-card space-y-6 rb-glass-elevated rb-motion-fade-in">
         <header className="border-b border-[var(--rule)] pb-4 space-y-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span className="font-mono text-xs font-semibold px-2.5 py-0.5 rounded bg-[var(--sheet)] text-[var(--ink)]">

@@ -33,7 +33,7 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
   const allWards = Array.from(new Set(ds.roads.map((r) => r.ward))).sort();
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-6">
+    <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Operational Command Queue</span>
@@ -45,22 +45,22 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
         </p>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rb-stat-card">
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Action Items</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{summary.totalItems}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{summary.totalItems}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Critical Priority</dt>
-          <dd className="rb-stat-val text-[var(--failed-ink)]">{summary.criticalCount}</dd>
+          <dd className="rb-stat-val text-[var(--failed-ink)] rb-tabular-nums">{summary.criticalCount}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">High Priority</dt>
-          <dd className="rb-stat-val text-[var(--flagged-ink)]">{summary.highCount}</dd>
+          <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{summary.highCount}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Billed Amount at Risk</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{formatInr(summary.totalAtRiskInr)}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInr(summary.totalAtRiskInr)}</dd>
         </div>
       </dl>
 

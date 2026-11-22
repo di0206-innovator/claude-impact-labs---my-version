@@ -156,7 +156,10 @@
   top: 0;
   z-index: 50;
   padding-top: env(safe-area-inset-top);
-  background: var(--ux4g-bg-neutral-elevated);
+  background: var(--glass-bg-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--rule);
 }
 
 .rb-header .ux4g-navbar-wrap {

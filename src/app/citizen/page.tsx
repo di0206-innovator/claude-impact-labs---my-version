@@ -54,7 +54,7 @@ export default function CitizenHubPage() {
   ];
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-8">
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Public Civic Hub</span>
@@ -66,11 +66,11 @@ export default function CitizenHubPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 rb-motion-stagger">
         {actions.map((act) => (
           <div
             key={act.href}
-            className="ux4g-card ux4g-card-solid p-6 border border-[var(--rule)] flex flex-col justify-between hover:border-[var(--enamel)] transition-colors"
+            className="ux4g-card ux4g-card-solid p-6 border border-[var(--rule)] flex flex-col justify-between rb-interactive-card"
           >
             <div>
               <span className="rb-chip rb-chip-neutral mb-3 text-[0.625rem]">{act.badge}</span>

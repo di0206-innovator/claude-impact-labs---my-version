@@ -72,9 +72,11 @@
   border-radius: 0.875rem;
   background: transparent;
   text-align: start;
+  transition: transform 180ms var(--ease-spring), border-color 180ms var(--ease-spring), background-color 180ms var(--ease-spring);
 }
 
 .rb-chat-starters button:hover {
+  transform: translateY(-1.5px);
   border-color: var(--enamel);
   background: var(--enamel-soft);
 }

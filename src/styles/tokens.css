@@ -41,8 +41,30 @@
 
   /* Tactile surfaces & shadows */
   --card-shadow: 0 1px 3px rgb(16 24 40 / 0.04), 0 1px 2px rgb(16 24 40 / 0.02);
-  --card-shadow-hover: 0 4px 12px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.04);
+  --card-shadow-hover: 0 6px 16px -2px rgb(16 24 40 / 0.08), 0 2px 6px -1px rgb(16 24 40 / 0.04);
   --card-radius: var(--ux4g-radius-md, 0.5rem);
+
+  /* Startup-grade glassmorphic tokens (Linear / Stripe caliber) */
+  --glass-bg: rgb(255 255 255 / 0.86);
+  --glass-bg-elevated: rgb(255 255 255 / 0.94);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --glass-border-subtle: rgb(16 24 40 / 0.08);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-shadow: 0 10px 30px -5px rgb(16 24 40 / 0.08), 0 0 0 1px rgb(16 24 40 / 0.04);
+  --glass-shadow-floating: 0 20px 40px -10px rgb(16 24 40 / 0.12), 0 0 0 1px rgb(16 24 40 / 0.06);
+
+  /* Ambient edge-lighting / glow */
+  --glow-held: 0 0 20px -3px rgb(18 122 82 / 0.25);
+  --glow-flagged: 0 0 20px -3px rgb(224 161 6 / 0.25);
+  --glow-failed: 0 0 20px -3px rgb(176 40 31 / 0.25);
+  --glow-enamel: 0 0 20px -3px rgb(79 70 229 / 0.25);
+
+  /* Spring physics & transitions */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-fast: 160ms var(--ease-spring);
+  --transition-normal: 240ms var(--ease-spring);
+  --transition-smooth: 380ms var(--ease-spring);
 
   /* Older component names, kept so map and desk code reads the same tokens. */
   --paper: var(--overcast);

@@ -18,7 +18,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const initialIssueType = parseIssueType(type);
 
   return (
-    <div className="shell-narrow rb-home">
+    <div className="shell-narrow rb-home rb-motion-fade-in">
       <h1 className="rb-flow-title">Report a road problem</h1>
       <ReportForm initialIssueType={initialIssueType} />
     </div>

@@ -18,6 +18,11 @@
   padding-inline: var(--ux4g-padding-s);
   border-radius: var(--ux4g-radius-sm);
   white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.rb-nav-link:hover {
+  background-color: var(--sheet);
 }
 
 .rb-nav-icon {
@@ -45,6 +50,11 @@
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.rb-nav-more-btn:hover {
+  background-color: var(--sheet);
 }
 
 .rb-nav-more-panel {
@@ -55,11 +65,14 @@
   min-width: 14.5rem;
   padding: 0.75rem;
   border-radius: var(--ux4g-radius-md);
-  border: 1px solid var(--rule);
-  background: var(--ux4g-bg-neutral-elevated);
-  box-shadow: var(--card-shadow-hover);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow-floating);
   display: grid;
   gap: 0.75rem;
+  animation: rb-fade-in-up 180ms var(--ease-spring);
 }
 
 .rb-nav-more-heading {

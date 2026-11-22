@@ -32,7 +32,7 @@ export default async function VerifyPage({ searchParams }: PageProps) {
   const obsLabel = params.observation ? (OBS_LABELS[params.observation] ?? params.observation) : null;
 
   return (
-    <article className="shell-narrow rb-page py-6 sm:py-10 space-y-6">
+    <article className="shell-narrow rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Crowdsourced Accountability</span>

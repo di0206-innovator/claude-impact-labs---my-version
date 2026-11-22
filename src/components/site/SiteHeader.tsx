@@ -88,12 +88,18 @@ export function SiteHeader() {
     <header className="rb-header">
       <nav className="ux4g-navbar" aria-label="Site">
         <div className="ux4g-navbar-wrap shell">
-          <Link href="/" className="rb-wordmark touch-target" onClick={() => setMoreOpen(false)}>
-            <span className="ux4g-heading-xs-strong">Rastabaaz</span>
-            <span lang="mr" className="ux4g-label-m-default ux4g-text-neutral-secondary">
-              रस्ताबाज
-            </span>
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/" className="rb-wordmark touch-target" onClick={() => setMoreOpen(false)}>
+              <span className="ux4g-heading-xs-strong">Rastabaaz</span>
+              <span lang="mr" className="ux4g-label-m-default ux4g-text-neutral-secondary">
+                रस्ताबाज
+              </span>
+            </Link>
+            <div className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.6875rem] font-medium bg-[var(--held-bg)] text-[var(--held-ink)] border border-[var(--held-border)]">
+              <span className="rb-pulse-dot" aria-hidden="true" />
+              <span>Civic Ledger 2.0</span>
+            </div>
+          </div>
 
           <div className="flex items-center gap-1">
             <ul className="ux4g-navbar-links rb-nav">

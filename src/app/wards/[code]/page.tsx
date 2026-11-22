@@ -10,9 +10,10 @@ import { SpendCategories } from "@/components/rupee/SpendCategories";
 import { ScoreHow } from "@/components/rupee/ScoreHow";
 import { WardVoices } from "@/components/rupee/WardVoices";
 import { getRepository } from "@/lib/repo/context";
-import { formatInr, formatInrShort, getRupee, nextRupee } from "@/lib/rupee";
+import { formatInr, formatInrShort, generateWardActionQueue, getRupee, nextRupee } from "@/lib/rupee";
 import { getScorecards } from "@/lib/rupee/scorecard";
 import { moneyScore, pct, scoreBand, wardFromSlug, wardSlug } from "@/lib/rupee/slug";
+import { WardEngineerQueue } from "./queue";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +67,7 @@ export default async function WardPage({ params, searchParams }: PageProps) {
 
   const { ward, outcome, complaints, context } = ledger;
   const next = nextRupee(rupee.ds, rupee.flags, ward.code, 8);
+  const queueItems = generateWardActionQueue(rupee.ds, ward.code);
   const scoreById = new Map(
     rupee.scores.map((score) => [score.contractor.id, score]),
   );
@@ -223,6 +225,14 @@ export default async function WardPage({ params, searchParams }: PageProps) {
           <OfficerActions wardCode={ward.code} wardName={ward.name} flags={ledger.flags} next={next} />
         </div>
       </section>
+
+      {/* Operational Ward Engineer Triage Queue */}
+      <WardEngineerQueue
+        wardCode={ward.code}
+        wardName={ward.name}
+        items={queueItems}
+        className="ux4g-mt-3xl"
+      />
 
       <section className="rb-section" aria-labelledby="people-heading">
         <h2 id="people-heading" className="ux4g-title-l-strong">

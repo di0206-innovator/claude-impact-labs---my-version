@@ -33,7 +33,7 @@ export default async function AccountabilityPage({ searchParams }: PageProps) {
     : flags;
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-6">
+    <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Audit Screening Engine</span>
@@ -45,22 +45,22 @@ export default async function AccountabilityPage({ searchParams }: PageProps) {
         </p>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rb-stat-card">
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Flagged Orders</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{flags.length}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{flags.length}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Amount at Risk</dt>
-          <dd className="rb-stat-val text-[var(--flagged-ink)]">{formatInrShort(totalAtRisk)}</dd>
+          <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{formatInrShort(totalAtRisk)}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Rate Card Overages</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{overRateFlags.length}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{overRateFlags.length}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Repeat Repair Candidates</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{repeatFlags.length}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{repeatFlags.length}</dd>
         </div>
       </dl>
 

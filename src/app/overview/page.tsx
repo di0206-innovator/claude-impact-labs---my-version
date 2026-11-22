@@ -30,7 +30,7 @@ export default function OverviewPage() {
   const reopenRate = totalOrders > 0 ? reopenedOrders / totalOrders : 0;
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-8">
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Citywide Executive Dashboard</span>
@@ -42,24 +42,24 @@ export default function OverviewPage() {
         </p>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rb-stat-card">
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Amount Billed</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{formatInrShort(overview.spentInr)}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInrShort(overview.spentInr)}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Citizen Reports</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{totalComplaints.toLocaleString("en-IN")}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{totalComplaints.toLocaleString("en-IN")}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">City SLA Compliance</dt>
-          <dd className={`rb-stat-val ${slaRate < 0.75 ? "text-[var(--failed-ink)]" : "text-[var(--held-ink)]"}`}>
+          <dd className={`rb-stat-val rb-tabular-nums ${slaRate < 0.75 ? "text-[var(--failed-ink)]" : "text-[var(--held-ink)]"}`}>
             {pct(slaRate)}
           </dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">30-Day Reopening Rate</dt>
-          <dd className={`rb-stat-val ${reopenRate > 0.2 ? "text-[var(--failed-ink)]" : "text-[var(--ink)]"}`}>
+          <dd className={`rb-stat-val rb-tabular-nums ${reopenRate > 0.2 ? "text-[var(--failed-ink)]" : "text-[var(--ink)]"}`}>
             {pct(reopenRate)}
           </dd>
         </div>

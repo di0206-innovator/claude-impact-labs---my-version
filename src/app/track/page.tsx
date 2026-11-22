@@ -34,7 +34,7 @@ export default async function TrackPage({ searchParams }: PageProps) {
     : null;
 
   return (
-    <article className="shell-narrow rb-page py-6 sm:py-10 space-y-6">
+    <article className="shell-narrow rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
       <header className="space-y-2">
         <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Track a Road Problem</h1>
         <p className="ux4g-body-m-default text-[var(--mist)]">
@@ -72,7 +72,7 @@ export default async function TrackPage({ searchParams }: PageProps) {
       )}
 
       {complaint && (
-        <div className="p-6 rounded border border-[var(--rule)] bg-[var(--card)] space-y-4 shadow-sm">
+        <div className="p-6 rounded border border-[var(--rule)] bg-[var(--card)] space-y-4 shadow-sm rb-glass-card">
           <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--rule)] pb-3">
             <div>
               <span className="font-mono font-bold text-sm text-[var(--ink)]">{complaint.id}</span>

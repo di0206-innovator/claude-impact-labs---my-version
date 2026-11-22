@@ -56,7 +56,8 @@
 }
 .rb-outcome-compact .rb-outcome-track { height: 0.625rem; }
 .rb-outcome-fill { display: flex; gap: 2px; height: 100%; }
-.rb-seg { min-width: 2px; height: 100%; }
+.rb-seg { min-width: 2px; height: 100%; transition: opacity 160ms var(--ease-spring); }
+.rb-seg:hover { opacity: 0.88; }
 .rb-seg:first-child { border-radius: 4px 0 0 4px; }
 .rb-seg:last-child { border-radius: 0 4px 4px 0; }
 .rb-seg:only-child { border-radius: 4px; }

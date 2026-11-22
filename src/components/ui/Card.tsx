@@ -18,7 +18,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
-        className={`rb-card bg-card shadow-card ${className}`}
+        className={`rb-card bg-card shadow-card rb-interactive-card ${className}`}
         {...rest}
       >
         {title && <div className="rb-card-header px-4 py-2 border-b border-rule">{title}</div>}

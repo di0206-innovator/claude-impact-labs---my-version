@@ -13,9 +13,12 @@
   flex-direction: column;
   height: 42%;
   border-radius: 1.25rem 1.25rem 0 0;
-  background: var(--ux4g-bg-neutral-elevated);
-  box-shadow: var(--card-shadow-hover);
-  transition: opacity 0.2s ease;
+  background: var(--glass-bg-elevated);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-top: 1px solid var(--glass-border);
+  box-shadow: 0 -8px 32px rgb(16 24 40 / 0.1);
+  transition: height 300ms var(--ease-spring), opacity 200ms ease;
 }
 
 .rb-sheet[data-selected="true"] {

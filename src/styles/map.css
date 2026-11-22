@@ -121,11 +121,18 @@
   padding: 0 0.75rem;
   border: 1px solid var(--ux4g-border-color-neutral-subtle);
   border-radius: 999px;
-  background: var(--ux4g-bg-neutral-elevated);
-  box-shadow: var(--card-shadow);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
   color: var(--ux4g-text-neutral-primary);
   font-size: 0.875rem;
   font-weight: 600;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.rb-select-chip:hover {
+  box-shadow: var(--glass-shadow-floating);
 }
 
 .rb-select-chip svg {
@@ -161,8 +168,11 @@
   margin-left: auto;
   padding: 0.25rem;
   border-radius: 999px;
-  background: var(--ux4g-bg-neutral-elevated);
-  box-shadow: var(--card-shadow);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border-subtle);
+  box-shadow: var(--glass-shadow);
 }
 
 .rb-view-toggle button {

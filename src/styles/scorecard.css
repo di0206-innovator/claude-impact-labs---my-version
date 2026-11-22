@@ -63,7 +63,8 @@
   border-radius: 50%;
   border: 3px solid var(--ux4g-bg-neutral-elevated);
   background: var(--ux4g-bg-primary-strong);
-  box-shadow: 0 0 0 1px var(--ux4g-text-neutral-primary);
+  box-shadow: 0 0 0 1px var(--ux4g-text-neutral-primary), var(--glow-enamel);
+  transition: left 500ms var(--ease-spring);
 }
 
 .rb-meter-scale {

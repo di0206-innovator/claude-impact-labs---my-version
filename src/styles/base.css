@@ -39,6 +39,13 @@
     outline-color: var(--marking);
   }
 
+  button,
+  [role="button"],
+  .ux4g-btn,
+  .rb-chip {
+    transition: transform 180ms var(--ease-spring), box-shadow 180ms var(--ease-spring);
+  }
+
   button:active,
   [role="button"]:active,
   .ux4g-btn:active,

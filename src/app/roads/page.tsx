@@ -41,7 +41,7 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
   const allWards = Array.from(new Set(ds.roads.map((r) => r.ward))).sort();
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-6">
+    <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
       <header className="space-y-2">
         <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Road Explorer & Reliability Passports</h1>
         <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">
@@ -49,22 +49,22 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
         </p>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="rb-stat-card">
+      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Roads Tracked</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{stats.totalRoads}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{stats.totalRoads}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Total Amount Billed</dt>
-          <dd className="rb-stat-val text-[var(--ink)]">{formatInrShort(stats.totalBilledInr)}</dd>
+          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInrShort(stats.totalBilledInr)}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Flagged for Review</dt>
-          <dd className="rb-stat-val text-[var(--flagged-ink)]">{stats.flaggedRoadsCount}</dd>
+          <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{stats.flaggedRoadsCount}</dd>
         </div>
-        <div className="rb-stat-card">
+        <div className="rb-stat-card rb-interactive-card">
           <dt className="rb-stat-label">Under Active DLP</dt>
-          <dd className="rb-stat-val text-[var(--held-ink)]">{stats.dlpRoadsCount}</dd>
+          <dd className="rb-stat-val text-[var(--held-ink)] rb-tabular-nums">{stats.dlpRoadsCount}</dd>
         </div>
       </dl>
 

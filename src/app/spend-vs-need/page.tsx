@@ -26,7 +26,7 @@ export default async function SpendVsNeedPage({ searchParams }: PageProps) {
   const rankedRoads = rankRoadPriorities(undefined, params.ward);
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-8">
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
       <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span className="rb-chip rb-chip-neutral">Decision Support Matrix</span>
@@ -46,12 +46,12 @@ export default async function SpendVsNeedPage({ searchParams }: PageProps) {
           <span className="text-xs text-[var(--mist)]">Hypothetical Fiscal Envelopes</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 rb-motion-stagger">
           {scenarios.map((sc) => (
             <Link
               key={sc.id}
               href={`/spend-vs-need?scenario=${sc.id}`}
-              className={`p-4 rounded border transition-colors text-left flex flex-col justify-between ${activeScenario.id === sc.id ? "border-[var(--enamel)] bg-[var(--card)] shadow-sm" : "border-[var(--rule)] bg-[var(--card)] hover:border-[var(--rule-firm)]"}`}
+              className={`p-4 rounded border transition-colors text-left flex flex-col justify-between rb-interactive-card ${activeScenario.id === sc.id ? "border-[var(--enamel)] bg-[var(--card)] shadow-sm" : "border-[var(--rule)] bg-[var(--card)] hover:border-[var(--rule-firm)]"}`}
             >
               <div>
                 <span className="text-xs font-semibold text-[var(--enamel)] block mb-1">

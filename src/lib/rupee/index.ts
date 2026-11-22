@@ -20,6 +20,13 @@ export { wardLedger, allLedgers, cityOverview } from "./ledger";
 export { contractorScores } from "./contractors";
 export { nextRupee } from "./next-rupee";
 
+// Core accountability & audit services
+export * from "./matching";
+export * from "./deduplication";
+export * from "./cost-anomaly";
+export * from "./dlp";
+export * from "./accountability";
+
 import type { AuditFlag, CityOverview, ContractorScore, WardLedger } from "./types";
 import type { Dataset } from "./load";
 import { loadDataset } from "./load";

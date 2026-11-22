@@ -52,23 +52,23 @@ export function PassportHeader({ data }: { data: RoadPassportData }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-[var(--rule)]">
-        <div className="rb-stat-card">
-          <div className="rb-stat-val text-[var(--ink)]">{formatInr(summary.totalBilledInr)}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-[var(--rule)] rb-motion-stagger">
+        <div className="rb-stat-card rb-interactive-card">
+          <div className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInr(summary.totalBilledInr)}</div>
           <div className="rb-stat-label">Total Amount Billed</div>
         </div>
-        <div className="rb-stat-card">
-          <div className="rb-stat-val text-[var(--ink)]">{summary.totalOrders}</div>
+        <div className="rb-stat-card rb-interactive-card">
+          <div className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{summary.totalOrders}</div>
           <div className="rb-stat-label">Work Orders Executed</div>
         </div>
-        <div className="rb-stat-card">
-          <div className={`rb-stat-val ${summary.reopenRate >= 0.25 ? "text-[var(--failed-ink)]" : "text-[var(--ink)]"}`}>
+        <div className="rb-stat-card rb-interactive-card">
+          <div className={`rb-stat-val rb-tabular-nums ${summary.reopenRate >= 0.25 ? "text-[var(--failed-ink)]" : "text-[var(--ink)]"}`}>
             {Math.round(summary.reopenRate * 100)}%
           </div>
           <div className="rb-stat-label">30-Day Reopening Rate</div>
         </div>
-        <div className="rb-stat-card">
-          <div className={`rb-stat-val ${summary.auditFlagCount > 0 ? "text-[var(--flagged-ink)]" : "text-[var(--held-ink)]"}`}>
+        <div className="rb-stat-card rb-interactive-card">
+          <div className={`rb-stat-val rb-tabular-nums ${summary.auditFlagCount > 0 ? "text-[var(--flagged-ink)]" : "text-[var(--held-ink)]"}`}>
             {summary.auditFlagCount}
           </div>
           <div className="rb-stat-label">Audit Flags Detected</div>

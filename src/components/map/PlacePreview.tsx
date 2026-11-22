@@ -51,7 +51,7 @@ export function PlacePreview({
       className={
         inline
           ? "ux4g-card ux4g-card-solid ux4g-card-vertical rb-sheet-preview"
-          : "ux4g-card ux4g-card-solid ux4g-card-vertical pointer-events-auto absolute inset-x-3 bottom-3 z-10 max-w-sm sm:inset-x-auto sm:right-4 sm:bottom-12"
+          : "ux4g-card ux4g-card-solid ux4g-card-vertical rb-glass-floating rb-motion-fade-in pointer-events-auto absolute inset-x-3 bottom-3 z-10 max-w-sm sm:inset-x-auto sm:right-4 sm:bottom-12"
       }
     >
       <div className="rb-preview-head">

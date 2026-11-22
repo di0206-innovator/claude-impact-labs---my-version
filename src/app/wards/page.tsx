@@ -47,7 +47,7 @@ export default async function WardsPage({ searchParams }: Props) {
         : overview.wards;
 
   return (
-    <div className="shell rb-page">
+    <div className="shell rb-page rb-motion-fade-in">
       <h1 className="ux4g-display-xs-strong">
         Where the monsoon road money went
       </h1>
