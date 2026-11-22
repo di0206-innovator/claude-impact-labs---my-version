@@ -1,0 +1,41 @@
+#!/bin/sh
+set -e
+
+# Pre-push safety hook enforcing the strict repository remote policy:
+# 1. Prohibit any push to deprecated repository: TUSHARDHOKRIYA/Claude-Impact-Lab
+# 2. Enforce exclusive push destination: https://github.com/di0206-innovator/claude-impact-labs---my-version.git (origin)
+
+remote="$1"
+url="$2"
+
+# If URL was not directly provided, resolve it from the remote name
+if [ -z "$url" ] && [ -n "$remote" ]; then
+  url="$(git remote get-url "$remote" 2>/dev/null || true)"
+fi
+
+target="${url:-$remote}"
+
+# HARD BLOCK 1: Deprecated repository check
+if echo "$remote $target" | grep -qi "TUSHARDHOKRIYA"; then
+  echo "FATAL: Push to forbidden repository 'TUSHARDHOKRIYA/Claude-Impact-Lab' is strictly blocked by safety policy." >&2
+  exit 1
+fi
+
+# HARD BLOCK 2: Whitelist check - sole authorized repository
+case "$target" in
+  *github.com[:/]di0206-innovator/claude-impact-labs---my-version*|origin)
+    ;;
+  *)
+    echo "FATAL: Push target '$target' is not authorized." >&2
+    echo "The sole authorized remote is: https://github.com/di0206-innovator/claude-impact-labs---my-version.git (origin)." >&2
+    exit 1
+    ;;
+esac
+
+# HARD BLOCK 3: Remote name verification (if remote name was provided and differs from URL)
+if [ -n "$remote" ] && [ "$remote" != "$target" ] && [ "$remote" != "origin" ]; then
+  echo "FATAL: Remote name '$remote' is not authorized. Only 'origin' is allowed." >&2
+  exit 1
+fi
+
+exit 0
