@@ -18,7 +18,7 @@
     "seed": "tsx --conditions=react-server scripts/seed.ts",
     "amplify:env": "tsx scripts/write-amplify-env.ts",
     "iam:policy": "tsx scripts/render-amplify-policy.ts",
-    "postinstall": "node scripts/copy-maplibre-worker.mjs",
+    "postinstall": "node scripts/copy-maplibre-worker.mjs && node scripts/setup-git-hooks.mjs",
     "predev": "node scripts/copy-maplibre-worker.mjs",
     "prebuild": "node scripts/copy-maplibre-worker.mjs"
   },
