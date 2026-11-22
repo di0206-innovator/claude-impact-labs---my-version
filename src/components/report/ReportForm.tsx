@@ -18,3 +18,5 @@ export function ReportForm(props: ReportFormProps = {}) {
     />
   );
 }
+
+export default ReportForm;

@@ -16,6 +16,11 @@ const PlacePickerMap = dynamic(() => import("@/components/report/PlacePickerMap"
   loading: () => <div className="rb-place-canvas" aria-hidden="true" />,
 });
 
+const PinMap = dynamic(() => import("@/components/report/PinMap"), {
+  ssr: false,
+  loading: () => <div className="rb-place-canvas" aria-hidden="true" />,
+});
+
 const GEO_ERROR = "Could not read your location. Search for the area instead.";
 
 /**
@@ -27,10 +32,12 @@ export function LocationStep({
   value,
   onChange,
   error,
+  mapMode = "picker",
 }: {
   value: MapPin | null;
   onChange: (pin: MapPin | null) => void;
   error: string | null;
+  mapMode?: "picker" | "pin";
 }) {
   const [query, setQuery] = useState("");
   const [target, setTarget] = useState<FlyTarget | null>(null);
@@ -100,7 +107,11 @@ export function LocationStep({
       </p>
 
       <div className="rb-place">
-        <PlacePickerMap initial={value} target={target} onCenter={onChange} />
+        {mapMode === "pin" ? (
+          <PinMap value={value} onChange={onChange} />
+        ) : (
+          <PlacePickerMap initial={value} target={target} onCenter={onChange} />
+        )}
 
         <div className="rb-place-top">
           <div className="rb-search">
@@ -237,3 +248,5 @@ export function LocationStep({
     </div>
   );
 }
+
+export default LocationStep;

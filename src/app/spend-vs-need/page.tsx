@@ -28,9 +28,17 @@ export default async function SpendVsNeedPage({ searchParams }: PageProps) {
   return (
     <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
       <header className="space-y-2">
-        <div className="flex flex-wrap items-center gap-2 mb-2">
-          <span className="rb-chip rb-chip-neutral">Decision Support Matrix</span>
-          <span className="rb-chip rb-chip-held">5 Weighted Dimensions</span>
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rb-chip rb-chip-neutral">Decision Support Matrix</span>
+            <span className="rb-chip rb-chip-held">5 Weighted Dimensions</span>
+          </div>
+          <Link
+            href="/budget"
+            className="ux4g-btn ux4g-btn-xs ux4g-btn-outline-primary touch-target text-xs inline-flex items-center gap-1"
+          >
+            Ward Disparity & Fiscal Equity →
+          </Link>
         </div>
         <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Spend vs Need & Next Rupee</h1>
         <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">

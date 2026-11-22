@@ -36,6 +36,7 @@ const MORE_GROUPS = [
       { href: "/contractors", label: "Contractors" },
       { href: "/queue", label: "Action Queue" },
       { href: "/accountability", label: "Procurement Audit" },
+      { href: "/budget", label: "Budget & Disparity" },
       { href: "/spend-vs-need", label: "Spend vs Need" },
     ],
   },
