@@ -6,7 +6,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "ci": "npm run lint && npm run test && npm run build",
+    "ci": "npm run test:lines && npm run typecheck && npm run lint && npx vitest run && npm run build",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -15,6 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:lines": "vitest run src/test/line-limit.test.ts",
+    "setup-git-hooks": "node scripts/setup-git-hooks.mjs",
     "seed": "tsx --conditions=react-server scripts/seed.ts",
     "amplify:env": "tsx scripts/write-amplify-env.ts",
     "iam:policy": "tsx scripts/render-amplify-policy.ts",
