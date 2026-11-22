@@ -46,12 +46,12 @@ describe("RoadPassportPage (src/app/roads/[roadId]/page.tsx)", () => {
     expect(wardLinks[0]).toHaveAttribute("href", "/wards/a");
 
     expect(screen.getByRole("heading", { name: "Shahid Bhagat Singh Marg", level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Work Order & Repair Timeline/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Money Trail & Procurement Audit/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Environmental & Traffic Context/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Work Orders & Contractor Timeline/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Money Trail & Rate Card Comparison/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Environmental & Public Safety Context/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Recommended Next Actions/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Promises vs Reality Lifecycle/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Forensic Evidence Graph/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Evidence Graph & Provenance/i })).toBeInTheDocument();
     expect(screen.getByText(/Data Provenance:/i)).toBeInTheDocument();
   });
 

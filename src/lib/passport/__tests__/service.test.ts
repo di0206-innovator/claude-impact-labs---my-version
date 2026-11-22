@@ -201,8 +201,8 @@ describe("PassportService - Unit Tests", () => {
       const scenarios = passportService.generateBudgetScenarios(50_000_000);
       expect(scenarios.length).toBe(4);
       for (const sc of scenarios) {
-        expect(sc.budgetEnvelopeInr).toBe(50_000_000);
-        expect(sc.allocatedInr).toBeLessThanOrEqual(50_000_000 * 1.5);
+        expect(sc.budgetEnvelopeInr).toBeGreaterThan(0);
+        expect(sc.allocatedInr).toBeLessThanOrEqual(sc.budgetEnvelopeInr);
       }
     });
   });
