@@ -1,6 +1,5 @@
 /* Hallmark · theme: civic-intelligence · genre: modern-minimal · floor: verified */
-/* Contractor scorecards. UX4G draws the cards, tables, tags and accordion;
- * this file adds the 0 to 100 meter and the scorecard layout. */
+/* Contractor scorecards: Swiss-editorial civic caliber layout, meters, and performance tiers. */
 
 .rb-meter-track {
   position: relative;
@@ -10,40 +9,14 @@
   background: var(--ux4g-bg-neutral-subtle);
   overflow: visible;
 }
-
-.rb-meter-large .rb-meter-track {
-  height: 1.125rem;
-}
-
-.rb-meter-zone {
-  height: 100%;
-}
-
-.rb-meter-zone:first-child {
-  border-radius: 4px 0 0 4px;
-}
-
-.rb-meter-zone:nth-child(3) {
-  border-radius: 0 4px 4px 0;
-}
-
-.rb-meter-low {
-  background: color-mix(in srgb, var(--failed) 22%, transparent);
-}
-
-.rb-meter-mid {
-  background: color-mix(in srgb, var(--flagged) 24%, transparent);
-}
-
-.rb-meter-high {
-  background: color-mix(in srgb, var(--held) 24%, transparent);
-}
-
-.rb-meter-plain {
-  height: 100%;
-  border-radius: 4px 0 0 4px;
-  background: var(--ux4g-border-color-neutral-default);
-}
+.rb-meter-large .rb-meter-track { height: 1.125rem; }
+.rb-meter-zone { height: 100%; }
+.rb-meter-zone:first-child { border-radius: 4px 0 0 4px; }
+.rb-meter-zone:nth-child(3) { border-radius: 0 4px 4px 0; }
+.rb-meter-low { background: color-mix(in srgb, var(--failed) 22%, transparent); }
+.rb-meter-mid { background: color-mix(in srgb, var(--flagged) 24%, transparent); }
+.rb-meter-high { background: color-mix(in srgb, var(--held) 24%, transparent); }
+.rb-meter-plain { height: 100%; border-radius: 4px 0 0 4px; background: var(--ux4g-border-color-neutral-default); }
 
 .rb-meter-expected {
   position: absolute;
@@ -236,6 +209,39 @@
 .rb-score-flags {
   padding-left: var(--ux4g-padding-l);
   list-style: disc;
+}
+
+/* Performance Tiers & Bayesian Score Badges */
+.rb-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rb-tier-exemplary { background: var(--held-bg); color: var(--held); border: 1px solid var(--held-border); }
+.rb-tier-compliant { background: var(--flagged-bg); color: var(--flagged-ink); border: 1px solid var(--flagged-border); }
+.rb-tier-elevated { background: var(--failed-bg); color: var(--failed); border: 1px solid var(--failed-border); }
+
+/* DLP Liability Ledgers */
+.rb-dlp-ledger {
+  border: 1px solid var(--rule);
+  border-radius: var(--ux4g-radius-md, 0.5rem);
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+.rb-dlp-ledger-header {
+  background: var(--canvas);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* UX4G leaves these two unset: a vertical card stacks, an outline card sits on white. */

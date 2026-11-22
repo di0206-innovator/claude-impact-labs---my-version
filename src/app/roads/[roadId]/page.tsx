@@ -34,29 +34,32 @@ export default async function RoadPassportPage({ params }: PageProps) {
   if (!data) notFound();
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-8">
-      <nav aria-label="Breadcrumb" className="mb-4">
-        <ol className="m-0 flex min-w-0 list-none flex-wrap items-center gap-2 p-0 text-sm">
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
+      {/* Clean Swiss-Editorial Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="mb-2">
+        <ol className="m-0 flex min-w-0 list-none flex-wrap items-center gap-2 p-0 text-xs">
           <li>
-            <Link href="/roads" className="ux4g-text-link-m touch-target">
+            <Link href="/roads" className="ux4g-text-link-m text-[var(--teal-deep)] font-semibold touch-target">
               Road Explorer
             </Link>
           </li>
           <li aria-hidden="true" className="text-[var(--mist)]">/</li>
           <li>
-            <Link href={`/wards/${wardSlug(data.road.ward)}`} className="ux4g-text-link-m touch-target">
+            <Link href={`/wards/${wardSlug(data.road.ward)}`} className="ux4g-text-link-m text-[var(--mist)] hover:text-[var(--teal-deep)] touch-target">
               Ward {data.road.ward}
             </Link>
           </li>
           <li aria-hidden="true" className="text-[var(--mist)]">/</li>
-          <li className="font-medium text-[var(--ink)] truncate max-w-[18rem]" aria-current="page">
+          <li className="font-semibold text-[var(--ink)] truncate max-w-[18rem]" aria-current="page">
             {data.road.name}
           </li>
         </ol>
       </nav>
 
+      {/* Unified #064E4B Editorial Passport Header */}
       <PassportHeader data={data} />
 
+      {/* 2-Column Passport Analytical Grid */}
       <div className="rb-passport-grid">
         <div className="space-y-8 min-w-0">
           <PassportTimeline workOrders={data.workOrders} />
@@ -71,12 +74,13 @@ export default async function RoadPassportPage({ params }: PageProps) {
         </div>
       </div>
 
-      <footer className="p-4 bg-[var(--card)] rounded border border-[var(--rule)] text-xs text-[var(--mist)] space-y-2">
+      {/* High-Trust Municipal Provenance Footer */}
+      <footer className="p-5 bg-[var(--card)] rounded-xl border border-[var(--rule)] text-xs text-[var(--mist)] space-y-2 shadow-sm">
         <p>
-          <strong>Data Provenance:</strong> {data.provenance.datasetSource} — Engine Version: {data.provenance.algorithmVersion} — Generated: {data.provenance.generatedAt}
+          <strong className="text-[var(--ink)]">Data Provenance:</strong> {data.provenance.datasetSource} — Engine Version: {data.provenance.algorithmVersion} — Generated: {data.provenance.generatedAt}
         </p>
-        <p>
-          <strong>Notice:</strong> {data.provenance.contractualDisclaimer}
+        <p className="leading-relaxed">
+          <strong className="text-[var(--ink)]">Contractual Notice:</strong> {data.provenance.contractualDisclaimer}
         </p>
       </footer>
     </article>

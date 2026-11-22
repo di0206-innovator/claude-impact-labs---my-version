@@ -46,10 +46,6 @@
   display: none;
 }
 
-.rb-rank-item:not([open]):hover {
-  box-shadow: var(--card-shadow-hover);
-}
-
 .rb-rank-row:focus-visible {
   outline: 3px solid var(--ux4g-bg-primary-strong);
   outline-offset: 2px;
@@ -74,19 +70,8 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-
-.rb-rank-no[data-top="true"] {
-  background: var(--lane);
-  color: var(--asphalt);
-}
-
-.rb-rank-main {
-  display: grid;
-  flex: 1;
-  gap: 0.375rem;
-  min-width: 0;
-}
-
+.rb-rank-no[data-top="true"] { background: var(--lane); color: var(--asphalt); }
+.rb-rank-main { display: grid; flex: 1; gap: 0.375rem; min-width: 0; }
 .rb-rank-title {
   overflow: hidden;
   font-size: 1rem;
@@ -94,17 +79,8 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.rb-rank-name {
-  color: var(--ux4g-text-neutral-secondary);
-  font-size: 0.875rem;
-}
-
-.rb-rank-sub {
-  color: var(--ux4g-text-neutral-secondary);
-  font-size: 0.8125rem;
-}
-
+.rb-rank-name { color: var(--ux4g-text-neutral-secondary); font-size: 0.875rem; }
+.rb-rank-sub { color: var(--ux4g-text-neutral-secondary); font-size: 0.8125rem; }
 .rb-rank-score {
   display: grid;
   justify-items: center;
@@ -113,34 +89,54 @@
   padding: 0.375rem 0.5rem;
   border-radius: 0.875rem;
 }
+.rb-rank-score-n { font-size: 1.5rem; font-weight: 800; line-height: 1.75rem; font-variant-numeric: tabular-nums; }
+.rb-rank-score-w { font-size: 0.6875rem; font-weight: 600; }
 
-.rb-rank-score-n {
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: 1.75rem;
-  font-variant-numeric: tabular-nums;
+.rb-score-good { background: var(--held-bg); color: var(--held); }
+.rb-score-fair { background: var(--flagged-bg); color: var(--flagged-ink); }
+.rb-score-poor { background: var(--failed-bg); color: var(--failed); }
+
+/* Ward Risk Heatmap Accents */
+.rb-ward-heatmap-high {
+  border-left: 4px solid var(--failed);
+  background: linear-gradient(90deg, rgba(200, 30, 30, 0.04) 0%, transparent 40%);
+}
+.rb-ward-heatmap-medium {
+  border-left: 4px solid var(--flagged);
+  background: linear-gradient(90deg, rgba(180, 83, 9, 0.04) 0%, transparent 40%);
+}
+.rb-ward-heatmap-low {
+  border-left: 4px solid var(--held);
+  background: linear-gradient(90deg, rgba(14, 124, 102, 0.04) 0%, transparent 40%);
 }
 
-.rb-rank-score-w {
+/* Hairline metrics */
+.rb-hairline-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+.rb-hairline-metric {
+  border-left: 1px solid var(--rule);
+  padding-left: 0.75rem;
+}
+
+/* Clear DLP breach flags */
+.rb-dlp-flag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 4px;
   font-size: 0.6875rem;
-  font-weight: 600;
-}
-
-.rb-score-good {
-  background: var(--held-bg);
-  color: var(--held);
-}
-
-.rb-score-fair {
-  background: var(--flagged-bg);
-  color: var(--flagged-ink);
-}
-
-.rb-score-poor {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   background: var(--failed-bg);
   color: var(--failed);
+  border: 1px solid var(--failed-border);
 }
-
 
 .rb-rank-chev {
   flex: none;

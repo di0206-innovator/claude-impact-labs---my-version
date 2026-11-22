@@ -19,33 +19,52 @@ export default function ContractorsPage() {
   for (const flag of flags) flagsById.set(flag.contractorId, (flagsById.get(flag.contractorId) ?? 0) + 1);
 
   return (
-    <div className="shell rb-page rb-contractors rb-motion-fade-in">
-      <h1 className="ux4g-display-xs-strong">Who did the work, and did it hold?</h1>
-      <p className="ux4g-body-l-default ux4g-text-neutral-secondary ux4g-mt-xs rb-measure">
-        {cards.length} contractors, scored against what is fair for the same work in the same conditions. 50 means
-        exactly as expected.
-      </p>
-
-      <dl className="rb-city-facts ux4g-mt-m">
-        <div>
-          <dt>Jobs</dt>
-          <dd>{city.jobs.toLocaleString("en-IN")}</dd>
+    <div className="shell rb-page py-6 sm:py-10 space-y-8 rb-contractors rb-motion-fade-in">
+      <header className="rb-editorial-hero space-y-6 rb-parallax-hero">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="rb-chip-dark">
+              <span className="rb-status-dot rb-status-dot-vermilion" aria-hidden="true" />
+              Civic Procurement Audit
+            </span>
+            <span className="rb-chip-dark rb-chip-dark-held">{cards.length} Empanelled Contractors</span>
+            <span className="rb-chip-dark">Bayesian Performance Tiers</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-normal tracking-tight">
+            Who did the work, and did it hold?
+          </h1>
+          <p className="rb-editorial-lead text-sm sm:text-base">
+            {cards.length} road contractors evaluated on whether repairs held, rate-card fidelity, and completion speed,
+            benchmarked against what is fair for the same work in equivalent ward flood environments.
+          </p>
         </div>
-        <div>
-          <dt>Came back in 30 days</dt>
-          <dd>{pct(city.reopenRate)}</dd>
-        </div>
-        <div>
-          <dt>Missed the time limit</dt>
-          <dd>{pct(city.slaMissRate)}</dd>
-        </div>
-      </dl>
 
-      <ScoreHow kind="contractor" className="ux4g-mt-m" />
+        <dl className="rb-kpi-strip grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 rb-motion-stagger">
+          <div className="rb-kpi-item">
+            <dt className="rb-kpi-label">Monitored Jobs</dt>
+            <dd className="rb-kpi-val">{city.jobs.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">30-Day Reopening Rate</dt>
+            <dd className="rb-kpi-val">{pct(city.reopenRate)}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">City SLA Miss Rate</dt>
+            <dd className="rb-kpi-val">{pct(city.slaMissRate)}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Empanelled Contractors</dt>
+            <dd className="rb-kpi-val">{cards.length}</dd>
+          </div>
+        </dl>
+      </header>
 
-      <div className="ux4g-mt-m">
-        <ContractorRankList cards={cards} flagsById={flagsById} />
-      </div>
+      <section className="space-y-4">
+        <ScoreHow kind="contractor" />
+        <div className="pt-2">
+          <ContractorRankList cards={cards} flagsById={flagsById} />
+        </div>
+      </section>
     </div>
   );
 }

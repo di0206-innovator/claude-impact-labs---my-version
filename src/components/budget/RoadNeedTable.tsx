@@ -26,12 +26,12 @@ export function RoadNeedTable({ roads }: Props) {
             Roads with high risk scores (unresolved citizen complaints, flood exposure, accidents) that received zero or minimal repair spend.
           </p>
         </div>
-        <span className="text-xs text-[var(--mist)] font-mono">
+        <span className="text-xs text-[var(--mist)] font-mono bg-[var(--sheet)] px-2 py-0.5 rounded border border-[var(--rule)]">
           Top {deficitRoads.length} Deficit Segments
         </span>
       </div>
 
-      <div className="rb-table-wrap border border-[var(--rule)] rounded bg-[var(--card)]">
+      <div className="rb-table-wrap border border-[var(--rule)] rounded-xl bg-[var(--card)] overflow-hidden shadow-xs">
         <table className="rb-data-table rb-stack w-full">
           <thead>
             <tr>
@@ -57,7 +57,7 @@ export function RoadNeedTable({ roads }: Props) {
 
               return (
                 <tr key={r.roadId} className="hover:bg-[var(--sheet)] transition-colors">
-                  <td className="text-center font-bold text-xs text-[var(--mist)]" data-label="Rank">
+                  <td className="text-center font-bold text-xs text-[var(--mist)] font-mono" data-label="Rank">
                     #{r.needRank}
                   </td>
                   <td data-label="Road">
@@ -67,8 +67,8 @@ export function RoadNeedTable({ roads }: Props) {
                     >
                       {r.roadName}
                     </Link>
-                    <div className="flex items-center gap-1.5 text-[0.6875rem] text-[var(--mist)]">
-                      <Link href={`/wards/${wardSlug(r.ward)}`} className="text-[var(--enamel)] hover:underline">
+                    <div className="flex items-center gap-1.5 text-[0.6875rem] text-[var(--mist)] font-mono">
+                      <Link href={`/wards/${wardSlug(r.ward)}`} className="text-[#064E4B] hover:underline font-semibold">
                         Ward {r.ward}
                       </Link>
                       <span>·</span>
@@ -81,7 +81,7 @@ export function RoadNeedTable({ roads }: Props) {
                     </div>
                   </td>
                   <td className="text-center" data-label="Need Score">
-                    <span className="inline-block px-2 py-0.5 rounded font-bold font-mono text-xs bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300">
+                    <span className="inline-block px-2 py-0.5 rounded font-bold font-mono text-xs bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border border-rose-200">
                       {r.needScore}/100
                     </span>
                   </td>
@@ -93,16 +93,20 @@ export function RoadNeedTable({ roads }: Props) {
                     </ul>
                   </td>
                   <td className="text-right font-mono text-xs text-[var(--ink)]" data-label="Billed Spend">
-                    {r.spentInr > 0 ? formatInrShort(r.spentInr) : <span className="text-rose-600 font-semibold">₹0 Billed</span>}
+                    {r.spentInr > 0 ? (
+                      <span className="font-semibold">{formatInrShort(r.spentInr)}</span>
+                    ) : (
+                      <span className="text-rose-600 font-semibold font-mono">₹0 Billed</span>
+                    )}
                   </td>
                   <td className="text-right font-mono text-xs text-rose-600 dark:text-rose-400 font-semibold" data-label="Shortfall">
                     {formatInrShort(Math.abs(r.disparityInr))} deficit
-                    <div className="text-[0.625rem] text-[var(--mist)] font-normal">
+                    <div className="text-[0.625rem] text-[var(--mist)] font-normal font-mono">
                       Exp: {formatInrShort(r.expectedSpendInr)}
                     </div>
                   </td>
                   <td className="text-center" data-label="Status">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[0.6875rem] font-semibold font-mono bg-rose-100 text-rose-800 dark:bg-rose-950/50 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                       {r.status === "critical_deficit" ? "Zero / Severe" : "Underfunded"}
                     </span>
                   </td>

@@ -23,8 +23,8 @@ const SUGGESTED_QUESTIONS = [
 ];
 
 /**
- * Ask about road money. Empty, it is a heading, one composer and four
- * starting questions. Once a question is asked it becomes a conversation:
+ * Ask about road money. Empty, it is an editorial dark-teal header, one composer
+ * and four mint starting questions. Once a question is asked it becomes a conversation:
  * questions as bubbles on the right, answers as plain text, and the
  * composer pinned to the bottom of the screen.
  */
@@ -79,19 +79,34 @@ export function AssistantChat({ initialComplaintId, context }: { initialComplain
 
   return (
     <div className={messages.length === 0 && !loading ? "rb-chat rb-chat-empty" : "rb-chat rb-chat-live"}>
-      <div className="rb-chat-topbar">
-        <h1 className={messages.length === 0 && !loading ? "rb-chat-title" : "sr-only"}>
-          Where did the road money go?
-        </h1>
-        <button
-          type="button"
-          className="rb-chat-export-btn touch-target"
-          onClick={() => setShowExportPanel((v) => !v)}
-          aria-expanded={showExportPanel}
-        >
-          <span aria-hidden="true">📥</span> Export Evidence Pack
-        </button>
-      </div>
+      {/* Editorial #064E4B Dark Teal Header Banner */}
+      <header className="rb-chat-header-banner rb-parallax-hero">
+        <div className="rb-chat-topbar">
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rb-chat-badge">Audited AI Console</span>
+              <span className="rb-chat-badge-sub">Official BMC Records</span>
+            </div>
+            <h1 className={messages.length === 0 && !loading ? "rb-chat-title" : "sr-only"}>
+              Where did the road money go?
+            </h1>
+          </div>
+          <button
+            type="button"
+            className="rb-chat-export-btn touch-target"
+            onClick={() => setShowExportPanel((v) => !v)}
+            aria-expanded={showExportPanel}
+          >
+            <span aria-hidden="true">📥</span> Export Evidence Pack
+          </button>
+        </div>
+
+        {messages.length === 0 && !loading ? (
+          <p className="rb-chat-sub">
+            Ask about a complaint, a road, a ward or a contractor. Answers come directly from official BMC work orders, billed rate-cards, and contractor durability records.
+          </p>
+        ) : null}
+      </header>
 
       {showExportPanel ? (
         <div className="rb-chat-export-drawer">
@@ -101,10 +116,6 @@ export function AssistantChat({ initialComplaintId, context }: { initialComplain
 
       {messages.length === 0 && !loading ? (
         <>
-          <p className="rb-chat-sub">
-            Ask about a complaint, a road, a ward or a contractor. Answers come from BMC work orders, bills and
-            repair records.
-          </p>
           {context ? <div className="rb-chat-context">{context}</div> : null}
           {composer(false)}
           <ul className="rb-chat-starters" aria-label="Questions to start with">

@@ -33,38 +33,46 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
   const allWards = Array.from(new Set(ds.roads.map((r) => r.ward))).sort();
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
-      <header className="space-y-2 rb-parallax-hero">
-        <div className="flex flex-wrap items-center gap-2 mb-2">
-          <span className="rb-chip rb-chip-neutral">Operational Command Queue</span>
-          <span className="rb-chip rb-chip-flagged">{summary.criticalCount} Critical Actions</span>
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
+      <header className="rb-editorial-hero space-y-6 rb-parallax-hero">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="rb-chip-dark">
+              <span className="rb-status-dot rb-status-dot-vermilion" aria-hidden="true" />
+              Operational Command Queue
+            </span>
+            <span className="rb-chip-dark rb-chip-dark-failed">{summary.criticalCount} Critical Actions</span>
+            <span className="rb-chip-dark">Daily Engineer Triage</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-normal tracking-tight">
+            Ward Engineer Action Queue
+          </h1>
+          <p className="rb-editorial-lead text-sm sm:text-base">
+            Transforming civic intelligence into prioritized operational tasks: investigate SLA misses, verify DLP warranties, and review recurring failures across Mumbai&apos;s road network.
+          </p>
         </div>
-        <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Ward Engineer Action Queue</h1>
-        <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">
-          Transforming civic intelligence into prioritized operational tasks: investigate SLA misses, verify DLP warranties, and review recurring failures.
-        </p>
+
+        <dl className="rb-kpi-strip grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 rb-motion-stagger">
+          <div className="rb-kpi-item">
+            <dt className="rb-kpi-label">Total Action Items</dt>
+            <dd className="rb-kpi-val">{summary.totalItems}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Critical Priority</dt>
+            <dd className="rb-kpi-val text-[#fca5a5]">{summary.criticalCount}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">High Priority</dt>
+            <dd className="rb-kpi-val text-[#fde68a]">{summary.highCount}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Audit Amount at Risk</dt>
+            <dd className="rb-kpi-val">{formatInr(summary.auditFlagAtRiskInr)}</dd>
+          </div>
+        </dl>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Total Action Items</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{summary.totalItems}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Critical Priority</dt>
-          <dd className="rb-stat-val text-[var(--failed-ink)] rb-tabular-nums">{summary.criticalCount}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">High Priority</dt>
-          <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{summary.highCount}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Audit Amount at Risk</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInr(summary.auditFlagAtRiskInr)}</dd>
-        </div>
-      </dl>
-
-      <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded border border-[var(--rule)] bg-[var(--card)]">
+      <section className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-4 sm:p-5 shadow-[var(--card-shadow)] flex flex-wrap items-center justify-between gap-4">
         <form method="get" action="/queue" className="flex flex-wrap items-center gap-2 text-xs">
           {params.priority ? <input type="hidden" name="priority" value={params.priority} /> : null}
           <label htmlFor="queue-ward-select" className="font-semibold text-[var(--mist)]">
@@ -92,31 +100,41 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
           <span className="font-semibold text-[var(--mist)] mr-1">Priority:</span>
           <Link
             href={`/queue?priority=critical${params.ward ? `&ward=${params.ward}` : ""}`}
-            className={`rb-chip touch-target ${params.priority === "critical" ? "rb-chip-failed" : "rb-chip-neutral"}`}
+            className={`touch-target text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+              params.priority === "critical"
+                ? "rb-pill-vermilion"
+                : "bg-[var(--sheet)] text-[var(--mist)] border-[var(--rule)] hover:border-[var(--rule-firm)]"
+            }`}
           >
             Critical
           </Link>
           <Link
             href={`/queue?priority=high${params.ward ? `&ward=${params.ward}` : ""}`}
-            className={`rb-chip touch-target ${params.priority === "high" ? "rb-chip-flagged" : "rb-chip-neutral"}`}
+            className={`touch-target text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${
+              params.priority === "high"
+                ? "rb-pill-vermilion"
+                : "bg-[var(--sheet)] text-[var(--mist)] border-[var(--rule)] hover:border-[var(--rule-firm)]"
+            }`}
           >
             High
           </Link>
           {(params.priority || params.category) && (
-            <Link href={params.ward ? `/queue?ward=${params.ward}` : "/queue"} className="text-xs text-[var(--enamel)] hover:underline ml-2">
+            <Link href={params.ward ? `/queue?ward=${params.ward}` : "/queue"} className="text-xs text-[var(--enamel)] hover:underline ml-2 font-medium">
               Clear Filter
             </Link>
           )}
         </div>
-      </div>
+      </section>
 
       <section aria-labelledby="queue-items-heading" className="space-y-4">
-        <h2 id="queue-items-heading" className="text-sm font-semibold text-[var(--mist)]">
-          Queue Tasks ({items.length})
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 id="queue-items-heading" className="ux4g-heading-s-strong text-[var(--ink)]">
+            Queue Tasks ({items.length})
+          </h2>
+        </div>
 
         {items.length === 0 ? (
-          <div className="ux4g-card ux4g-card-solid p-8 text-center text-[var(--mist)]">
+          <div className="bg-[var(--card)] rounded-xl border border-dashed border-[var(--rule)] p-8 text-center text-[var(--mist)]">
             No action items matching the selected filters.
           </div>
         ) : (
@@ -124,26 +142,35 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="rb-action-item"
+                className={`rb-action-item rounded-xl border p-5 shadow-[var(--card-shadow)] transition-all ${
+                  item.priority === "critical"
+                    ? "border-[var(--failed-border)] bg-[var(--failed-bg)]"
+                    : item.priority === "high"
+                    ? "border-[var(--flagged-border)] bg-[var(--card)]"
+                    : "border-[var(--rule)] bg-[var(--card)]"
+                }`}
                 data-priority={item.priority}
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className={`rb-chip ${item.priority === "critical" ? "rb-chip-failed" : item.priority === "high" ? "rb-chip-flagged" : "rb-chip-neutral"}`}>
-                      {item.priority}
+                      {item.priority.toUpperCase()}
                     </span>
                     <span className="rb-chip rb-chip-neutral">Ward {item.ward}</span>
+                    {item.category === "potential_dlp_conflict" && (
+                      <span className="rb-dlp-flag">DLP Conflict</span>
+                    )}
                     <span className="text-xs text-[var(--mist)] font-mono">{item.relatedEntityId}</span>
                   </div>
 
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-[var(--sheet)] text-[var(--ink)]">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[var(--sheet)] text-[var(--ink)] border border-[var(--rule)]">
                     Status: {item.status.charAt(0).toUpperCase() + item.status.slice(1).replace(/_/g, " ")}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-start justify-between gap-4 mt-1">
+                <div className="flex flex-wrap items-start justify-between gap-4 mt-2">
                   <div>
-                    <h3 className="ux4g-body-m-strong text-[var(--ink)]">{item.headline}</h3>
+                    <h3 className="ux4g-body-m-strong text-[var(--ink)] text-base">{item.headline}</h3>
                     <div className="text-xs text-[var(--mist)] mt-0.5">
                       Road: <strong>{item.roadName}</strong>
                     </div>
@@ -151,26 +178,26 @@ export default async function ActionQueuePage({ searchParams }: PageProps) {
 
                   {item.amountAtRiskInr > 0 && (
                     <div className="text-right">
-                      <div className="text-xs font-bold text-[var(--ink)] font-mono">
+                      <div className="text-sm font-bold text-[var(--ink)] font-mono">
                         {formatInr(item.amountAtRiskInr)}
                       </div>
-                      <div className="text-[0.625rem] text-[var(--mist)]">Amount at risk</div>
+                      <div className="text-[0.625rem] text-[var(--mist)] uppercase tracking-wider font-semibold">Amount at risk</div>
                     </div>
                   )}
                 </div>
 
-                <p className="text-xs text-[var(--mist)] bg-[var(--sheet)] p-2.5 rounded mt-2">
-                  <strong>Recommended Protocol:</strong> {item.recommendedAction}
+                <p className="text-xs text-[var(--ink)] bg-[var(--sheet)] p-3 rounded-lg border border-[var(--rule)] mt-3 leading-relaxed">
+                  <strong className="text-[var(--ink)]">Recommended Protocol:</strong> {item.recommendedAction}
                 </p>
 
-                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--rule)] text-xs">
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-[var(--rule)] text-xs">
                   <span className="text-[var(--mist)]">{item.evidenceCount} supporting evidence records</span>
                   {item.roadId.startsWith("RD") && (
                     <Link
                       href={`/roads/${item.roadId}`}
-                      className="text-[var(--enamel)] font-medium hover:underline touch-target"
+                      className="text-[var(--enamel)] font-semibold hover:underline touch-target inline-flex items-center gap-1"
                     >
-                      Open Road Passport
+                      Open Road Passport →
                     </Link>
                   )}
                 </div>

@@ -41,47 +41,63 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
   const allWards = Array.from(new Set(ds.roads.map((r) => r.ward))).sort();
 
   return (
-    <article className="shell rb-page py-6 sm:py-10 space-y-6 rb-motion-fade-in">
-      <header className="space-y-2 rb-parallax-hero">
-        <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Road Explorer & Reliability Passports</h1>
-        <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">
-          Every road segment in Mumbai with traceable citizen complaints, billed repair amounts, 30-day durability rates, and audit flags.
-        </p>
+    <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
+      {/* Editorial Authority Header */}
+      <header className="p-6 sm:p-10 rounded-2xl bg-[var(--teal-deep)] text-white space-y-6 shadow-md rb-glass-card rb-parallax-hero">
+        <div className="space-y-3 max-w-3xl">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/10 text-white/90 border border-white/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-[var(--vermilion)]" />
+              Municipal Road Network
+            </span>
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--mint-tint)] text-[var(--teal-deep)]">
+              291 Segment Reliability Passports
+            </span>
+          </div>
+          <h1 className="ux4g-display-xs-strong text-white font-serif tracking-tight">
+            Road Explorer & Reliability Passports
+          </h1>
+          <p className="text-sm sm:text-base text-white/80 leading-relaxed">
+            Every road segment in Mumbai with traceable citizen complaints, billed repair amounts, 30-day durability rates, and audit flags.
+          </p>
+        </div>
+
+        {/* Frosted KPI Matrix */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-white/15 rb-motion-stagger">
+          <div className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 space-y-1">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-white rb-tabular-nums">{stats.totalRoads}</div>
+            <div className="text-xs text-white/70">Total Roads Tracked</div>
+          </div>
+          <div className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 space-y-1">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-white rb-tabular-nums">{formatInrShort(stats.totalBilledInr)}</div>
+            <div className="text-xs text-white/70">Total Amount Billed</div>
+          </div>
+          <div className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 space-y-1">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-[#ffaba0] rb-tabular-nums">{stats.flaggedRoadsCount}</div>
+            <div className="text-xs text-white/70">Flagged for Review</div>
+          </div>
+          <div className="p-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 space-y-1">
+            <div className="text-xl sm:text-2xl font-bold font-mono text-[var(--mint-tint)] rb-tabular-nums">{stats.dlpRoadsCount}</div>
+            <div className="text-xs text-white/70">Under Active DLP</div>
+          </div>
+        </div>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Total Roads Tracked</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{stats.totalRoads}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Total Amount Billed</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInrShort(stats.totalBilledInr)}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Flagged for Review</dt>
-          <dd className="rb-stat-val text-[var(--flagged-ink)] rb-tabular-nums">{stats.flaggedRoadsCount}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Under Active DLP</dt>
-          <dd className="rb-stat-val text-[var(--held-ink)] rb-tabular-nums">{stats.dlpRoadsCount}</dd>
-        </div>
-      </dl>
-
-      <form method="get" action="/roads" className="flex flex-wrap items-center gap-2">
+      {/* Search & Filter Form */}
+      <form method="get" action="/roads" className="flex flex-wrap items-center gap-2.5">
         <input
           type="search"
           name="q"
           defaultValue={params.q ?? ""}
           placeholder="Search road name or ID (e.g. Swami Vivekananda, RD0001)..."
-          className="ux4g-input flex-1 min-w-[16rem] py-2 px-3 text-sm rounded border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)]"
+          className="ux4g-input flex-1 min-w-[16rem] py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
         />
         <select
           name="ward"
           defaultValue={params.ward ?? ""}
-          className="ux4g-select py-2 px-3 text-sm rounded border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)]"
+          className="ux4g-select py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
         >
-          <option value="">All Wards</option>
+          <option value="">All Wards ({allWards.length})</option>
           {allWards.map((w) => (
             <option key={w} value={w}>Ward {w}</option>
           ))}
@@ -101,7 +117,7 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
 
       <section aria-labelledby="roads-table-heading" className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 id="roads-table-heading" className="text-sm font-semibold text-[var(--mist)]">
+          <h2 id="roads-table-heading" className="text-xs font-semibold text-[var(--mist)] uppercase tracking-wider">
             Showing {roads.length} road segment{roads.length === 1 ? "" : "s"}
           </h2>
         </div>
@@ -128,7 +144,7 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
                     <div className="text-xs text-[var(--mist)] font-mono">{road.id}, {road.surface}</div>
                   </td>
                   <td>
-                    <Link href={`/wards/${wardSlug(road.ward)}`} className="text-xs font-semibold text-[var(--enamel)] hover:underline">
+                    <Link href={`/wards/${wardSlug(road.ward)}`} className="text-xs font-semibold text-[var(--teal-deep)] hover:underline">
                       Ward {road.ward}
                     </Link>
                   </td>

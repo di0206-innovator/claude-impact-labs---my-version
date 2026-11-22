@@ -31,44 +31,52 @@ export default function OverviewPage() {
 
   return (
     <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
-      <header className="space-y-2 rb-parallax-hero">
-        <div className="flex flex-wrap items-center gap-2 mb-2">
-          <span className="rb-chip rb-chip-neutral">Citywide Executive Dashboard</span>
-          <span className="rb-chip rb-chip-held">Monsoon 2025</span>
+      <header className="rb-editorial-hero space-y-6 rb-parallax-hero">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="rb-chip-dark">
+              <span className="rb-status-dot rb-status-dot-vermilion" aria-hidden="true" />
+              Citywide Executive Dashboard
+            </span>
+            <span className="rb-chip-dark rb-chip-dark-held">Monsoon 2025</span>
+            <span className="rb-chip-dark">24 Administrative Wards</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-normal tracking-tight">
+            Mumbai Road Intelligence Overview
+          </h1>
+          <p className="rb-editorial-lead text-sm sm:text-base">
+            Comprehensive civic pulse across Mumbai&apos;s 24 administrative wards: where money was billed, whether repairs held, and which wards require intervention.
+          </p>
         </div>
-        <h1 className="ux4g-display-xs-strong text-[var(--ink)]">Mumbai Road Intelligence Overview</h1>
-        <p className="ux4g-body-l-default text-[var(--mist)] rb-measure">
-          Comprehensive civic pulse across Mumbai&apos;s 24 administrative wards: where money was billed, whether repairs held, and which wards require intervention.
-        </p>
+
+        <dl className="rb-kpi-strip grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 rb-motion-stagger">
+          <div className="rb-kpi-item">
+            <dt className="rb-kpi-label">Total Amount Billed</dt>
+            <dd className="rb-kpi-val">{formatInrShort(overview.spentInr)}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Total Citizen Reports</dt>
+            <dd className="rb-kpi-val">{totalComplaints.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">City SLA Compliance</dt>
+            <dd className={`rb-kpi-val ${slaRate < 0.75 ? "text-[#fca5a5]" : "text-[var(--mint-tint)]"}`}>
+              {pct(slaRate)}
+            </dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">30-Day Reopening Rate</dt>
+            <dd className={`rb-kpi-val ${reopenRate > 0.2 ? "text-[#fca5a5]" : "text-[var(--mint-tint)]"}`}>
+              {pct(reopenRate)}
+            </dd>
+          </div>
+        </dl>
       </header>
 
-      <dl className="grid grid-cols-2 sm:grid-cols-4 gap-3 rb-motion-stagger">
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Total Amount Billed</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{formatInrShort(overview.spentInr)}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">Total Citizen Reports</dt>
-          <dd className="rb-stat-val text-[var(--ink)] rb-tabular-nums">{totalComplaints.toLocaleString("en-IN")}</dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">City SLA Compliance</dt>
-          <dd className={`rb-stat-val rb-tabular-nums ${slaRate < 0.75 ? "text-[var(--failed-ink)]" : "text-[var(--held-ink)]"}`}>
-            {pct(slaRate)}
-          </dd>
-        </div>
-        <div className="rb-stat-card rb-interactive-card">
-          <dt className="rb-stat-label">30-Day Reopening Rate</dt>
-          <dd className={`rb-stat-val rb-tabular-nums ${reopenRate > 0.2 ? "text-[var(--failed-ink)]" : "text-[var(--ink)]"}`}>
-            {pct(reopenRate)}
-          </dd>
-        </div>
-      </dl>
-
-      <section className="ux4g-card ux4g-card-solid p-6 border border-[var(--rule)] space-y-4">
+      <section className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-6 shadow-[var(--card-shadow)] space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="ux4g-heading-s-strong text-[var(--ink)]">Citywide Spend by Outcome</h2>
-          <span className="text-xs text-[var(--mist)]">Budget: {formatInrShort(overview.budgetInr)}</span>
+          <span className="text-xs text-[var(--mist)] font-mono">Budget: {formatInrShort(overview.budgetInr)}</span>
         </div>
         <OutcomeBar
           outcome={overview.outcome}
@@ -77,37 +85,46 @@ export default function OverviewPage() {
           label="All 24 wards combined spend"
         />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-2">
-          <div className="p-3 rounded bg-[var(--held-bg)] border border-[var(--held-border)]">
-            <strong className="text-[var(--held-ink)] block text-sm">{formatInrShort(overview.outcome.heldInr)} Held</strong>
-            <span className="text-[var(--mist)]">Repairs that held for 30+ days without audit flags</span>
+          <div className="p-3.5 rounded-lg bg-[var(--held-bg)] border border-[var(--held-border)] flex items-start gap-2.5">
+            <span className="rb-status-dot rb-status-dot-held mt-1" aria-hidden="true" />
+            <div>
+              <strong className="text-[var(--held-ink)] block text-sm font-mono">{formatInrShort(overview.outcome.heldInr)} Held</strong>
+              <span className="text-[var(--mist)]">Repairs that held for 30+ days without audit flags</span>
+            </div>
           </div>
-          <div className="p-3 rounded bg-[var(--flagged-bg)] border border-[var(--flagged-border)]">
-            <strong className="text-[var(--flagged-ink)] block text-sm">{formatInrShort(overview.outcome.flaggedInr)} Flagged</strong>
-            <span className="text-[var(--mist)]">Carries cost variance, repeat-repair, or DLP flag</span>
+          <div className="p-3.5 rounded-lg bg-[var(--flagged-bg)] border border-[var(--flagged-border)] flex items-start gap-2.5">
+            <span className="rb-status-dot rb-status-dot-flagged mt-1" aria-hidden="true" />
+            <div>
+              <strong className="text-[var(--flagged-ink)] block text-sm font-mono">{formatInrShort(overview.outcome.flaggedInr)} Flagged</strong>
+              <span className="text-[var(--mist)]">Carries cost variance, repeat-repair, or DLP flag</span>
+            </div>
           </div>
-          <div className="p-3 rounded bg-[var(--failed-bg)] border border-[var(--failed-border)]">
-            <strong className="text-[var(--failed-ink)] block text-sm">{formatInrShort(overview.outcome.failedInr)} Failed</strong>
-            <span className="text-[var(--mist)]">Potholes and road repairs reopened within 30 days</span>
+          <div className="p-3.5 rounded-lg bg-[var(--failed-bg)] border border-[var(--failed-border)] flex items-start gap-2.5">
+            <span className="rb-status-dot rb-status-dot-failed mt-1" aria-hidden="true" />
+            <div>
+              <strong className="text-[var(--failed-ink)] block text-sm font-mono">{formatInrShort(overview.outcome.failedInr)} Failed</strong>
+              <span className="text-[var(--mist)]">Potholes and road repairs reopened within 30 days</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="ux4g-card ux4g-card-solid p-6 border border-[var(--rule)] space-y-4">
+      <section className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-6 shadow-[var(--card-shadow)] space-y-4">
         <h2 className="ux4g-heading-s-strong text-[var(--ink)]">Data Completeness & Blindspot Index</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[var(--mist)]">
-          <div className="p-3 rounded border border-[var(--rule)] bg-[var(--sheet)]">
-            <div className="font-semibold text-sm text-[var(--ink)]">{gpsPct}% GPS Coverage</div>
+          <div className="p-3.5 rounded-lg border border-[var(--rule)] bg-[var(--sheet)]">
+            <div className="font-semibold text-sm text-[var(--ink)] font-mono">{gpsPct}% GPS Coverage</div>
             <p className="mt-1 leading-relaxed">
               {gpsComplaints.toLocaleString("en-IN")} reports carry precise GPS coords; {nonGpsComplaints.toLocaleString("en-IN")} Helpline 1916 and walk-in reports are resolved via locality gazetteer.
             </p>
           </div>
-          <div className="p-3 rounded border border-[var(--rule)] bg-[var(--sheet)]">
-            <div className="font-semibold text-sm text-[var(--ink)]">{flags.length} Audit Flags Screened</div>
+          <div className="p-3.5 rounded-lg border border-[var(--rule)] bg-[var(--sheet)]">
+            <div className="font-semibold text-sm text-[var(--ink)] font-mono">{flags.length} Audit Flags Screened</div>
             <p className="mt-1 leading-relaxed">
               All {totalOrders.toLocaleString("en-IN")} work orders match valid road IDs, wards, contractors, and rate card items.
             </p>
           </div>
-          <div className="p-3 rounded border border-[var(--rule)] bg-[var(--sheet)]">
+          <div className="p-3.5 rounded-lg border border-[var(--rule)] bg-[var(--sheet)]">
             <div className="font-semibold text-sm text-[var(--ink)]">Synthetic Provenance</div>
             <p className="mt-1 leading-relaxed">
               Municipal data is simulated for research and development. Never presented as official certified BMC records.
@@ -118,9 +135,12 @@ export default function OverviewPage() {
 
       <section className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="ux4g-heading-s-strong text-[var(--ink)]">24 Ward Scoreboard</h2>
-          <Link href="/wards" className="text-xs text-[var(--enamel)] hover:underline touch-target">
-            View All Ward Ledgers
+          <div className="flex items-center gap-2">
+            <h2 className="ux4g-heading-s-strong text-[var(--ink)]">24 Ward Scoreboard</h2>
+            <span className="rb-chip rb-chip-neutral text-xs">24 Ledgers</span>
+          </div>
+          <Link href="/wards" className="text-xs text-[var(--enamel)] hover:underline touch-target font-medium inline-flex items-center gap-1">
+            View All Ward Ledgers →
           </Link>
         </div>
 
@@ -139,17 +159,22 @@ export default function OverviewPage() {
             </thead>
             <tbody>
               {overview.wards.map((w) => (
-                <tr key={w.code} className="hover:bg-[var(--sheet)] transition-colors">
+                <tr key={w.code} className="hover:bg-[rgba(6,78,75,0.02)] transition-colors">
                   <td>
-                    <Link href={`/wards/${wardSlug(w.code)}`} className="font-bold text-[var(--enamel)] hover:underline">
-                      Ward {w.code}
-                    </Link>
-                    <div className="text-xs text-[var(--mist)]">{w.name}</div>
+                    <div className="flex items-center gap-2">
+                      <span className={`rb-status-dot ${w.reopenRate >= 0.25 ? "rb-status-dot-failed" : w.flagCount > 0 ? "rb-status-dot-flagged" : "rb-status-dot-held"}`} aria-hidden="true" />
+                      <div>
+                        <Link href={`/wards/${wardSlug(w.code)}`} className="font-bold text-[var(--enamel)] hover:underline">
+                          Ward {w.code}
+                        </Link>
+                        <div className="text-xs text-[var(--mist)]">{w.name}</div>
+                      </div>
+                    </div>
                   </td>
                   <td className="text-xs text-[var(--mist)]">{ds.wards.find((d) => d.code === w.code)?.zone}</td>
                   <td className="text-right font-mono text-xs font-semibold text-[var(--ink)]">{formatInr(w.spentInr)}</td>
                   <td className="text-right font-mono text-xs text-[var(--mist)]">{formatInr(w.budgetInr)}</td>
-                  <td className="text-right text-xs">
+                  <td className="text-right text-xs font-mono">
                     <span className={w.reopenRate >= 0.25 ? "text-[var(--failed-ink)] font-bold" : "text-[var(--ink)]"}>
                       {Math.round(w.reopenRate * 100)}%
                     </span>

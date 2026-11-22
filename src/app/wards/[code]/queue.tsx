@@ -154,7 +154,9 @@ export function WardEngineerQueue({ wardCode, wardName, items, className = "" }:
                 data-priority={item.priority}
                 className={`rb-action-item rounded-lg border p-4 transition-all ${
                   item.priority === "critical"
-                    ? "border-red-200 bg-red-50/20 dark:border-red-950 dark:bg-red-950/10"
+                    ? "border-[var(--failed-border)] bg-[var(--failed-bg)] shadow-[0_2px_8px_rgba(200,30,30,0.06)]"
+                    : item.priority === "high"
+                    ? "border-[var(--flagged-border)] bg-[var(--card)]"
                     : "border-[var(--rule)] bg-[var(--card)]"
                 }`}
               >
@@ -164,7 +166,11 @@ export function WardEngineerQueue({ wardCode, wardName, items, className = "" }:
                       <span className={`rb-chip ${item.priority === "critical" ? "rb-chip-failed" : item.priority === "high" ? "rb-chip-flagged" : "rb-chip-neutral"}`}>
                         {item.priority.toUpperCase()}
                       </span>
-                      <span className="rb-chip rb-chip-neutral">{categoryLabel}</span>
+                      {item.category === "potential_dlp_conflict" ? (
+                        <span className="rb-dlp-flag">DLP Warranty Conflict</span>
+                      ) : (
+                        <span className="rb-chip rb-chip-neutral">{categoryLabel}</span>
+                      )}
                       <span className={`rb-chip ${item.status === "resolved" ? "rb-chip-held" : item.status === "under_review" ? "rb-chip-flagged" : "rb-chip-neutral"}`}>
                         {item.status === "under_review" ? "Under Review" : item.status === "resolved" ? "Resolved" : "New"}
                       </span>

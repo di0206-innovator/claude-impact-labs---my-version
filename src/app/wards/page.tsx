@@ -47,27 +47,59 @@ export default async function WardsPage({ searchParams }: Props) {
         : overview.wards;
 
   return (
-    <div className="shell rb-page rb-motion-fade-in">
-      <h1 className="ux4g-display-xs-strong">
-        Where the monsoon road money went
-      </h1>
-      <p className="ux4g-body-l-default ux4g-text-neutral-secondary ux4g-mt-xs rb-measure">
-        Mumbai&apos;s wards spent {formatInrShort(overview.spentInr)} on{" "}
-        {overview.orders.toLocaleString("en-IN")} road and drain repairs this
-        monsoon, against a budget of {formatInrShort(overview.budgetInr)}.
-      </p>
+    <div className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
+      <header className="rb-editorial-hero space-y-6 rb-parallax-hero">
+        <div className="space-y-2">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="rb-chip-dark">
+              <span className="rb-status-dot rb-status-dot-vermilion" aria-hidden="true" />
+              Ward Directory &amp; Intelligence
+            </span>
+            <span className="rb-chip-dark rb-chip-dark-held">24 Administrative Wards</span>
+            <span className="rb-chip-dark">Monsoon 2025</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-normal tracking-tight">
+            Where the monsoon road money went
+          </h1>
+          <p className="rb-editorial-lead text-sm sm:text-base">
+            Mumbai&apos;s 24 administrative wards spent {formatInrShort(overview.spentInr)} on{" "}
+            {overview.orders.toLocaleString("en-IN")} road and drain repairs this monsoon, against a
+            budget allocation of {formatInrShort(overview.budgetInr)}.
+          </p>
+        </div>
 
-      <div className="rb-wards-layout ux4g-mt-l">
+        <dl className="rb-kpi-strip grid grid-cols-2 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10 rb-motion-stagger">
+          <div className="rb-kpi-item">
+            <dt className="rb-kpi-label">Wards Monitored</dt>
+            <dd className="rb-kpi-val">{overview.wards.length}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Total Amount Billed</dt>
+            <dd className="rb-kpi-val">{formatInrShort(overview.spentInr)}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Repair Jobs Count</dt>
+            <dd className="rb-kpi-val">{overview.orders.toLocaleString("en-IN")}</dd>
+          </div>
+          <div className="rb-kpi-item pt-3 sm:pt-0">
+            <dt className="rb-kpi-label">Total Budget Allocation</dt>
+            <dd className="rb-kpi-val">{formatInrShort(overview.budgetInr)}</dd>
+          </div>
+        </dl>
+      </header>
+
+      <div className="rb-wards-layout">
         <section
-          className="ux4g-card ux4g-card-solid ux4g-card-vertical rb-wards-city"
+          className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-6 shadow-[var(--card-shadow)] rb-wards-city space-y-4"
           aria-labelledby="city-heading"
         >
-          <div className="ux4g-card-header">
-            <h2 id="city-heading" className="ux4g-heading-xs-strong">
+          <div className="flex items-center justify-between pb-2 border-b border-[var(--rule)]">
+            <h2 id="city-heading" className="ux4g-heading-xs-strong text-[var(--ink)]">
               All wards together
             </h2>
+            <span className="text-xs text-[var(--mist)] font-mono">24 Wards</span>
           </div>
-          <div className="ux4g-card-body">
+          <div>
             <OutcomeBar
               outcome={overview.outcome}
               spentInr={overview.spentInr}
@@ -75,11 +107,15 @@ export default async function WardsPage({ searchParams }: Props) {
               label="Citywide monsoon road spend by outcome"
             />
           </div>
+          <div className="pt-2 text-xs text-[var(--mist)] border-t border-[var(--rule)] flex items-center justify-between">
+            <span>Audit flags screened</span>
+            <span className="font-mono font-semibold text-[var(--ink)]">{flags.length}</span>
+          </div>
         </section>
 
-        <section className="rb-wards-list" aria-labelledby="all-heading">
+        <section className="rb-wards-list space-y-4" aria-labelledby="all-heading">
           <div className="rb-list-head">
-            <h2 id="all-heading" className="ux4g-title-l-strong">
+            <h2 id="all-heading" className="ux4g-title-l-strong text-[var(--ink)]">
               {overview.wards.length} wards, ranked
             </h2>
             <nav className="rb-sort" aria-label="Sort wards">
@@ -91,11 +127,11 @@ export default async function WardsPage({ searchParams }: Props) {
                       ? "/wards"
                       : `/wards?sort=${option.key}`
                   }
-                  className={
+                  className={`touch-target transition-colors text-xs font-semibold px-3 py-1.5 rounded-full border ${
                     sort === option.key
-                      ? "ux4g-filter-chip-m active touch-target"
-                      : "ux4g-filter-chip-m touch-target"
-                  }
+                      ? "rb-pill-vermilion"
+                      : "bg-[var(--sheet)] text-[var(--mist)] border-[var(--rule)] hover:border-[var(--rule-firm)]"
+                  }`}
                   aria-current={sort === option.key ? "true" : undefined}
                   scroll={false}
                 >
@@ -104,7 +140,7 @@ export default async function WardsPage({ searchParams }: Props) {
               ))}
             </nav>
           </div>
-          <p className="ux4g-body-s-default ux4g-text-neutral-secondary ux4g-mt-2xs rb-measure">
+          <p className="ux4g-body-s-default text-[var(--mist)] rb-measure">
             Tap a ward to see where its money went and the first road to fix.
           </p>
           <ScoreHow kind="ward" className="ux4g-mt-xs ux4g-mb-s" />

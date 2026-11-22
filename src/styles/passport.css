@@ -1,4 +1,4 @@
-/* Hallmark · theme: civic-intelligence · genre: modern-minimal · floor: verified */
+/* Hallmark · theme: civic-intelligence · genre: swiss-editorial · floor: verified */
 /* Rasta Hisaab 2.0: Passport, Explorer, Queue, Scenarios, and Receipt styling */
 
 .rb-passport-grid {
@@ -13,14 +13,40 @@
   }
 }
 
+/* 2-Column Split Layout for Citizen Flow (Report, Track, Verify) */
+.rb-split-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .rb-split-flow-grid {
+    grid-template-columns: minmax(20rem, 24rem) minmax(0, 1fr);
+    gap: 3rem;
+  }
+}
+
+.rb-split-sticky-col {
+  position: static;
+}
+
+@media (min-width: 60rem) {
+  .rb-split-sticky-col {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
 .rb-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.3125rem;
-  padding: 0.1875rem 0.625rem;
+  padding: 0.25rem 0.625rem;
   border-radius: var(--ux4g-radius-full, 9999px);
-  font-size: 0.8125rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   line-height: 1.25;
 }
 
@@ -48,32 +74,37 @@
   border: 1px solid var(--rule);
 }
 
+.rb-chip-vermilion {
+  background-color: rgb(232 93 74 / 0.1);
+  color: var(--vermilion);
+  border: 1px solid rgb(232 93 74 / 0.25);
+}
+
 .rb-stat-card {
   padding: 1rem;
   border-radius: var(--ux4g-radius-md, 0.5rem);
   background: var(--card);
   border: 1px solid var(--rule);
   box-shadow: var(--card-shadow);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 @media (max-width: 480px) {
-  .rb-stat-card {
-    padding: 0.75rem;
-  }
+  .rb-stat-card { padding: 0.75rem; }
 }
 
 .rb-stat-val {
-  font-size: clamp(1.125rem, 4vw, 1.5rem);
+  font-size: clamp(1.125rem, 3.5vw, 1.5rem);
   font-weight: 700;
   line-height: 1.15;
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   overflow-wrap: break-word;
-  word-break: break-word;
 }
 
 .rb-stat-label {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  font-weight: 500;
   color: var(--mist);
   margin-top: 0.25rem;
 }
@@ -99,39 +130,58 @@
   padding: 0.75rem 1rem;
   background: var(--sheet);
   font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
   color: var(--mist);
   border-bottom: 1px solid var(--rule);
   white-space: nowrap;
 }
 
 .rb-data-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   border-bottom: 1px solid var(--rule);
   color: var(--ink);
   vertical-align: top;
   font-variant-numeric: tabular-nums;
 }
 
-.rb-data-table tr:last-child td {
-  border-bottom: none;
-}
+.rb-data-table tr:last-child td { border-bottom: none; }
 
+/* Polpharma-inspired High-Trust Municipal Public Receipt */
 .rb-receipt-card {
-  max-width: 44rem;
+  max-width: 46rem;
   margin-inline: auto;
-  padding: 1.75rem;
+  padding: 2rem;
   border-radius: var(--ux4g-radius-lg, 0.75rem);
-  background: var(--glass-bg-elevated);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow-floating);
+  background: var(--card);
+  border: 1px solid var(--rule);
+  box-shadow: 0 12px 32px -4px rgb(6 78 75 / 0.08), 0 0 0 1px var(--rule);
 }
 
+@media (max-width: 480px) {
+  .rb-receipt-card { padding: 1.25rem; }
+}
+
+.rb-receipt-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: var(--mint-tint);
+  color: var(--teal-deep);
+  border: 1px solid rgba(6, 78, 75, 0.2);
+}
+
+/* Hairline Step Progression */
 .rb-step-chain {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
   position: relative;
   padding-left: 1.75rem;
 }
@@ -142,34 +192,33 @@
   left: 0.5rem;
   top: 0.5rem;
   bottom: 0.5rem;
-  width: 2px;
+  width: 1px;
   background: var(--rule-firm);
 }
 
-.rb-step-node {
-  position: relative;
-}
+.rb-step-node { position: relative; }
 
 .rb-step-node::before {
   content: "";
   position: absolute;
   left: -1.5rem;
   top: 0.375rem;
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.625rem;
+  height: 0.625rem;
   border-radius: 9999px;
-  background: var(--enamel);
+  background: var(--teal-deep);
   border: 2px solid var(--card);
+  box-shadow: 0 0 0 1px var(--rule);
 }
 
 .rb-step-node-missing::before {
   background: var(--failed);
-  box-shadow: 0 0 8px rgb(176 40 31 / 0.45);
+  box-shadow: 0 0 8px rgb(200 30 30 / 0.45);
 }
 
 .rb-step-node-verified::before {
   background: var(--held);
-  box-shadow: 0 0 8px rgb(18 122 82 / 0.45);
+  box-shadow: 0 0 8px rgb(14 124 102 / 0.45);
 }
 
 .rb-scenario-grid {
@@ -183,42 +232,33 @@
   border-radius: var(--ux4g-radius-md, 0.5rem);
   border: 1px solid var(--rule);
   background: var(--card);
-  box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.5), var(--card-shadow);
+  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
 }
 
-.rb-action-item[data-priority="critical"] {
-  border-color: var(--failed-border);
-}
+.rb-action-item[data-priority="critical"] { border-color: var(--failed-border); }
+.rb-action-item[data-priority="high"] { border-color: var(--flagged-border); }
+.rb-action-item[data-priority="medium"] { border-color: var(--rule-firm); }
+.rb-action-item[data-priority="low"] { border-color: var(--held-border); }
 
-.rb-action-item[data-priority="high"] {
-  border-color: var(--flagged-border);
-}
-
-.rb-action-item[data-priority="medium"] {
-  border-color: var(--rule-firm);
-}
-
-.rb-action-item[data-priority="low"] {
-  border-color: var(--held-border);
+/* DLP Active Countdown Badge */
+.rb-dlp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgb(232 93 74 / 0.12);
+  color: #c43825;
+  border: 1px solid rgb(232 93 74 / 0.35);
 }
 
 @media print {
-  .rb-header,
-  .rb-nav,
-  footer,
-  .no-print {
-    display: none !important;
-  }
-  body {
-    background: var(--card) !important;
-    color: var(--ink) !important;
-  }
-  .shell,
-  .shell-narrow {
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
+  .rb-header, .rb-nav, footer, .no-print { display: none !important; }
+  body { background: #ffffff !important; color: #0b2625 !important; }
+  .shell, .shell-narrow { max-width: 100% !important; padding: 0 !important; }
 }
