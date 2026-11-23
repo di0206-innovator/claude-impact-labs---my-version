@@ -90,7 +90,7 @@ export default async function WardsPage({ searchParams }: Props) {
 
       <div className="rb-wards-layout">
         <section
-          className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-6 shadow-[var(--card-shadow)] rb-wards-city space-y-4"
+          className="bg-[var(--card)] rounded-xl border border-[var(--rule)] p-4 sm:p-6 shadow-[var(--card-shadow)] rb-wards-city space-y-4"
           aria-labelledby="city-heading"
         >
           <div className="flex items-center justify-between pb-2 border-b border-[var(--rule)]">

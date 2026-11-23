@@ -139,6 +139,12 @@
 .rb-num { text-align: end; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .rb-table tbody tr:last-child > *,
 .rb-outcome-table tbody tr:last-child > * { border-bottom: 0; }
+.rb-outcome-table th,
+.rb-outcome-table td { padding: 0.5rem 0.5rem; }
+@media (max-width: 480px) {
+  .rb-outcome-table th,
+  .rb-outcome-table td { padding: 0.375rem 0.25rem; }
+}
 .rb-table th[scope="row"],
 .rb-outcome-table th[scope="row"] {
   color: var(--ux4g-text-neutral-primary);

@@ -84,27 +84,32 @@ export default async function RoadExplorerPage({ searchParams }: PageProps) {
       </header>
 
       {/* Search & Filter Form */}
-      <form method="get" action="/roads" className="flex flex-wrap items-center gap-2.5">
+      <form method="get" action="/roads" className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
         <input
           type="search"
           name="q"
           defaultValue={params.q ?? ""}
           placeholder="Search road name or ID (e.g. Swami Vivekananda, RD0001)..."
-          className="ux4g-input flex-1 min-w-[16rem] py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
+          className="ux4g-input w-full sm:flex-1 sm:min-w-[16rem] py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
         />
-        <select
-          name="ward"
-          defaultValue={params.ward ?? ""}
-          className="ux4g-select py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
-        >
-          <option value="">All Wards ({allWards.length})</option>
-          {allWards.map((w) => (
-            <option key={w} value={w}>Ward {w}</option>
-          ))}
-        </select>
-        <button type="submit" className="ux4g-btn ux4g-btn-m ux4g-btn-primary touch-target">
-          Search
-        </button>
+        <div className="flex items-center gap-2">
+          <select
+            name="ward"
+            defaultValue={params.ward ?? ""}
+            className="ux4g-select flex-1 sm:flex-initial py-2.5 px-3.5 text-sm rounded-lg border border-[var(--rule)] bg-[var(--card)] text-[var(--ink)] focus:border-[var(--teal-deep)]"
+          >
+            <option value="">All Wards ({allWards.length})</option>
+            {allWards.map((w) => (
+              <option key={w} value={w}>Ward {w}</option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-[var(--teal-deep)] text-white hover:bg-[var(--teal-abyss)] transition-colors touch-target"
+          >
+            Search
+          </button>
+        </div>
       </form>
 
       <RoadExplorerFilterBar

@@ -183,7 +183,6 @@ export function SiteHeader() {
           </div>
         </div>
       </nav>
-      <div className="rb-lane" aria-hidden="true" />
     </header>
   );
 }

@@ -146,6 +146,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+@media (max-width: 640px) {
+  .rb-data-table th,
+  .rb-data-table td {
+    padding: 0.5rem 0.625rem;
+  }
+}
+
 .rb-data-table tr:last-child td { border-bottom: none; }
 
 /* Polpharma-inspired High-Trust Municipal Public Receipt */

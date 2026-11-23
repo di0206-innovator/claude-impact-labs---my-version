@@ -45,7 +45,7 @@ export function RoadExplorerFilterBar({
         </Link>
       </div>
 
-      <div className="flex flex-wrap items-center gap-1.5 text-xs ml-auto">
+      <div className="flex flex-wrap items-center gap-1.5 text-xs sm:ml-auto w-full sm:w-auto pt-1 sm:pt-0">
         <span className="font-semibold text-[var(--mist)] mr-1">Filter:</span>
         <Link
           href={`/roads?hasFlags=true${currentWard ? `&ward=${currentWard}` : ""}`}
