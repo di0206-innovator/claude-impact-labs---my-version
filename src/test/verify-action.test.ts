@@ -4,7 +4,7 @@ vi.mock("server-only", () => ({}));
 
 import { submitVerificationAction } from "@/lib/actions/verify";
 import { getPotholeReceipt } from "@/lib/passport/receipt";
-import { resetRepositoryForTests } from "@/lib/repo/context";
+import { resetRepositoryForTests, setRepositoryForTests } from "@/lib/repo/context";
 import { MemoryRastabaazRepository } from "@/lib/repo/memory";
 import { resetVerificationsForTests } from "@/lib/repo/verification-store";
 
@@ -12,6 +12,7 @@ describe("Persistent Verification via Server Action & Store", () => {
   beforeEach(() => {
     resetRepositoryForTests();
     resetVerificationsForTests();
+    setRepositoryForTests(new MemoryRastabaazRepository());
   });
 
   it("fails when complaintId is missing", async () => {
