@@ -20,7 +20,7 @@ export function SceneLedgerPreview({ wards }: SceneLedgerPreviewProps) {
   const topWards = wards.slice(0, 6);
 
   return (
-    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-20 lg:py-28">
+    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-12 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div className="max-w-2xl">
@@ -61,15 +61,15 @@ export function SceneLedgerPreview({ wards }: SceneLedgerPreviewProps) {
               <tbody className="divide-y divide-[#064E4B]/10">
                 {topWards.map((ward) => (
                   <tr key={ward.code} className="hover:bg-[#F7F9F8]/60 transition-colors">
-                    <td className="py-4 px-4 sm:px-6 font-mono font-bold text-[#064E4B]">
+                    <td className="py-3.5 px-3 sm:px-6 font-mono font-bold text-[#064E4B] whitespace-nowrap">
                       <span className="inline-flex items-center justify-center rounded bg-[#064E4B]/10 px-2 py-0.5 text-xs">
                         Ward {ward.code}
                       </span>
                     </td>
-                    <td className="py-4 px-4 sm:px-6 text-[#0B2625] font-medium max-w-[200px] truncate sm:max-w-none">
+                    <td className="py-3.5 px-3 sm:px-6 text-[#0B2625] font-medium max-w-[160px] truncate sm:max-w-none">
                       {ward.name}
                     </td>
-                    <td className="py-4 px-4 sm:px-6 font-mono text-right text-[#0B2625] font-semibold">
+                    <td className="py-3.5 px-3 sm:px-6 font-mono text-right text-[#0B2625] font-semibold whitespace-nowrap">
                       {formatInrShort(ward.spentInr)}
                     </td>
                     <td className="py-4 px-4 sm:px-6 text-center font-mono">

@@ -43,7 +43,7 @@ export function SceneLifecycle() {
   ];
 
   return (
-    <section className="bg-[#064E4B] text-white py-20 lg:py-28 relative overflow-hidden">
+    <section className="bg-[#064E4B] text-white py-12 sm:py-20 lg:py-28 relative overflow-hidden">
       {/* Hairline subtle background grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-10"

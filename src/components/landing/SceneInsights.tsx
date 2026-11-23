@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function SceneInsights() {
   return (
-    <section className="bg-white py-20 lg:py-28 border-b border-[#064E4B]/10">
+    <section className="bg-white py-12 sm:py-20 lg:py-28 border-b border-[#064E4B]/10">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 max-w-2xl">
           <div className="text-xs font-semibold tracking-widest uppercase text-[#064E4B]/70 mb-2 font-mono">
@@ -96,15 +96,15 @@ export function SceneInsights() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <a
-              href="#report-entry"
-              className="inline-flex items-center justify-center rounded-full bg-[#E85D4A] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-wider text-white shadow hover:bg-[#d84e3b] transition-all"
+            <Link
+              href="/report"
+              className="inline-flex items-center justify-center rounded-full bg-[#E85D4A] px-6 py-3 text-xs font-mono font-semibold uppercase tracking-wider text-white shadow hover:bg-[#d84e3b] transition-all touch-target"
             >
               Report a Pothole
-            </a>
+            </Link>
             <Link
               href="/map"
-              className="inline-flex items-center justify-center rounded-full border border-[#064E4B]/20 bg-white/80 px-6 py-3 text-xs font-mono font-semibold uppercase tracking-wider text-[#064E4B] hover:bg-white transition-all"
+              className="inline-flex items-center justify-center rounded-full border border-[#064E4B]/20 bg-white/80 px-6 py-3 text-xs font-mono font-semibold uppercase tracking-wider text-[#064E4B] hover:bg-white transition-all touch-target"
             >
               View City Map →
             </Link>

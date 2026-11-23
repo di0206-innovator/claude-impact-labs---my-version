@@ -14,7 +14,7 @@ export function SceneHero({
   flaggedCount,
 }: SceneHeroProps) {
   return (
-    <section className="relative overflow-hidden bg-[#064E4B] text-white pt-20 pb-16 lg:pt-28 lg:pb-24">
+    <section className="relative overflow-hidden bg-[#064E4B] text-white pt-12 pb-12 sm:pt-20 sm:pb-16 lg:pt-28 lg:pb-24">
       {/* Concentric topographic parallax rings SVG */}
       <div
         className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-30 rb-parallax-slow"

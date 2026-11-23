@@ -12,7 +12,7 @@ export function SceneMetrics({
   flaggedCount,
 }: SceneMetricsProps) {
   return (
-    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-20 lg:py-28">
+    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-12 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-12 max-w-2xl">
           <div className="text-xs font-semibold tracking-widest uppercase text-[#064E4B]/70 mb-2 font-mono">
@@ -79,7 +79,7 @@ export function SceneMetrics({
               <circle cx="500" cy="10" r="4" fill="#E85D4A" />
             </svg>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between text-xs text-[#4A6361] border-t border-[#064E4B]/10 pt-3">
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[#4A6361] border-t border-[#064E4B]/10 pt-3">
               <span>Trail: [Geotag] → [Work Order] → [Rate Card] → [Warranty Lock]</span>
               <span className="font-mono text-[#064E4B] font-medium">100% Deterministic Code</span>
             </div>

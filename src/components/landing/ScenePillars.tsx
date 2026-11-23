@@ -27,7 +27,7 @@ export function ScenePillars() {
   ];
 
   return (
-    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-20 lg:py-28">
+    <section className="bg-[#F7F9F8] border-b border-[#064E4B]/10 py-12 sm:py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="mb-14 max-w-2xl">
           <div className="text-xs font-semibold tracking-widest uppercase text-[#064E4B]/70 mb-2 font-mono">
@@ -73,7 +73,7 @@ export function ScenePillars() {
 
           {/* Rotating Circular Mumbai Corridor SVG Diagram */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative flex items-center justify-center h-80 w-80 sm:h-96 sm:w-96 rounded-full border border-[#064E4B]/15 bg-white p-4 shadow-sm">
+            <div className="relative flex items-center justify-center w-[min(19rem,100%)] aspect-square sm:h-96 sm:w-96 rounded-full border border-[#064E4B]/15 bg-white p-4 shadow-sm">
               {/* Rotating outer ring */}
               <svg
                 viewBox="0 0 360 360"
