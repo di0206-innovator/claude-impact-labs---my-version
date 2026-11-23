@@ -107,10 +107,6 @@ export function SiteHeader() {
                 रस्ताबाज
               </span>
             </Link>
-            <div className="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.6875rem] font-medium bg-[var(--mint-tint)] text-[var(--teal-deep)] border border-[rgba(6,78,75,0.18)]">
-              <span className="rb-pulse-vermilion" aria-hidden="true" />
-              <span>Civic Ledger 2.0</span>
-            </div>
           </div>
 
           <div className="flex items-center gap-2">
