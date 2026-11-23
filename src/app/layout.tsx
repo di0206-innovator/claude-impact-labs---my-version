@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { PwaRegistrar } from "@/components/pwa/PwaRegistrar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { siteOrigin } from "@/lib/site-url";
@@ -24,8 +25,18 @@ const baseMetadata: Metadata = {
     title,
     description,
   },
+  appleWebApp: {
+    capable: true,
+    title: "Rastabaaz",
+    statusBarStyle: "black-translucent",
+  },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 
@@ -58,6 +69,7 @@ export default function RootLayout({
         <a className="skip-link" href="#main">
           Skip to content
         </a>
+        <PwaRegistrar />
         <SiteHeader />
         <main id="main" tabIndex={-1} className="flex-1">
           {children}
