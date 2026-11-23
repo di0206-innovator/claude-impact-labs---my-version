@@ -3,6 +3,7 @@ import { clusterKey, neighbourClusterKeys, nearestMatching } from "@/lib/geo";
 import seedRows from "@/lib/geo-data/seed-reports.data.json";
 import { slugify } from "@/lib/id";
 import { namePlace, nearestRoad } from "@/lib/place-name";
+import { computeEvidenceHash } from "@/lib/repo/mappers";
 import type { SeedItem } from "@/lib/repo/port";
 import type { AccidentSeen, IssueType, LocationRecord, SeedReport } from "@/lib/types";
 
@@ -103,13 +104,14 @@ export function seedItemsForRows(rows: SeedRow[]): SeedItem[] {
     };
     items.push({ entity: "location", record: location });
     for (const row of group.reports) {
+      const photo = PHOTO[row.issueType];
       const report: SeedReport = {
         id: row.id,
         locationId: group.locationId,
         issueType: row.issueType,
         lat: row.lat,
         lng: row.lng,
-        photo: PHOTO[row.issueType],
+        photo,
         noticedAt: row.noticedAt,
         noticedWindow: null,
         recurs: row.recurs,
@@ -117,6 +119,13 @@ export function seedItemsForRows(rows: SeedRow[]): SeedItem[] {
         description: row.description,
         isSample: true,
         createdAt: row.noticedAt,
+        evidenceHash: computeEvidenceHash({
+          issueType: row.issueType,
+          lat: row.lat,
+          lng: row.lng,
+          createdAt: row.noticedAt,
+          photo,
+        }),
       };
       items.push({ entity: "report", record: report });
     }

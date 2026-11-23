@@ -62,4 +62,24 @@ describe("export API route GET /api/export/:type/:id", () => {
     const body = await res.json();
     expect(body.error).toContain("No records found");
   });
+
+  it("rejects invalid characters in ID via Zod validation with 400", async () => {
+    const req = new NextRequest("http://localhost:3000/api/export/road/<script>");
+    const res = await GET(req, { params: Promise.resolve({ type: "road", id: "<script>" }) });
+
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error).toContain("Invalid export parameters");
+  });
+
+  it("strips non-whitelisted query params with 308 redirect for CDN caching", async () => {
+    const req = new NextRequest("http://localhost:3000/api/export/road/RD0065?format=pdf&_rnd=12345&utm_source=test");
+    const res = await GET(req, { params: Promise.resolve({ type: "road", id: "RD0065" }) });
+
+    expect(res.status).toBe(308);
+    const location = res.headers.get("Location");
+    expect(location).toContain("/api/export/road/RD0065?format=pdf");
+    expect(location).not.toContain("_rnd");
+    expect(location).not.toContain("utm_source");
+  });
 });

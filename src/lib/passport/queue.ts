@@ -142,6 +142,36 @@ export function listActionQueueItems(wardFilter?: string): ActionQueueItem[] {
     });
   }
 
+  // 5. Escalate priority for road segments with high social distress
+  // (likes > 200 or keyword "accident"/"gaddha")
+  const socialDistressRoadIds = new Set<string>();
+  for (const road of ds.roads) {
+    if (road.name.length < 4) continue;
+    const nameLower = road.name.toLowerCase();
+    const hasDistress = ds.socialPosts.some((p) => {
+      if (!p.text.toLowerCase().includes(nameLower)) return false;
+      return p.likes > 200 || /accident|gaddha|gadha|khadda|dhas|collapse|waterlog|paani/i.test(p.text);
+    });
+    if (hasDistress) {
+      socialDistressRoadIds.add(road.id);
+      socialDistressRoadIds.add(road.name);
+    }
+  }
+
+  for (const item of queue) {
+    if (socialDistressRoadIds.has(item.roadId) || socialDistressRoadIds.has(item.roadName)) {
+      if (item.priority === "medium") {
+        item.priority = "high";
+        item.headline = `[Social Signal Escalation] ${item.headline}`;
+        item.reason = `${item.reason} Escalated due to high viral citizen distress reports on social channels.`;
+      } else if (item.priority === "high") {
+        item.priority = "critical";
+        item.headline = `[Social Signal Escalation] ${item.headline}`;
+        item.reason = `${item.reason} Escalated to critical priority due to viral citizen distress and hazard reports.`;
+      }
+    }
+  }
+
   // Sort queue by priority: critical -> high -> medium, then by amount at risk
   const priorityRank = { critical: 0, high: 1, medium: 2 };
   queue.sort((a, b) => {

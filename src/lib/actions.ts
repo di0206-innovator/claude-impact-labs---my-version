@@ -5,7 +5,7 @@ import { isInsideCity } from "@/lib/city";
 import { estimateNoticedAt, kolkataTodayStamp } from "@/lib/noticed-date";
 import { assertPhotoString } from "@/lib/photo-validate";
 import { createReport } from "@/lib/queries";
-import { allowRequest } from "@/lib/rate-limit";
+import { allowRequest, allowRequestDistributed } from "@/lib/rate-limit";
 import { ItemTooLargeError, ReportValidationError } from "@/lib/repo/errors";
 import {
   ACCIDENT_SEEN,
@@ -51,7 +51,7 @@ export async function createReportAction(
 
   // Unidentified requests share one bucket instead of skipping the limit.
   const ip = (await clientIp()) ?? "unknown";
-  if (!allowRequest(`create:${ip}`, CREATE_LIMIT, CREATE_WINDOW_MS)) {
+  if (!(await allowRequestDistributed(`create:${ip}`, CREATE_LIMIT, CREATE_WINDOW_MS))) {
     return fail("Too many reports. Try again later.");
   }
 

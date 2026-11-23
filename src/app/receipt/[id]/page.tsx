@@ -60,6 +60,16 @@ export default async function PotholeReceiptPage({ params }: PageProps) {
           <p className="text-xs text-[var(--mist)]">
             Channel: <strong className="text-[var(--ink)]">{receipt.channel}</strong> — Locality: <strong className="text-[var(--ink)]">{receipt.locality}</strong> — Ward <strong className="text-[var(--ink)]">{receipt.ward}</strong>
           </p>
+          {receipt.evidenceHash ? (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-[0.6875rem] text-[var(--mist)] uppercase tracking-wider font-semibold">
+                Evidence SHA-256:
+              </span>
+              <span className="font-mono text-xs px-2.5 py-1 rounded bg-[var(--sheet)] text-[var(--ink)] border border-[var(--rule)] break-all select-all">
+                {receipt.evidenceHash}
+              </span>
+            </div>
+          ) : null}
         </header>
 
         {/* Original Citizen Complaint */}

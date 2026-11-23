@@ -3,7 +3,7 @@ import { isInsideCity } from "@/lib/city";
 import { estimateNoticedAt, kolkataTodayStamp } from "@/lib/noticed-date";
 import { assertPhotoString } from "@/lib/photo-validate";
 import { createReport, listAllReports } from "@/lib/queries";
-import { allowRequest } from "@/lib/rate-limit";
+import { allowRequest, allowRequestDistributed } from "@/lib/rate-limit";
 import { ItemTooLargeError, ReportValidationError } from "@/lib/repo/errors";
 import { getRoadTrail, type RoadTrailSummary } from "@/lib/rupee/road-trail";
 import {
@@ -32,7 +32,7 @@ function isAccidentSeen(value: unknown): value is AccidentSeen {
 
 export async function POST(request: Request) {
   const ip = (await clientIp()) ?? "unknown";
-  if (!allowRequest(`api:report:${ip}`, CREATE_LIMIT, CREATE_WINDOW_MS)) {
+  if (!(await allowRequestDistributed(`api:report:${ip}`, CREATE_LIMIT, CREATE_WINDOW_MS))) {
     return Response.json({ ok: false, error: "Too many reports. Try again later." }, { status: 429 });
   }
 

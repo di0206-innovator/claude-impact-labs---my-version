@@ -61,12 +61,15 @@ export type EvidenceBundle = {
 
 export type AssistantStructuredResponse = {
   answer: string;
+  text?: string;
   responseLanguage: AssistantLanguage;
   complaintStatus: string;
   linkedIssueReference: string | null;
   workOrderReferences: string[];
   relevantTimelineEvents: TimelineEventRecord[];
   evidenceSources: string[];
+  toolsUsed?: string[];
+  citations?: string[];
   nextAction: string;
   limitations: string[];
   isOfficialLink: boolean;

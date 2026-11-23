@@ -12,6 +12,7 @@ vi.mock("@/lib/queries", () => ({
 
 vi.mock("@/lib/rate-limit", () => ({
   allowRequest,
+  allowRequestDistributed: vi.fn(async () => allowRequest()),
 }));
 
 vi.mock("@/lib/client-ip", () => ({

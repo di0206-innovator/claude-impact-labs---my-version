@@ -2,6 +2,7 @@ import type { ComplaintIntelligenceEngine } from "@/lib/matching/engine";
 import type { Dataset } from "@/lib/rupee/load";
 import { maskPII } from "../security";
 import { executeAnalyticsTool } from "./analytics";
+import { buildRoadDossier } from "./road-dossier";
 
 export type ToolContext = {
   engine: ComplaintIntelligenceEngine;
@@ -101,6 +102,7 @@ export function executeAssistantTool(
           lastResurfaced: road.lastResurfaced,
           underDlp: road.underDlp,
           busRoute: road.busRoute,
+          socialCorroboration: buildRoadDossier(road.id)?.socialCorroboration ?? null,
         },
       };
     }

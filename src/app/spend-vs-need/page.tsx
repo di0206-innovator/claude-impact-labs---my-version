@@ -30,11 +30,29 @@ export default async function SpendVsNeedPage({ searchParams }: PageProps) {
 
   return (
     <article className="shell rb-page py-6 sm:py-10 space-y-8 rb-motion-fade-in">
+      {/* Breadcrumb back to Stage 1 */}
+      <nav aria-label="Breadcrumb" className="mb-2">
+        <ol className="m-0 flex min-w-0 list-none flex-wrap items-center gap-2 p-0 text-xs">
+          <li>
+            <Link href="/budget" className="ux4g-text-link-m text-[var(--teal-deep)] font-semibold touch-target">
+              ← Stage 1: Diagnose Equity (Wards)
+            </Link>
+          </li>
+          <li aria-hidden="true" className="text-[var(--mist)]">/</li>
+          <li className="font-semibold text-[var(--ink)]" aria-current="page">
+            Stage 2: Allocate Next Rupee (Corridors)
+          </li>
+        </ol>
+      </nav>
+
       {/* Editorial #064E4B Dark Teal Hero Header */}
       <header className="relative overflow-hidden rounded-2xl bg-[#064E4B] text-white p-6 sm:p-10 shadow-xl rb-parallax-hero">
         <div className="relative z-10 space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[var(--vermilion)] text-white shadow-sm">
+                STAGE 2: PREDICTIVE CAPITAL ALLOCATION SIMULATOR
+              </span>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase bg-white/10 text-[#DDF4F1] border border-white/15">
                 Decision Support Matrix
               </span>
@@ -46,7 +64,7 @@ export default async function SpendVsNeedPage({ searchParams }: PageProps) {
               href="/budget"
               className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/20 transition-all touch-target"
             >
-              Ward Disparity & Fiscal Equity →
+              ← Back to Stage 1 Diagnosis
             </Link>
           </div>
 

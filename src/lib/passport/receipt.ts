@@ -1,3 +1,5 @@
+import { computeEvidenceHash } from "../repo/mappers";
+import { getVerificationsForComplaintSync } from "../repo/verification-store";
 import { expectedCostInr } from "../rupee/audit";
 import { getRupee } from "../rupee/index";
 import { getRoadPassport } from "./aggregate";
@@ -30,9 +32,20 @@ export function getPotholeReceipt(complaintId: string): RupeeReceiptData | null 
   }
 
   const expectedInr = wo ? (expectedCostInr(ds, wo) ?? wo.costInr) : 0;
+  const evidenceHash = computeEvidenceHash({
+    issueType: complaint.category,
+    lat: complaint.lat ?? 0,
+    lng: complaint.lng ?? 0,
+    createdAt: complaint.receivedAt,
+    photo: "",
+  });
+
+  const verifications = getVerificationsForComplaintSync(complaint.id);
+  const latestVerif = verifications[0];
 
   return {
     complaintId: complaint.id,
+    evidenceHash,
     receivedAt: complaint.receivedAt,
     channel: complaint.channel,
     category: complaint.category,
@@ -69,10 +82,17 @@ export function getPotholeReceipt(complaintId: string): RupeeReceiptData | null 
       flags: woFlags.map((f) => f.reason),
     },
     missingRecords: missing,
-    citizenObservation: {
-      verifiedByCitizen: false,
-      verificationStatus: "Pending independent citizen field observation",
-    },
+    citizenObservation: latestVerif
+      ? {
+          verifiedByCitizen: true,
+          verificationStatus: latestVerif.observation,
+          verifiedAt: latestVerif.recordedAt,
+          remarks: latestVerif.notes,
+        }
+      : {
+          verifiedByCitizen: false,
+          verificationStatus: "Pending independent citizen field observation",
+        },
     provenance: {
       algorithmVersion: "2.0.0-pothole-receipt",
       dataIntegrityNotice:

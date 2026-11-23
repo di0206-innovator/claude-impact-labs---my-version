@@ -55,6 +55,12 @@ export async function compressImageFile(file: File): Promise<string> {
       const ctx = canvas.getContext("2d");
       if (!ctx) throw new Error(PHOTO_KIND_ERROR);
       ctx.drawImage(bitmap, 0, 0, width, height);
+      try {
+        const webp = canvas.toDataURL("image/webp", quality);
+        if (webp.startsWith("data:image/webp")) return webp;
+      } catch {
+        // Fall back to JPEG if WebP encoding fails or throws
+      }
       return canvas.toDataURL("image/jpeg", quality);
     };
     return await encodeWithinLimit(encode, bitmap.width, bitmap.height);

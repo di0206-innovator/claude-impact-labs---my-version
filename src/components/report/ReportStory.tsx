@@ -75,6 +75,15 @@ export function ReportStory({ report, location, place, history, connectedCount }
 
       {report.description ? <blockquote className="rb-report-words">{report.description}</blockquote> : null}
 
+      {report.evidenceHash ? (
+        <div className="my-3 flex flex-wrap items-center gap-2">
+          <span className="text-xs text-[var(--mist)]">Cryptographic Evidence Hash:</span>
+          <span className="font-mono text-xs px-2.5 py-1 rounded bg-[var(--sheet)] text-[var(--ink)] border border-[var(--rule)] break-all select-all">
+            {report.evidenceHash}
+          </span>
+        </div>
+      ) : null}
+
       <figure className="rb-report-photo">
         {/* The photo is a separate request so this page's payload stays small. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

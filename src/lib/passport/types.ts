@@ -31,6 +31,15 @@ export type PassportComplaint = Complaint & {
   distanceToRoadM: number | null;
 };
 
+export type SocialPostSummary = {
+  id: string;
+  postedAt: string;
+  source: string;
+  text: string;
+  hasMedia: boolean;
+  likes: number;
+};
+
 export type RecommendedActionKind =
   | "dlp_verification" | "field_quality_audit" | "repeated_failure_review"
   | "sla_delay_inquiry" | "flood_resilience_upgrade" | "citizen_verification" | "routine_monitoring";
@@ -52,6 +61,7 @@ export type RoadPassportData = {
   facilities: Facility[];
   floodHotspots: FloodHotspot[];
   traffic: Traffic | null;
+  socialCorroboration: SocialPostSummary[];
   summary: {
     totalBilledInr: number;
     expectedCostInr: number;
@@ -219,6 +229,7 @@ export type RoadEvidencePack = {
   accidentsCount: number;
   facilitiesCount: number;
   floodExposureCount: number;
+  socialPosts: SocialPostSummary[];
   recommendedActions: PassportRecommendedAction[];
   auditDisclaimer: string;
 };
@@ -231,6 +242,7 @@ export type RupeeReceiptData = {
   description: string;
   locality: string;
   ward: string;
+  evidenceHash?: string;
   road: { id: string; name: string; surface: string; underDlp: boolean } | null;
   workOrder: {
     id: string; assignedAt: string; startedAt: string; completedAt: string;
@@ -240,7 +252,12 @@ export type RupeeReceiptData = {
   } | null;
   auditStatus: { hasFlag: boolean; flags: string[] };
   missingRecords: string[];
-  citizenObservation: { verifiedByCitizen: boolean; verificationStatus: string };
+  citizenObservation: {
+    verifiedByCitizen: boolean;
+    verificationStatus: string;
+    verifiedAt?: string;
+    remarks?: string | null;
+  };
   provenance: { algorithmVersion: string; dataIntegrityNotice: string };
 };
 

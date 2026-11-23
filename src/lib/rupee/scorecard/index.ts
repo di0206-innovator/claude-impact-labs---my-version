@@ -10,6 +10,8 @@
 
 import type { Dataset } from "../load";
 import { loadDataset } from "../load";
+import { auditWorkOrders } from "../audit";
+import type { AuditFlag } from "../types";
 import { repeatsOf, methodSlices, volumeOf, wardSlices } from "./detail";
 import { buildScoredOrders } from "./orders";
 import { adjustForSample, bandOf, buildBuckets, costPart, durabilityPart, overallOf, speedPart } from "./score";
@@ -19,10 +21,11 @@ export * from "./types";
 export { OUTLIER_FACTOR, REPEAT_WINDOW_DAYS } from "./orders";
 export { PRIOR_JOBS, WEIGHTS, ratioScore } from "./score";
 
-export function buildScorecards(ds: Dataset): ScorecardSet {
+export function buildScorecards(ds: Dataset, customFlags?: AuditFlag[]): ScorecardSet {
   const all = buildScoredOrders(ds);
   const buckets = buildBuckets(all);
   const cityOutlierShare = all.filter((o) => o.overBilled).length / Math.max(all.length, 1);
+  const flags = customFlags ?? auditWorkOrders(ds);
 
   const cards = ds.contractors
     .map((contractor) => {
@@ -31,7 +34,12 @@ export function buildScorecards(ds: Dataset): ScorecardSet {
       const durability = durabilityPart(orders, buckets);
       const cost = costPart(orders, cityOutlierShare);
       const speed = speedPart(orders, buckets);
-      const rawOverall = overallOf(durability.score, cost.score, speed.score);
+      const repeats = repeatsOf(contractor.id, orders);
+      const repeatShare = repeats.byThisContractor / Math.max(orders.length, 1);
+      const auditFlagCount = flags.filter(
+        (f) => f.contractorId === contractor.id && f.kind !== "paid_under_dlp",
+      ).length;
+      const rawOverall = overallOf(durability.score, cost.score, speed.score, repeatShare, auditFlagCount);
       const overall = adjustForSample(rawOverall, orders.length);
       return {
         id: contractor.id,
@@ -45,7 +53,7 @@ export function buildScorecards(ds: Dataset): ScorecardSet {
         cost,
         speed,
         volume: volumeOf(orders),
-        repeats: repeatsOf(contractor.id, orders),
+        repeats,
         byWard: wardSlices(ds, orders, buckets),
         byMethod: methodSlices(orders, buckets),
         orders: [...orders].sort((a, b) => (a.completedAt < b.completedAt ? 1 : -1)),

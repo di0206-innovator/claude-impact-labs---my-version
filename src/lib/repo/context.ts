@@ -14,6 +14,7 @@ let singleton: RastabaazRepository | null = null;
  * no table, and no Docker. Ignored whenever NODE_ENV is production.
  */
 export function wantsMemoryRepository(env: NodeJS.ProcessEnv = process.env): boolean {
+  if (env.ALLOW_MEMORY_REPO === "1" && env.RASTABAAZ_REPO === "memory") return true;
   return env.RASTABAAZ_REPO === "memory" && env.NODE_ENV !== "production";
 }
 
@@ -23,13 +24,35 @@ const holder = globalThis as { __rastabaazMemoryRepository?: RastabaazRepository
 
 export function setRepositoryForTests(repo: RastabaazRepository | null): void {
   override = repo;
+  if (repo === null) {
+    singleton = null;
+  }
+}
+
+export function resetRepositoryForTests(): void {
+  override = null;
+  singleton = null;
+  delete holder.__rastabaazMemoryRepository;
 }
 
 export function getRepository(): RastabaazRepository {
   if (override) return override;
+
+  const isProd = process.env.NODE_ENV === "production";
+  const allowMemoryInProd = process.env.ALLOW_MEMORY_REPO === "1";
+
+  if (isProd && !allowMemoryInProd && !process.env.RASTABAAZ_TABLE_NAME?.trim()) {
+    throw new Error(
+      "FATAL: RASTABAAZ_TABLE_NAME environment variable is required in production. " +
+      "In-memory fallback is disabled to prevent silent data loss. " +
+      "Set ALLOW_MEMORY_REPO=1 if this is an ephemeral demo environment."
+    );
+  }
+
   if (
     wantsMemoryRepository() ||
-    (!process.env.RASTABAAZ_TABLE_NAME && process.env.RASTABAAZ_REPO !== "dynamo")
+    (!process.env.RASTABAAZ_TABLE_NAME?.trim() && process.env.RASTABAAZ_REPO !== "dynamo") ||
+    (allowMemoryInProd && process.env.RASTABAAZ_REPO === "memory")
   ) {
     if (!holder.__rastabaazMemoryRepository) {
       const repo = new MemoryRastabaazRepository({ strictPhoto: true });

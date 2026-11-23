@@ -17,6 +17,23 @@ export type SeedItem =
   | { entity: "report"; record: SeedReport }
   | { entity: "retire_report"; record: SeedReport };
 
+export type CitizenObservationType = "fixed" | "returned" | "persists" | "new_issue";
+
+export type VerificationRecord = {
+  id: string;
+  complaintId: string;
+  observation: CitizenObservationType;
+  notes: string | null;
+  recordedAt: string;
+};
+
+export type VerificationInput = {
+  complaintId: string;
+  observation: CitizenObservationType;
+  notes?: string | null;
+  recordedAt?: string;
+};
+
 export type RastabaazRepository = {
   getLocation(id: string): Promise<LocationRecord | null>;
   getLocationBySlug(slug: string): Promise<LocationRecord | null>;
@@ -32,6 +49,8 @@ export type RastabaazRepository = {
   createReport(input: CreateReportInput): Promise<CreateReportResult>;
   updateReport(input: UpdateReportInput): Promise<ReportRecord | null>;
   addDeskNote(reportId: string, body: string): Promise<DeskNote>;
+  addVerification(input: VerificationInput): Promise<VerificationRecord>;
+  getVerificationsForComplaint(complaintId: string): Promise<VerificationRecord[]>;
   getSeedMarker(): Promise<string | null>;
   putSeedMarker(version: string): Promise<boolean>;
   putSeedItems(items: SeedItem[]): Promise<void>;

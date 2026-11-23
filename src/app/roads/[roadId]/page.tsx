@@ -8,6 +8,7 @@ import { PassportGraph } from "@/components/passport/PassportGraph";
 import { PassportHeader } from "@/components/passport/PassportHeader";
 import { PassportLifecycle } from "@/components/passport/PassportLifecycle";
 import { PassportMoneyTrail } from "@/components/passport/PassportMoneyTrail";
+import { PassportSocialEvidence } from "@/components/passport/PassportSocialEvidence";
 import { PassportTimeline } from "@/components/passport/PassportTimeline";
 import { passportService } from "@/lib/passport/service";
 import { wardSlug } from "@/lib/rupee/slug";
@@ -65,6 +66,7 @@ export default async function RoadPassportPage({ params }: PageProps) {
           <PassportTimeline workOrders={data.workOrders} />
           <PassportMoneyTrail data={data} />
           <PassportContext data={data} />
+          <PassportSocialEvidence posts={data.socialCorroboration} />
         </div>
 
         <div className="space-y-8 min-w-0">

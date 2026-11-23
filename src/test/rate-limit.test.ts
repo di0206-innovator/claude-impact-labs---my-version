@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, it } from "vitest";
-import { allowRequest, resetRateLimits } from "@/lib/rate-limit";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { allowRequest, allowRequestDistributed, resetRateLimits } from "@/lib/rate-limit";
 
 describe("allowRequest", () => {
   afterEach(() => {
@@ -45,5 +45,28 @@ describe("allowRequest", () => {
     }
     expect(allowRequest("flood:4096", 1, 60_000, 4096)).toBe(true);
     expect(allowRequest("flood:0", 1, 60_000, 4096)).toBe(true);
+  });
+
+  describe("allowRequestDistributed", () => {
+    it("falls back to in-memory rate limiting when RASTABAAZ_TABLE_NAME is unset", async () => {
+      delete process.env.RASTABAAZ_TABLE_NAME;
+      const key = "dist:1.1.1.1";
+      const windowMs = 60_000;
+      expect(await allowRequestDistributed(key, 2, windowMs, 0)).toBe(true);
+      expect(await allowRequestDistributed(key, 2, windowMs, 1)).toBe(true);
+      expect(await allowRequestDistributed(key, 2, windowMs, 2)).toBe(false);
+    });
+
+    it("falls back safely to in-memory limiting if DynamoDB throws", async () => {
+      vi.stubEnv("RASTABAAZ_TABLE_NAME", "nonexistent-table");
+      const key = "dist:err:1";
+      const windowMs = 60_000;
+      // It should catch the error, log a warning, and succeed using in-memory bucket
+      const allowed = await allowRequestDistributed(key, 1, windowMs, 0);
+      expect(allowed).toBe(true);
+      const denied = await allowRequestDistributed(key, 1, windowMs, 100);
+      expect(denied).toBe(false);
+      vi.unstubAllEnvs();
+    });
   });
 });

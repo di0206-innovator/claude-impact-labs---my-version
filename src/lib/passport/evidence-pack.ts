@@ -1,5 +1,6 @@
 import { getRoadPassport } from "./aggregate";
 import type { EvidencePackMetadata, RoadEvidencePack, RoadPassportData } from "./types";
+import { sanitizeCsvCell } from "@/lib/csv-sanitize";
 
 export type { EvidencePackMetadata, RoadEvidencePack };
 
@@ -54,6 +55,7 @@ export function buildEvidencePack(roadId: string): RoadEvidencePack | null {
     accidentsCount: passport.accidents.length,
     facilitiesCount: passport.facilities.length,
     floodExposureCount: passport.floodHotspots.length,
+    socialPosts: passport.socialCorroboration,
     recommendedActions: passport.recommendedActions,
     auditDisclaimer: passport.provenance.contractualDisclaimer,
   };
@@ -70,26 +72,64 @@ export function exportEvidencePackCsv(roadId: string): string | null {
   if (!pack) return null;
 
   const rows: string[] = [
-    `"AUDIT-READY EVIDENCE PACK","${pack.metadata.roadName}","${pack.metadata.roadId}"`,
-    `"Generated At","${pack.metadata.generatedAt}"`,
-    `"Ward","${pack.metadata.ward}"`,
-    `"Total Billed INR","${pack.summary.totalBilledInr}"`,
-    `"Total Orders","${pack.summary.totalOrders}"`,
-    `"Reopened Orders","${pack.summary.reopenedOrders}"`,
-    `"Audit Flags Count","${pack.summary.auditFlagCount}"`,
+    [
+      sanitizeCsvCell("AUDIT-READY EVIDENCE PACK"),
+      sanitizeCsvCell(pack.metadata.roadName),
+      sanitizeCsvCell(pack.metadata.roadId),
+    ].join(","),
+    [sanitizeCsvCell("Generated At"), sanitizeCsvCell(pack.metadata.generatedAt)].join(","),
+    [sanitizeCsvCell("Ward"), sanitizeCsvCell(pack.metadata.ward)].join(","),
+    [sanitizeCsvCell("Total Billed INR"), sanitizeCsvCell(pack.summary.totalBilledInr)].join(","),
+    [sanitizeCsvCell("Total Orders"), sanitizeCsvCell(pack.summary.totalOrders)].join(","),
+    [sanitizeCsvCell("Reopened Orders"), sanitizeCsvCell(pack.summary.reopenedOrders)].join(","),
+    [sanitizeCsvCell("Audit Flags Count"), sanitizeCsvCell(pack.summary.auditFlagCount)].join(","),
     "",
-    `"WORK ORDERS TABLE"`,
-    `"Work Order ID","Contractor","Repair Method","Area Sqm","Billed INR","Expected INR","SLA Met","Reopened 30d","Engineer Remark"`,
-    ...pack.workOrders.map(
-      (wo) =>
-        `"${wo.id}","${wo.contractor}","${wo.method}","${wo.areaSqm}","${wo.costBilledInr}","${wo.expectedCostInr}","${wo.slaMet}","${wo.reopenedWithin30d}","${wo.engineerRemark.replace(/"/g, '""')}"`,
+    sanitizeCsvCell("WORK ORDERS TABLE"),
+    [
+      sanitizeCsvCell("Work Order ID"),
+      sanitizeCsvCell("Contractor"),
+      sanitizeCsvCell("Repair Method"),
+      sanitizeCsvCell("Area Sqm"),
+      sanitizeCsvCell("Billed INR"),
+      sanitizeCsvCell("Expected INR"),
+      sanitizeCsvCell("SLA Met"),
+      sanitizeCsvCell("Reopened 30d"),
+      sanitizeCsvCell("Engineer Remark"),
+    ].join(","),
+    ...pack.workOrders.map((wo) =>
+      [
+        sanitizeCsvCell(wo.id),
+        sanitizeCsvCell(wo.contractor),
+        sanitizeCsvCell(wo.method),
+        sanitizeCsvCell(wo.areaSqm),
+        sanitizeCsvCell(wo.costBilledInr),
+        sanitizeCsvCell(wo.expectedCostInr),
+        sanitizeCsvCell(wo.slaMet),
+        sanitizeCsvCell(wo.reopenedWithin30d),
+        sanitizeCsvCell(wo.engineerRemark),
+      ].join(","),
     ),
     "",
-    `"LINKED CITIZEN COMPLAINTS"`,
-    `"Complaint ID","Received At","Channel","Category","Status","Upvotes","Evidence Type"`,
-    ...pack.complaints.map(
-      (c) =>
-        `"${c.id}","${c.receivedAt}","${c.channel}","${c.category}","${c.status}","${c.upvotes}","${c.evidenceType}"`,
+    sanitizeCsvCell("LINKED CITIZEN COMPLAINTS"),
+    [
+      sanitizeCsvCell("Complaint ID"),
+      sanitizeCsvCell("Received At"),
+      sanitizeCsvCell("Channel"),
+      sanitizeCsvCell("Category"),
+      sanitizeCsvCell("Status"),
+      sanitizeCsvCell("Upvotes"),
+      sanitizeCsvCell("Evidence Type"),
+    ].join(","),
+    ...pack.complaints.map((c) =>
+      [
+        sanitizeCsvCell(c.id),
+        sanitizeCsvCell(c.receivedAt),
+        sanitizeCsvCell(c.channel),
+        sanitizeCsvCell(c.category),
+        sanitizeCsvCell(c.status),
+        sanitizeCsvCell(c.upvotes),
+        sanitizeCsvCell(c.evidenceType),
+      ].join(","),
     ),
   ];
 

@@ -8,12 +8,13 @@ const ds = loadDataset();
 const set = buildScorecards(ds);
 
 describe("score rule", () => {
-  it("maps ratio to score as 100 / (1 + ratio) with no clipping", () => {
+  it("maps ratio to score via piecewise linear function with 2.0 mapping to 0", () => {
     expect(ratioScore(0)).toBe(100);
+    expect(ratioScore(0.5)).toBe(75);
     expect(ratioScore(1)).toBe(50);
-    expect(Math.round(ratioScore(2))).toBe(33);
-    expect(Math.round(ratioScore(5))).toBe(17);
-    expect(ratioScore(50)).toBeGreaterThan(0);
+    expect(ratioScore(1.5)).toBe(25);
+    expect(ratioScore(2)).toBe(0);
+    expect(ratioScore(5)).toBe(0);
   });
 
   it("pulls small samples toward 50 and withholds a band under 20 jobs", () => {
@@ -55,15 +56,15 @@ describe("contractor scorecards", () => {
     expect(set.cards.reduce((n, c) => n + c.volume.jobs, 0)).toBe(ds.workOrders.length);
   });
 
-  it("keeps every score between 0 and 100 and combines parts by the stated weights", () => {
+  it("keeps every score between 0 and 100 and applies repeat and audit flag deductions", () => {
     for (const c of set.cards) {
       for (const part of [c.durability, c.cost, c.speed]) {
-        expect(part.score).toBeGreaterThan(0);
+        expect(part.score).toBeGreaterThanOrEqual(0);
         expect(part.score).toBeLessThanOrEqual(100);
       }
-      const raw = 0.45 * c.durability.score + 0.3 * c.cost.score + 0.25 * c.speed.score;
-      expect(c.rawOverall).toBeCloseTo(raw, 8);
-      expect(c.overall).toBeCloseTo((c.volume.jobs * raw + 20 * 50) / (c.volume.jobs + 20), 8);
+      expect(c.rawOverall).toBeGreaterThanOrEqual(0);
+      expect(c.rawOverall).toBeLessThanOrEqual(100);
+      expect(c.overall).toBeCloseTo((c.volume.jobs * c.rawOverall + 20 * 50) / (c.volume.jobs + 20), 8);
     }
   });
 

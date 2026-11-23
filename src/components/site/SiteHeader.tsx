@@ -7,16 +7,23 @@ import { useEffect, useRef, useState } from "react";
 import {
   AskTabIcon,
   MapTabIcon,
+  OverviewTabIcon,
   ReportTabIcon,
   RoadsTabIcon,
-  WardsTabIcon,
 } from "@/components/site/nav-icons";
 
-const PRIMARY_NAV = [
-  { href: "/", label: "Home", Icon: ReportTabIcon },
+type NavItem = {
+  href: string;
+  label: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  isCta?: boolean;
+};
+
+const PRIMARY_NAV: readonly NavItem[] = [
+  { href: "/", label: "Home", Icon: OverviewTabIcon },
   { href: "/map", label: "Map", Icon: MapTabIcon },
+  { href: "/report", label: "Report", Icon: ReportTabIcon, isCta: true },
   { href: "/roads", label: "Roads", Icon: RoadsTabIcon },
-  { href: "/wards", label: "Wards", Icon: WardsTabIcon },
   { href: "/assistant", label: "Ask", Icon: AskTabIcon },
 ] as const;
 
@@ -33,11 +40,12 @@ const MORE_GROUPS = [
     heading: "For BMC & Auditors",
     links: [
       { href: "/overview", label: "City Overview" },
+      { href: "/wards", label: "Wards" },
       { href: "/contractors", label: "Contractors" },
       { href: "/queue", label: "Action Queue" },
       { href: "/accountability", label: "Procurement Audit" },
-      { href: "/budget", label: "Budget & Disparity" },
-      { href: "/spend-vs-need", label: "Spend vs Need" },
+      { href: "/budget", label: "Stage 1: Diagnose Equity (Wards)" },
+      { href: "/spend-vs-need", label: "Stage 2: Allocate Next Rupee (Corridors)" },
     ],
   },
 ] as const;
@@ -111,12 +119,12 @@ export function SiteHeader() {
 
           <div className="flex items-center gap-2">
             <ul className="ux4g-navbar-links rb-nav">
-              {PRIMARY_NAV.map(({ href, label, Icon }) => (
+              {PRIMARY_NAV.map(({ href, label, Icon, isCta }) => (
                 <li key={href}>
                   <Link
                     href={href}
                     aria-current={isActive(pathname, href) ? "page" : undefined}
-                    className="ux4g-text-link-neutral-m rb-nav-link touch-target"
+                    className={`ux4g-text-link-neutral-m rb-nav-link touch-target${isCta ? " rb-nav-cta-pill" : ""}`}
                     onClick={() => setMoreOpen(false)}
                   >
                     <Icon className="rb-nav-icon" />
@@ -175,10 +183,11 @@ export function SiteHeader() {
 
             <Link
               href="/report"
-              className="rb-nav-cta rb-cta-vermilion touch-target hidden sm:inline-flex"
+              className="rb-nav-cta rb-cta-vermilion touch-target inline-flex items-center justify-center"
               onClick={() => setMoreOpen(false)}
             >
-              Report Pothole
+              <ReportTabIcon className="w-5 h-5 text-white sm:hidden" />
+              <span className="hidden sm:inline">Report Pothole</span>
             </Link>
           </div>
         </div>

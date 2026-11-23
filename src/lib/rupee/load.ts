@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { loadAll } from "./load-rows";
 import type { Contractor, Road, Ward, WorkOrder } from "./types";
 
@@ -113,8 +115,25 @@ export type Dataset = {
 
 let cached: Dataset | null = null;
 
-/** Load and parse the whole dataset once per process. */
+/** Load and parse the whole dataset once per process. Uses pre-compiled JSON when available. */
 export function loadDataset(): Dataset {
-  if (!cached) cached = loadAll();
+  if (cached) return cached;
+
+  const jsonPath = path.join(process.cwd(), "src", "lib", "rupee", "generated-dataset.json");
+  if (fs.existsSync(jsonPath)) {
+    try {
+      const raw = fs.readFileSync(jsonPath, "utf8");
+      cached = JSON.parse(raw) as Dataset;
+      return cached;
+    } catch {
+      // Fall back to CSV files on error
+    }
+  }
+
+  cached = loadAll();
   return cached;
+}
+
+export function resetDatasetCacheForTests(): void {
+  cached = null;
 }

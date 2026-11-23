@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { drainOfflineQueue } from "@/lib/offline/queue";
 
 export function PwaRegistrar() {
   useEffect(() => {
@@ -16,6 +17,23 @@ export function PwaRegistrar() {
       window.addEventListener("load", register, { once: true });
       return () => window.removeEventListener("load", register);
     }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleOnline = () => {
+      drainOfflineQueue().catch(() => {
+        // Ignore background sync errors
+      });
+    };
+
+    if (navigator.onLine) {
+      handleOnline();
+    }
+
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
   }, []);
 
   return null;

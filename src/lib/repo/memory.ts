@@ -6,7 +6,16 @@ import { namePlace, nearestRoad, repairStoredPlace } from "@/lib/place-name";
 import { MAX_ENCODED_PHOTO_BYTES, SAMPLE_PHOTO_PATTERN } from "@/lib/photo-limits";
 import { assertPhotoString, dataUrlByteLength } from "@/lib/photo-validate";
 import { ItemTooLargeError, ReportValidationError } from "@/lib/repo/errors";
-import { seedReportUntouched, toListItem, type RastabaazRepository, type SeedItem } from "@/lib/repo/port";
+import { buildCitizenReport } from "@/lib/repo/mappers";
+import {
+  seedReportUntouched,
+  toListItem,
+  type RastabaazRepository,
+  type SeedItem,
+  type VerificationInput,
+  type VerificationRecord,
+} from "@/lib/repo/port";
+import { getVerificationsForComplaintSync, recordVerificationSync } from "@/lib/repo/verification-store";
 import { PREVIOUS_SEED_DESCRIPTIONS } from "@/lib/seed/previous-copy";
 import {
   ISSUE_TYPE_LABELS,
@@ -147,6 +156,14 @@ export class MemoryRastabaazRepository implements RastabaazRepository {
     return note;
   }
 
+  async addVerification(input: VerificationInput): Promise<VerificationRecord> {
+    return recordVerificationSync(input);
+  }
+
+  async getVerificationsForComplaint(complaintId: string): Promise<VerificationRecord[]> {
+    return getVerificationsForComplaintSync(complaintId);
+  }
+
   async getSeedMarker(): Promise<string | null> {
     return this.seedMarker;
   }
@@ -260,19 +277,6 @@ export class MemoryRastabaazRepository implements RastabaazRepository {
   }
 
   private buildReport(input: CreateReportInput, locationId: string): ReportRecord {
-    return {
-      id: nid("rpt"),
-      locationId,
-      issueType: input.issueType,
-      lat: input.lat,
-      lng: input.lng,
-      noticedAt: input.noticedAt,
-      noticedWindow: input.noticedWindow ?? null,
-      recurs: input.recurs,
-      accident: input.accident ?? null,
-      description: input.description,
-      isSample: false,
-      createdAt: new Date().toISOString(),
-    };
+    return buildCitizenReport(input, locationId);
   }
 }

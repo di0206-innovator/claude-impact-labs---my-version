@@ -1,8 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ActionQueueCategory, ActionQueueItem } from "@/lib/passport/types";
 import { formatInr } from "@/lib/rupee/format";
+import {
+  CATEGORY_LABELS,
+  clearTriageOverrides,
+  exportTriageCsv,
+  loadTriageOverrides,
+  saveTriageOverrides,
+} from "@/lib/passport/triage";
 
 export type WardEngineerQueueProps = {
   wardCode: string;
@@ -11,22 +18,16 @@ export type WardEngineerQueueProps = {
   className?: string;
 };
 
-const CATEGORY_LABELS: Record<ActionQueueCategory, string> = {
-  potential_dlp_conflict: "DLP Conflict",
-  repeat_work_cluster: "Repeat Billing",
-  cost_anomaly: "Rate Card Variance",
-  sla_breach: "SLA Delay",
-  high_defect_recurrence: "High Defect Recurrence",
-  reopened_repair: "Chronic Reopening",
-  unlinked_complaint_backlog: "Unlinked Backlog",
-};
-
 export function WardEngineerQueue({ wardCode, wardName, items, className = "" }: WardEngineerQueueProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [statusOverrides, setStatusOverrides] = useState<Record<string, ActionQueueItem["status"]>>({});
+
+  useEffect(() => {
+    setStatusOverrides(loadTriageOverrides(wardCode));
+  }, [wardCode]);
 
   const decoratedItems = useMemo(() => {
     return items.map((item) => ({
@@ -49,7 +50,20 @@ export function WardEngineerQueue({ wardCode, wardName, items, className = "" }:
   const totalAtRisk = decoratedItems.reduce((sum, i) => sum + i.amountAtRiskInr, 0);
 
   const toggleStatus = (id: string, nextStatus: ActionQueueItem["status"]) => {
-    setStatusOverrides((prev) => ({ ...prev, [id]: nextStatus }));
+    setStatusOverrides((prev) => {
+      const updated = { ...prev, [id]: nextStatus };
+      saveTriageOverrides(wardCode, updated);
+      return updated;
+    });
+  };
+
+  const handleReset = () => {
+    clearTriageOverrides(wardCode);
+    setStatusOverrides({});
+  };
+
+  const handleExport = () => {
+    exportTriageCsv(decoratedItems, `ward-${wardCode}-triage.csv`);
   };
 
   return (
@@ -134,6 +148,23 @@ export function WardEngineerQueue({ wardCode, wardName, items, className = "" }:
             <option value="under_review">Under Review</option>
             <option value="resolved">Resolved</option>
           </select>
+
+          <button
+            type="button"
+            onClick={handleExport}
+            className="ux4g-btn ux4g-btn-xs ux4g-btn-outline-primary touch-target text-xs ml-2"
+          >
+            Export Triage CSV
+          </button>
+          {Object.keys(statusOverrides).length > 0 && (
+            <button
+              type="button"
+              onClick={handleReset}
+              className="ux4g-btn ux4g-btn-xs text-xs text-[var(--vermilion)] hover:underline ml-1"
+            >
+              Reset Triage
+            </button>
+          )}
         </div>
       </div>
 

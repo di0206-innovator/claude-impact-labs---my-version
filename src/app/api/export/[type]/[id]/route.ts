@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
 import { exportEvidencePack, type EvidencePackType, type ExportFormat } from "@/lib/assistant/export";
 
 type RouteProps = {
@@ -10,9 +11,22 @@ type RouteProps = {
 
 const VALID_TYPES = new Set<EvidencePackType>(["road", "contractor", "ward"]);
 
+const ExportParamsSchema = z.object({
+  type: z.enum(["road", "contractor", "ward"]),
+  id: z.string().min(1).max(64).regex(/^[A-Za-z0-9_/ -]+$/),
+});
+
 export async function GET(request: NextRequest, { params }: RouteProps): Promise<NextResponse> {
   const { type, id } = await params;
-  const decodedId = decodeURIComponent(id);
+  let decodedId: string;
+  try {
+    decodedId = decodeURIComponent(id);
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid URI encoding in export ID." },
+      { status: 400 },
+    );
+  }
 
   if (!VALID_TYPES.has(type as EvidencePackType)) {
     return NextResponse.json(
@@ -21,8 +35,28 @@ export async function GET(request: NextRequest, { params }: RouteProps): Promise
     );
   }
 
-  const { searchParams } = new URL(request.url);
-  const rawFormat = (searchParams.get("format") ?? "csv").toLowerCase();
+  const parsed = ExportParamsSchema.safeParse({ type, id: decodedId });
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: `Invalid export parameters: ${parsed.error.issues.map((i) => i.message).join(", ")}` },
+      { status: 400 },
+    );
+  }
+
+  const url = new URL(request.url);
+  const allowedQueryKeys = new Set(["format"]);
+  const extraKeys = Array.from(url.searchParams.keys()).filter((k) => !allowedQueryKeys.has(k));
+
+  if (extraKeys.length > 0) {
+    const cleanUrl = new URL(url.pathname, url.origin);
+    const rawFormat = (url.searchParams.get("format") ?? "csv").toLowerCase();
+    if (rawFormat === "pdf") {
+      cleanUrl.searchParams.set("format", "pdf");
+    }
+    return NextResponse.redirect(cleanUrl, 308);
+  }
+
+  const rawFormat = (url.searchParams.get("format") ?? "csv").toLowerCase();
   const format: ExportFormat = rawFormat === "pdf" ? "pdf" : "csv";
 
   try {

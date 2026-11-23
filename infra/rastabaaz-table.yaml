@@ -75,6 +75,7 @@ Resources:
               - isSample
               - reportId
               - body
+              - evidenceHash
 Outputs:
   TableName:
     Value: !Ref RastabaazTable

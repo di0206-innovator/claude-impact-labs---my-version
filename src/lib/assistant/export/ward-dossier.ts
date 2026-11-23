@@ -2,6 +2,7 @@ import { PDFDocument, StandardFonts } from "pdf-lib";
 import { getRupee, nextRupee } from "@/lib/rupee";
 import { Cursor, MARGIN, CONTENT_W, MUTED, RULE, ACCENT, INK } from "@/lib/rupee/scorecard-pdf/layout";
 import { sanitiseText, moneyFull, generatedDate } from "@/lib/rupee/scorecard-pdf/text";
+import { sanitizeCsvCell } from "@/lib/csv-sanitize";
 
 const DISCLAIMER = "BMC Ward Accountability Dossier. Claude explains, it does not count. Figures reflect billed amounts.";
 
@@ -21,38 +22,92 @@ export function exportWardDossierCsv(wardCode: string): string | null {
   const { ledger, plan } = data;
 
   const rows: string[] = [
-    `"BMC WARD ACCOUNTABILITY DOSSIER","Ward ${ledger.ward.code} - ${ledger.ward.name}"`,
-    `"Generated At","${new Date().toISOString()}"`,
-    `"Budget Allocated INR","${ledger.budgetInr}"`,
-    `"Total Billed INR","${ledger.spentInr}"`,
-    `"Variance INR","${ledger.spentInr - ledger.budgetInr}"`,
-    `"Total Work Orders","${ledger.orders}"`,
-    `"30d Reopen Rate","${Math.round(ledger.reopenRate * 100)}%"`,
-    `"SLA Compliance Rate","${Math.round(ledger.slaRate * 100)}%"`,
-    `"Citizen Complaints","${ledger.complaints}"`,
-    `"Flagged Bills Count","${ledger.flags.length}"`,
+    [
+      sanitizeCsvCell("BMC WARD ACCOUNTABILITY DOSSIER"),
+      sanitizeCsvCell(`Ward ${ledger.ward.code} - ${ledger.ward.name}`),
+    ].join(","),
+    [sanitizeCsvCell("Generated At"), sanitizeCsvCell(new Date().toISOString())].join(","),
+    [sanitizeCsvCell("Budget Allocated INR"), sanitizeCsvCell(ledger.budgetInr)].join(","),
+    [sanitizeCsvCell("Total Billed INR"), sanitizeCsvCell(ledger.spentInr)].join(","),
+    [sanitizeCsvCell("Variance INR"), sanitizeCsvCell(ledger.spentInr - ledger.budgetInr)].join(","),
+    [sanitizeCsvCell("Total Work Orders"), sanitizeCsvCell(ledger.orders)].join(","),
+    [
+      sanitizeCsvCell("30d Reopen Rate"),
+      sanitizeCsvCell(`${Math.round(ledger.reopenRate * 100)}%`),
+    ].join(","),
+    [
+      sanitizeCsvCell("SLA Compliance Rate"),
+      sanitizeCsvCell(`${Math.round(ledger.slaRate * 100)}%`),
+    ].join(","),
+    [sanitizeCsvCell("Citizen Complaints"), sanitizeCsvCell(ledger.complaints)].join(","),
+    [sanitizeCsvCell("Flagged Bills Count"), sanitizeCsvCell(ledger.flags.length)].join(","),
     "",
-    `"OUTCOME BREAKDOWN"`,
-    `"Held Billed INR (DLP Active)","${ledger.outcome.heldInr}"`,
-    `"Failed Billed INR (Reopened 30d)","${ledger.outcome.failedInr}"`,
-    `"Flagged Billed INR (Audit Irregularities)","${ledger.outcome.flaggedInr}"`,
+    sanitizeCsvCell("OUTCOME BREAKDOWN"),
+    [sanitizeCsvCell("Held Billed INR (DLP Active)"), sanitizeCsvCell(ledger.outcome.heldInr)].join(","),
+    [sanitizeCsvCell("Failed Billed INR (Reopened 30d)"), sanitizeCsvCell(ledger.outcome.failedInr)].join(","),
+    [
+      sanitizeCsvCell("Flagged Billed INR (Audit Irregularities)"),
+      sanitizeCsvCell(ledger.outcome.flaggedInr),
+    ].join(","),
     "",
-    `"TOP CONTRACTORS IN WARD"`,
-    `"Contractor ID","Contractor Name","Jobs","Billed INR"`,
-    ...ledger.byContractor.map((c) => `"${c.key}","${c.label}","${c.orders}","${c.spentInr}"`),
-    "",
-    `"FLAGGED BILLS IN WARD (${ledger.flags.length})"`,
-    `"Work Order ID","Flag Kind","Road Name","Contractor","Cost INR","Amount At Risk INR","Reason"`,
-    ...ledger.flags.map(
-      (f) =>
-        `"${f.workOrderId}","${f.kind}","${f.roadName}","${f.contractorName}","${f.costInr}","${f.amountAtRiskInr}","${f.reason.replace(/"/g, '""')}"`,
+    sanitizeCsvCell("TOP CONTRACTORS IN WARD"),
+    [
+      sanitizeCsvCell("Contractor ID"),
+      sanitizeCsvCell("Contractor Name"),
+      sanitizeCsvCell("Jobs"),
+      sanitizeCsvCell("Billed INR"),
+    ].join(","),
+    ...ledger.byContractor.map((c) =>
+      [
+        sanitizeCsvCell(c.key),
+        sanitizeCsvCell(c.label),
+        sanitizeCsvCell(c.orders),
+        sanitizeCsvCell(c.spentInr),
+      ].join(","),
     ),
     "",
-    `"NEXT RUPEE PRIORITY ROADS"`,
-    `"Rank","Road ID","Road Name","Risk Score","Under DLP (Free Fix)","Est Cost INR","Reasons"`,
-    ...plan.map(
-      (p) =>
-        `"${p.rank}","${p.roadId}","${p.roadName}","${p.score}","${p.underDlp ? "Yes" : "No"}","${p.underDlp ? 0 : p.estCostInr}","${p.reasons.join("; ")}"`,
+    sanitizeCsvCell(`FLAGGED BILLS IN WARD (${ledger.flags.length})`),
+    [
+      sanitizeCsvCell("Work Order ID"),
+      sanitizeCsvCell("Flag Kind"),
+      sanitizeCsvCell("Road Name"),
+      sanitizeCsvCell("Contractor"),
+      sanitizeCsvCell("Cost INR"),
+      sanitizeCsvCell("Amount At Risk INR"),
+      sanitizeCsvCell("Reason"),
+    ].join(","),
+    ...ledger.flags.map((f) =>
+      [
+        sanitizeCsvCell(f.workOrderId),
+        sanitizeCsvCell(f.kind),
+        sanitizeCsvCell(f.roadName),
+        sanitizeCsvCell(f.contractorName),
+        sanitizeCsvCell(f.costInr),
+        sanitizeCsvCell(f.amountAtRiskInr),
+        sanitizeCsvCell(f.reason),
+      ].join(","),
+    ),
+    "",
+    sanitizeCsvCell("NEXT RUPEE PRIORITY ROADS"),
+    [
+      sanitizeCsvCell("Rank"),
+      sanitizeCsvCell("Road ID"),
+      sanitizeCsvCell("Road Name"),
+      sanitizeCsvCell("Risk Score"),
+      sanitizeCsvCell("Under DLP (Free Fix)"),
+      sanitizeCsvCell("Est Cost INR"),
+      sanitizeCsvCell("Reasons"),
+    ].join(","),
+    ...plan.map((p) =>
+      [
+        sanitizeCsvCell(p.rank),
+        sanitizeCsvCell(p.roadId),
+        sanitizeCsvCell(p.roadName),
+        sanitizeCsvCell(p.score),
+        sanitizeCsvCell(p.underDlp ? "Yes" : "No"),
+        sanitizeCsvCell(p.underDlp ? 0 : p.estCostInr),
+        sanitizeCsvCell(p.reasons.join("; ")),
+      ].join(","),
     ),
   ];
 

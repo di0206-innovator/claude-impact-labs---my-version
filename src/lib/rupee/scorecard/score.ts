@@ -5,9 +5,12 @@ export const WEIGHTS = { durability: 0.45, cost: 0.3, speed: 0.25 } as const;
 export const PRIOR_JOBS = 20;
 const PRIOR_SCORE = 50;
 
-/** The one rule behind every part: 0 is perfect (100), 1 is as expected (50), 2 is twice as bad (33). */
+/** Piecewise linear transfer function: 0 is perfect (100), 1 is as expected (50), 2 is twice as bad (0). */
 export function ratioScore(ratio: number): number {
-  return 100 / (1 + ratio);
+  if (ratio <= 1.0) {
+    return 100 - 50 * ratio;
+  }
+  return Math.max(0, 50 - 50 * (ratio - 1.0));
 }
 
 export function bandOf(overall: number, jobs: number): ScoreBand {
@@ -77,6 +80,15 @@ export function costPart(orders: ScoredOrder[], cityOutlierShare: number): CostP
   };
 }
 
-export function overallOf(durability: number, cost: number, speed: number): number {
-  return WEIGHTS.durability * durability + WEIGHTS.cost * cost + WEIGHTS.speed * speed;
+export function overallOf(
+  durability: number,
+  cost: number,
+  speed: number,
+  repeatShare: number = 0,
+  auditFlagCount: number = 0,
+): number {
+  const base = WEIGHTS.durability * durability + WEIGHTS.cost * cost + WEIGHTS.speed * speed;
+  const repeatPenalty = Math.min(15, repeatShare * 30);
+  const flagPenalty = Math.min(15, auditFlagCount * 0.2);
+  return Math.max(0, base - repeatPenalty - flagPenalty);
 }

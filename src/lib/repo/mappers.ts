@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { nid, slugify } from "@/lib/id";
 import { assertItemSize } from "@/lib/item-size";
 import { clusterKey, wardAt } from "@/lib/city";
@@ -55,7 +56,29 @@ export function buildCitizenLocation(input: PlaceSpot, slug: string): LocationRe
   };
 }
 
+export function computeEvidenceHash(payload: {
+  issueType: string;
+  lat: number;
+  lng: number;
+  createdAt: string;
+  photo?: string;
+}): string {
+  const photo = payload.photo ?? "";
+  const canonical = `${payload.issueType}|${payload.lat.toFixed(6)}|${payload.lng.toFixed(6)}|${payload.createdAt}|${photo}`;
+  return `sha256:${createHash("sha256").update(canonical).digest("hex")}`;
+}
+
 export function buildCitizenReport(input: CreateReportInput, locationId: string): ReportRecord {
+  const createdAt = new Date().toISOString();
+  const evidenceHash =
+    input.evidenceHash ||
+    computeEvidenceHash({
+      issueType: input.issueType,
+      lat: input.lat,
+      lng: input.lng,
+      createdAt,
+      photo: input.photo,
+    });
   return {
     id: nid("rpt"),
     locationId,
@@ -68,7 +91,8 @@ export function buildCitizenReport(input: CreateReportInput, locationId: string)
     accident: input.accident ?? null,
     description: input.description,
     isSample: false,
-    createdAt: new Date().toISOString(),
+    createdAt,
+    evidenceHash,
   };
 }
 
@@ -127,19 +151,27 @@ export function toPhotoItem(id: string, photo: string): DynamoItem {
 }
 
 export function fromReportItem(item: DynamoItem): ReportRecord {
+  const issueType = str(item, "issueType") as ReportRecord["issueType"];
+  const lat = num(item, "lat");
+  const lng = num(item, "lng");
+  const createdAt = str(item, "createdAt");
+  const evidenceHash =
+    opt(item, "evidenceHash") ||
+    computeEvidenceHash({ issueType, lat, lng, createdAt, photo: opt(item, "photo") ?? "" });
   return {
     id: str(item, "id"),
     locationId: str(item, "locationId"),
-    issueType: str(item, "issueType") as ReportRecord["issueType"],
-    lat: num(item, "lat"),
-    lng: num(item, "lng"),
+    issueType,
+    lat,
+    lng,
     noticedAt: str(item, "noticedAt"),
     noticedWindow: noticedWindowOf(item),
     recurs: flag(item, "recurs"),
     accident: (opt(item, "accident") as ReportRecord["accident"]) ?? null,
     description: opt(item, "description"),
     isSample: flag(item, "isSample"),
-    createdAt: str(item, "createdAt"),
+    createdAt,
+    evidenceHash,
   };
 }
 
@@ -183,23 +215,9 @@ export const CATALOG_TYPES = ["location", "report", "note"] as const;
  * returns only what it names, keys included, so queries add `type` themselves.
  */
 export const CATALOG_ATTRS = [
-  "id",
-  "name",
-  "slug",
-  "lat",
-  "lng",
-  "street",
-  "ward",
-  "createdAt",
-  "locationId",
-  "issueType",
-  "noticedAt",
-  "noticedWindow",
-  "recurs",
-  "description",
-  "isSample",
-  "reportId",
-  "body",
+  "id", "name", "slug", "lat", "lng", "street", "ward", "createdAt",
+  "locationId", "issueType", "noticedAt", "noticedWindow", "recurs",
+  "description", "isSample", "reportId", "body", "evidenceHash",
 ] as const;
 
 function projectAttrs(attrs: readonly string[]) {
@@ -230,17 +248,8 @@ export function catalogScanInput() {
 
 export function reportListProjection() {
   return projectAttrs([
-    "id",
-    "locationId",
-    "issueType",
-    "lat",
-    "lng",
-    "noticedAt",
-    "noticedWindow",
-    "recurs",
-    "description",
-    "isSample",
-    "createdAt",
+    "id", "locationId", "issueType", "lat", "lng", "noticedAt",
+    "noticedWindow", "recurs", "description", "isSample", "createdAt", "evidenceHash",
   ]);
 }
 

@@ -133,18 +133,42 @@ export function WardDisparityTable({ wards }: Props) {
                     </div>
                   </td>
                   <td className="text-right" data-label="Action">
-                    <Link
-                      href={`/wards/${wardSlug(w.wardCode)}`}
-                      className="ux4g-btn ux4g-btn-xs ux4g-btn-outline-primary touch-target text-xs inline-flex items-center"
-                    >
-                      Inspect
-                    </Link>
+                    <div className="flex items-center justify-end gap-1">
+                      <Link
+                        href={`/wards/${wardSlug(w.wardCode)}`}
+                        className="ux4g-btn ux4g-btn-xs ux4g-btn-outline-primary touch-target text-xs inline-flex items-center"
+                      >
+                        Inspect
+                      </Link>
+                      {(w.status === "critical_deficit" || w.status === "moderate_deficit") && (
+                        <Link
+                          href={`/spend-vs-need?ward=${w.wardCode}`}
+                          className="ux4g-btn ux4g-btn-xs ux4g-btn-primary touch-target text-xs inline-flex items-center whitespace-nowrap"
+                          title={`Simulate forward capital allocation for underfunded Ward ${w.wardCode}`}
+                        >
+                          Simulate →
+                        </Link>
+                      )}
+                    </div>
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Stage 2 Directing Callout */}
+      <div className="p-3.5 rounded-xl border border-[var(--teal-deep)] bg-[#064E4B]/5 text-xs flex flex-wrap items-center justify-between gap-2">
+        <span className="text-[var(--ink)]">
+          <strong>Stage 1 Diagnosis Complete?</strong> Proceed to Stage 2 to simulate forward capital allocations across road corridors.
+        </span>
+        <Link
+          href="/spend-vs-need"
+          className="text-[var(--teal-deep)] font-semibold hover:underline inline-flex items-center gap-1"
+        >
+          Open Stage 2 Simulator →
+        </Link>
       </div>
     </div>
   );

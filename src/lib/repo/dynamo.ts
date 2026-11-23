@@ -5,48 +5,30 @@ import { nid } from "@/lib/id";
 import { isInsideCity } from "@/lib/city";
 import { getDocClient, getTableName } from "@/lib/repo/dynamo-client";
 import {
-  getConsistent,
-  photoUpdateOp,
-  putItem,
-  putSeedMarkerVersion,
-  reportEditOp,
-  reportEditRejected,
-  transactWrite,
+  getConsistent, photoUpdateOp, putItem, putSeedMarkerVersion,
+  reportEditOp, reportEditRejected, transactWrite,
 } from "@/lib/repo/dynamo-write";
 import { writeSeedItems } from "@/lib/repo/dynamo-seed";
+import { putVerification, queryVerificationsForComplaint } from "@/lib/repo/dynamo-verification";
 import { SAMPLE_PHOTO_PATTERN } from "@/lib/photo-limits";
 import { ReportValidationError } from "@/lib/repo/errors";
 import { readCatalogItems } from "@/lib/repo/catalog-read";
 import { queryAll, scanMeta } from "@/lib/repo/dynamo-page";
 import { locationPk, neighbourGeoPks, reportPk, SEED_PK, slugLockPk } from "@/lib/repo/keys";
 import {
-  assertWritePhoto,
-  buildCitizenReport,
-  byTypeQueryInput,
-  emptyCatalog,
-  fromLocationItem,
-  fromReportItem,
-  guardItemSize,
-  ingestCatalogItem,
-  reportListProjection,
-  sortByNoticed,
-  toNoteItem,
-  toPhotoItem,
-  toReportItem,
+  assertWritePhoto, buildCitizenReport, byTypeQueryInput, emptyCatalog,
+  fromLocationItem, fromReportItem, guardItemSize, ingestCatalogItem,
+  reportListProjection, sortByNoticed, toNoteItem, toPhotoItem, toReportItem,
   type DynamoItem,
 } from "@/lib/repo/mappers";
 import { ExtraRejectedError, resolvePlace, type PlaceContext } from "@/lib/repo/place-resolve";
-import { toListItem, type RastabaazRepository, type SeedItem } from "@/lib/repo/port";
+import {
+  toListItem, type RastabaazRepository, type SeedItem,
+  type VerificationInput, type VerificationRecord,
+} from "@/lib/repo/port";
 import type {
-  Catalog,
-  CreateReportInput,
-  CreateReportResult,
-  DeskNote,
-  IssueType,
-  LocationRecord,
-  ReportListItem,
-  ReportRecord,
-  UpdateReportInput,
+  Catalog, CreateReportInput, CreateReportResult, DeskNote,
+  IssueType, LocationRecord, ReportListItem, ReportRecord, UpdateReportInput,
 } from "@/lib/types";
 
 export class DynamoRastabaazRepository implements RastabaazRepository {
@@ -242,6 +224,14 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
     guardItemSize(toNoteItem(note));
     await this.put(toNoteItem(note));
     return note;
+  }
+
+  async addVerification(input: VerificationInput): Promise<VerificationRecord> {
+    return putVerification(this.client, this.table, input);
+  }
+
+  async getVerificationsForComplaint(complaintId: string): Promise<VerificationRecord[]> {
+    return queryVerificationsForComplaint(this.client, this.table, complaintId);
   }
 
   async getSeedMarker(): Promise<string | null> {

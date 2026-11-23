@@ -48,14 +48,25 @@ let cached: Rupee | null = null;
 export function getRupee(): Rupee {
   if (!cached) {
     const ds = loadDataset();
-    const flags = auditWorkOrders(ds);
-    cached = {
-      ds,
-      flags,
-      ledgers: allLedgers(ds, flags),
-      scores: contractorScores(ds, flags),
-      overview: cityOverview(ds, flags),
-    };
+    const pre = ds as unknown as Partial<Rupee>;
+    if (pre.flags && pre.ledgers && pre.scores && pre.overview) {
+      cached = {
+        ds,
+        flags: pre.flags,
+        ledgers: pre.ledgers,
+        scores: pre.scores,
+        overview: pre.overview,
+      };
+    } else {
+      const flags = auditWorkOrders(ds);
+      cached = {
+        ds,
+        flags,
+        ledgers: allLedgers(ds, flags),
+        scores: contractorScores(ds, flags),
+        overview: cityOverview(ds, flags),
+      };
+    }
   }
   return cached;
 }

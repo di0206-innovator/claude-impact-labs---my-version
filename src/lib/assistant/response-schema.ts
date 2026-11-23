@@ -25,12 +25,15 @@ export function validateAndSanitizeResponse(
 
   return {
     answer: safeAnswer,
+    text: safeAnswer,
     responseLanguage: raw.responseLanguage ?? requestedLang,
     complaintStatus: evidence?.issueStatus ?? raw.complaintStatus ?? "Open",
     linkedIssueReference: evidence?.canonicalIssueId ?? raw.linkedIssueReference ?? null,
     workOrderReferences: safeWoRefs.length > 0 ? safeWoRefs : primaryWo ? [primaryWo.id] : [],
     relevantTimelineEvents: evidence?.timeline ?? raw.relevantTimelineEvents ?? [],
     evidenceSources: Array.from(validSourceIds),
+    toolsUsed: raw.toolsUsed ?? [],
+    citations: raw.citations ?? Array.from(validSourceIds),
     nextAction: raw.nextAction || generateDefaultNextAction(evidence, requestedLang),
     limitations: evidence?.limitations ?? raw.limitations ?? [],
     isOfficialLink: primaryWo?.isOfficialLink ?? false,

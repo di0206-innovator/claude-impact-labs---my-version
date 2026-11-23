@@ -4,11 +4,7 @@ import { useState } from "react";
 
 import { formatInr } from "@/lib/rupee/format";
 import type { AuditFlag, NextRupeeItem } from "@/lib/rupee/types";
-
-function csvCell(value: string | number): string {
-  const s = String(value);
-  return /[",\r\n]/.test(s) ? `"${s.replaceAll('"', '""')}"` : s;
-}
+import { sanitizeCsvCell } from "@/lib/csv-sanitize";
 
 function buildAuditCsv(flags: AuditFlag[]): string {
   const header = [
@@ -40,10 +36,10 @@ function buildAuditCsv(flags: AuditFlag[]): string {
       f.reason,
       f.evidence.join("|"),
     ]
-      .map(csvCell)
+      .map(sanitizeCsvCell)
       .join(","),
   );
-  return [header.join(","), ...rows].join("\n");
+  return [header.map(sanitizeCsvCell).join(","), ...rows].join("\n");
 }
 
 function buildOfficerMemo(

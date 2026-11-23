@@ -54,11 +54,11 @@ export default async function AssistantPage({ searchParams }: PageProps) {
     (params.reportId && !params.reportId.startsWith("rpt_") ? params.reportId : "");
 
   return (
-    <main className="shell rb-chat-page min-w-0">
+    <section className="shell rb-chat-page min-w-0" aria-label="Auditor Assistant Interface">
       <AssistantChat
         initialComplaintId={initialId}
         context={trail ? <RoadTrailCard trail={trail} /> : undefined}
       />
-    </main>
+    </section>
   );
 }

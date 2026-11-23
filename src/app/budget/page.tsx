@@ -72,21 +72,21 @@ export default async function BudgetPage({ searchParams }: PageProps) {
         <div className="relative z-10 space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase bg-[var(--vermilion)] text-white shadow-sm">
+                STAGE 1: RETROSPECTIVE FISCAL EQUITY DIAGNOSIS
+              </span>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase bg-white/10 text-[#DDF4F1] border border-white/15">
                 Fiscal Equity Matrix
               </span>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase bg-[#0E7C66]/40 text-[#DDF4F1] border border-[#0E7C66]/50">
                 Deterministic 6-Factor Model
               </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase bg-white/10 text-[#DDF4F1] border border-white/15">
-                Gini Disparity Index
-              </span>
             </div>
             <Link
               href="/spend-vs-need"
               className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-full text-xs font-medium text-white/90 bg-white/10 hover:bg-white/20 border border-white/20 transition-all touch-target"
             >
-              Budget Scenarios & Simulation →
+              Stage 2: Allocate Next Rupee →
             </Link>
           </div>
 
@@ -172,6 +172,24 @@ export default async function BudgetPage({ searchParams }: PageProps) {
 
       {/* High-Need Deficit Corridors */}
       <RoadNeedTable roads={report.roads} />
+
+      {/* Stage 2 Callout */}
+      <aside aria-label="Next Rupee Forward Allocation" className="p-4 rounded-xl border border-[var(--teal-deep)] bg-[#064E4B]/5 text-xs text-[var(--ink)] flex flex-wrap items-center justify-between gap-3 shadow-xs">
+        <div>
+          <strong className="text-[var(--teal-deep)] font-semibold block text-sm">
+            Diagnosed ward underfunding? Proceed to Stage 2
+          </strong>
+          <p className="text-[var(--mist)] mt-0.5">
+            Simulate forward capital allocation across road corridors using transparent multi-criteria budget envelopes.
+          </p>
+        </div>
+        <Link
+          href="/spend-vs-need"
+          className="ux4g-btn ux4g-btn-s ux4g-btn-primary touch-target text-xs inline-flex items-center gap-1 font-semibold"
+        >
+          Stage 2: Allocate Next Rupee →
+        </Link>
+      </aside>
 
       {/* Transparency & Methodology Disclosure */}
       <footer className="p-4 rounded-xl border border-[var(--rule)] bg-[var(--card)] space-y-2 text-xs text-[var(--mist)] shadow-xs">

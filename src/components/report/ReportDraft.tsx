@@ -20,6 +20,7 @@ import {
 } from "@/components/report/report-form-helpers";
 import { useReportPhoto } from "@/components/report/use-report-photo";
 import { createReportAction } from "@/lib/actions";
+import { enqueueReport } from "@/lib/offline/queue";
 import { isInsideCity } from "@/lib/city";
 import { ACCIDENT_SEEN, NOTICED_WINDOWS, type AccidentSeen, type IssueType, type NoticedWindow } from "@/lib/types";
 
@@ -41,6 +42,8 @@ export function ReportDraft({
   const [issueInvalid, setIssueInvalid] = useState(false);
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
   const [submittedId, setSubmittedId] = useState<string | null>(null);
+  const [queuedOffline, setQueuedOffline] = useState(false);
+  const [queuedId, setQueuedId] = useState<string | null>(null);
   const [roadTrail, setRoadTrail] = useState<import("@/lib/rupee/road-trail").RoadTrailSummary | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   const photoState = useReportPhoto(() => setFormError(null));
@@ -141,6 +144,17 @@ export function ReportDraft({
     }
     const data = new FormData(event.currentTarget);
     startTransition(async () => {
+      const isOffline = typeof navigator !== "undefined" && !navigator.onLine;
+      if (isOffline) {
+        try {
+          const item = await enqueueReport(data);
+          setQueuedId(item.id);
+          setQueuedOffline(true);
+        } catch {
+          setFormError("Could not save report offline. Please try again.");
+        }
+        return;
+      }
       try {
         const result = await createReportAction(data);
         if (result?.ok) {
@@ -153,8 +167,19 @@ export function ReportDraft({
           setFormError(result.error);
         }
       } catch {
-        focusAlert.current = true;
-        setFormError("Could not send your report. Your answers are still here, so try again.");
+        try {
+          const item = await enqueueReport(data);
+          setQueuedId(item.id);
+          if (typeof navigator !== "undefined" && !navigator.onLine) {
+            setQueuedOffline(true);
+          } else {
+            focusAlert.current = true;
+            setFormError("Could not send your report. Your answers are still here, so try again.");
+          }
+        } catch {
+          focusAlert.current = true;
+          setFormError("Could not send your report. Your answers are still here, so try again.");
+        }
       }
     });
   }
@@ -163,6 +188,32 @@ export function ReportDraft({
     issueType && pin && noticedWindow && (recurs === "true" || recurs === "false")
       ? { issueType, preview: photoState.preview, lat: pin.lat, lng: pin.lng, noticedWindow, recurs, accident, description }
       : null;
+  if (queuedOffline && answers) {
+    return (
+      <div className="p-6 sm:p-8 rounded-xl border border-[var(--gold-border)] bg-[var(--gold-bg)] space-y-4 shadow-sm rb-glass-card max-w-xl mx-auto my-8">
+        <div className="flex items-center gap-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-[var(--gold)]" />
+          <h2 className="ux4g-heading-s-strong text-[var(--gold-ink)]">Report Buffered Offline</h2>
+        </div>
+        <p className="text-xs text-[var(--ink)] leading-relaxed">
+          Your report has been secured in browser storage ({queuedId}). When your connection is restored, it will automatically transmit to Rastabaaz.
+        </p>
+        <div className="p-3 rounded bg-[var(--sheet)] border border-[var(--rule)] text-xs font-mono text-[var(--mist)]">
+          Queue ID: {queuedId} — Status: Waiting for network reconnection
+        </div>
+        <div className="pt-2">
+          <button
+            type="button"
+            onClick={onAgain}
+            className="ux4g-btn ux4g-btn-s ux4g-btn-outline-primary touch-target"
+          >
+            Report Another Issue
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (submittedId && answers) {
     return <SubmittedPanel reportId={submittedId} answers={answers} roadTrail={roadTrail} lang="en" onAgain={onAgain} />;
   }

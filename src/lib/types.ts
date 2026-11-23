@@ -114,6 +114,8 @@ export type ReportRecord = {
   description: string | null;
   isSample: boolean;
   createdAt: string;
+  /** Canonical SHA-256 evidence fingerprint. */
+  evidenceHash?: string;
 };
 
 export type PublicReportRecord = ReportRecord & {
@@ -176,6 +178,7 @@ export type CreateReportInput = {
   recurs: boolean;
   accident?: AccidentSeen | null;
   description: string | null;
+  evidenceHash?: string;
 };
 
 export type ReportPageData = {
