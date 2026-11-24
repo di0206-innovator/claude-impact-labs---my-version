@@ -90,9 +90,7 @@ header.sticky {
   font-weight: 700;
 }
 
-.ux4g-footer-wrapper {
-  padding-block: 1.5rem;
-}
+.ux4g-footer-wrapper { padding-block: 1.5rem; }
 
 .ux4g-footer-primary {
   background: var(--ux4g-bg-primary-strong);
@@ -115,23 +113,11 @@ header.sticky {
   gap: 1.25rem;
 }
 
-.ux4g-card {
-  border-radius: var(--ux4g-radius-lg);
-}
-
+.ux4g-card { border-radius: var(--ux4g-radius-lg); }
 .ux4g-card-solid,
-.ux4g-card-outline {
-  border: 1px solid var(--ux4g-border-color-neutral-default);
-}
-
-.ux4g-card-solid {
-  background: var(--ux4g-bg-neutral-elevated);
-}
-
-.ux4g-card-vertical {
-  display: flex;
-  flex-direction: column;
-}
+.ux4g-card-outline { border: 1px solid var(--ux4g-border-color-neutral-default); }
+.ux4g-card-solid { background: var(--ux4g-bg-neutral-elevated); }
+.ux4g-card-vertical { display: flex; flex-direction: column; }
 
 .ux4g-card-header,
 .ux4g-card-body,
@@ -205,11 +191,6 @@ header.sticky {
   gap: 0.75rem;
 }
 
-.ux4g-list-l .ux4g-list-item-start {
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
 .ux4g-accordion {
   display: flex;
   flex-direction: column;
@@ -225,26 +206,11 @@ header.sticky {
   border-radius: var(--ux4g-radius-md);
 }
 
-.ux4g-accordion__header {
-  display: flex;
-  align-items: center;
-  min-height: 3rem;
-  margin: 0;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  font-weight: 600;
-  color: var(--ux4g-text-neutral-primary);
-}
-
 .ux4g-accordion__body {
   padding: 0 1rem 1rem;
   color: var(--ux4g-text-neutral-primary);
 }
 
-.ux4g-tag-text-info,
-.ux4g-tag-filled-success,
-.ux4g-tag-outline-warning,
-.ux4g-tag-outline-error,
 .ux4g-tag-tonal-neutral {
   display: inline-flex;
   align-items: center;
@@ -254,35 +220,9 @@ header.sticky {
   border-radius: var(--ux4g-radius-md);
   font-size: 0.8125rem;
   font-weight: 600;
-}
-
-.ux4g-tag-text-info {
-  color: var(--ux4g-text-status-info);
-}
-
-.ux4g-tag-filled-success {
-  color: var(--ux4g-text-neutral-inverse);
-  background: var(--ux4g-bg-success-strong);
-}
-
-.ux4g-tag-outline-warning {
-  color: var(--ux4g-color-orange-800);
-  border-color: var(--ux4g-border-color-warning-default);
-  background: var(--ux4g-bg-neutral-elevated);
-}
-
-.ux4g-tag-outline-error {
-  color: var(--ux4g-color-red-800);
-  border-color: var(--ux4g-border-color-error-default);
-  background: var(--ux4g-bg-neutral-elevated);
-}
-
-.ux4g-tag-tonal-neutral {
   color: var(--ux4g-text-neutral-secondary);
   background: var(--ux4g-bg-neutral-soft);
 }
-
-.ux4g-stepper-center { justify-content: center; }
 
 @media (min-width: 64rem) {
   .ux4g-footer-row {

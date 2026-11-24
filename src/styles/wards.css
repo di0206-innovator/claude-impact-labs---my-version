@@ -96,32 +96,6 @@
 .rb-score-fair { background: var(--flagged-bg); color: var(--flagged-ink); }
 .rb-score-poor { background: var(--failed-bg); color: var(--failed); }
 
-/* Ward Risk Heatmap Accents */
-.rb-ward-heatmap-high {
-  border-left: 4px solid var(--failed);
-  background: linear-gradient(90deg, rgba(200, 30, 30, 0.04) 0%, transparent 40%);
-}
-.rb-ward-heatmap-medium {
-  border-left: 4px solid var(--flagged);
-  background: linear-gradient(90deg, rgba(180, 83, 9, 0.04) 0%, transparent 40%);
-}
-.rb-ward-heatmap-low {
-  border-left: 4px solid var(--held);
-  background: linear-gradient(90deg, rgba(14, 124, 102, 0.04) 0%, transparent 40%);
-}
-
-/* Hairline metrics */
-.rb-hairline-metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 0.75rem;
-  padding: 0.75rem 0;
-}
-.rb-hairline-metric {
-  border-left: 1px solid var(--rule);
-  padding-left: 0.75rem;
-}
-
 /* Clear DLP breach flags */
 .rb-dlp-flag {
   display: inline-flex;

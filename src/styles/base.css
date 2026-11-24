@@ -35,11 +35,6 @@
     outline-offset: 2px;
   }
 
-  .bg-asphalt :focus-visible,
-  .bg-teal-deep :focus-visible {
-    outline-color: var(--vermilion);
-  }
-
   button,
   [role="button"],
   .ux4g-btn,

@@ -1,4 +1,4 @@
-const CACHE_NAME = "rastabaaz-shell-f55bba0";
+const CACHE_NAME = "rastabaaz-shell-9838369";
 const PRECACHE_URLS = ["/offline", "/favicon.svg", "/icons/icon-192.png"];
 
 self.addEventListener("install", (event) => {

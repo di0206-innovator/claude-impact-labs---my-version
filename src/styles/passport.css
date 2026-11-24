@@ -74,12 +74,6 @@
   border: 1px solid var(--rule);
 }
 
-.rb-chip-vermilion {
-  background-color: rgb(232 93 74 / 0.1);
-  color: var(--vermilion);
-  border: 1px solid rgb(232 93 74 / 0.25);
-}
-
 .rb-stat-card {
   padding: 1rem;
   border-radius: var(--ux4g-radius-md, 0.5rem);
@@ -228,12 +222,6 @@
   box-shadow: 0 0 8px rgb(14 124 102 / 0.45);
 }
 
-.rb-scenario-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-}
-
 .rb-action-item {
   padding: 1.125rem;
   border-radius: var(--ux4g-radius-md, 0.5rem);
@@ -249,20 +237,6 @@
 .rb-action-item[data-priority="high"] { border-color: var(--flagged-border); }
 .rb-action-item[data-priority="medium"] { border-color: var(--rule-firm); }
 .rb-action-item[data-priority="low"] { border-color: var(--held-border); }
-
-/* DLP Active Countdown Badge */
-.rb-dlp-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.625rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: rgb(232 93 74 / 0.12);
-  color: #c43825;
-  border: 1px solid rgb(232 93 74 / 0.35);
-}
 
 @media print {
   .rb-header, .rb-nav, footer, .no-print { display: none !important; }

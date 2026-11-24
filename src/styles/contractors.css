@@ -3,8 +3,7 @@
  * three part scores as small bars under the name. */
 
 .rb-contractors .rb-how,
-.rb-contractors .rb-crank,
-.rb-contractors .rb-city-facts {
+.rb-contractors .rb-crank {
   max-width: 56rem;
 }
 
@@ -122,38 +121,6 @@
 .rb-score-none {
   background: var(--ux4g-bg-neutral-subtle);
   color: var(--ux4g-text-neutral-secondary);
-}
-
-.rb-city-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  overflow: hidden;
-  border: 1px solid var(--ux4g-border-color-neutral-subtle);
-  border-radius: 1rem;
-  background: var(--ux4g-bg-neutral-elevated);
-}
-
-.rb-city-facts > div {
-  padding: 0.75rem 1rem;
-}
-
-.rb-city-facts > div + div {
-  border-left: 1px solid var(--ux4g-border-color-neutral-subtle);
-}
-
-.rb-city-facts dt {
-  color: var(--ux4g-text-neutral-secondary);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1rem;
-}
-
-.rb-city-facts dd {
-  margin-top: 0.25rem;
-  font-size: 1.375rem;
-  font-weight: 800;
-  line-height: 1.75rem;
-  font-variant-numeric: tabular-nums;
 }
 
 .rb-pdf-actions {

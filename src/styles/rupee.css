@@ -77,7 +77,6 @@
   border: 1px solid rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(8px);
 }
-.rb-chip-dark-vermilion { background: rgba(232, 93, 74, 0.22); color: #ffffff; border-color: rgba(232, 93, 74, 0.45); }
 .rb-chip-dark-held { background: rgba(14, 124, 102, 0.28); color: var(--mint-tint); border-color: rgba(14, 124, 102, 0.5); }
 .rb-chip-dark-flagged { background: rgba(180, 83, 9, 0.28); color: #fde68a; border-color: rgba(180, 83, 9, 0.5); }
 .rb-pill-vermilion {
@@ -212,43 +211,6 @@
   align-items: center;
   padding-inline: var(--ux4g-padding-s);
 }
-.rb-ward-row:focus-visible {
-  outline: 3px solid var(--ux4g-bg-primary-strong);
-  outline-offset: 2px;
-}
-.rb-ward-list {
-  box-shadow: none;
-  border: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
-  padding: 0;
-}
-.rb-ward-list .ux4g-list-item + .ux4g-list-item {
-  border-top: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
-}
-.rb-ward-row {
-  display: grid;
-  gap: var(--ux4g-gap-row-xs);
-  padding: var(--ux4g-padding-s) var(--ux4g-padding-m);
-  color: inherit;
-}
-.rb-ward-row-head,
-.rb-ward-row-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--ux4g-gap-column-s);
-}
-.rb-ward-row-meta { align-items: center; }
-
-@media (min-width: 48rem) {
-  .rb-ward-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .rb-ward-list .ux4g-list-item:nth-child(2) { border-top: 0; }
-  .rb-ward-list .ux4g-list-item:nth-child(odd) {
-    border-right: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
-  }
-}
 
 /* ---- Ward page. ---- */
 .rb-more > summary { list-style: none; }
@@ -272,7 +234,6 @@
   padding-top: var(--ux4g-padding-s);
   border-top: var(--ux4g-border-width-sm) solid var(--ux4g-border-color-neutral-subtle);
 }
-.rb-section-tight { margin-top: var(--ux4g-margin-xl); }
 .rb-actions { display: flex; flex-wrap: wrap; gap: var(--ux4g-gap-column-xs); }
 .rb-pager { display: flex; justify-content: space-between; gap: var(--ux4g-gap-column-m); }
 

@@ -10,25 +10,6 @@
   overflow-x: clip;
 }
 
-/* Citizen Report Fold (above-the-fold citizen intake integration) */
-.rb-landing-report-fold {
-  position: relative;
-  background-color: var(--canvas);
-  border-bottom: 1px solid var(--rule);
-  padding: 3rem 1rem;
-}
-
-@media (min-width: 48rem) {
-  .rb-landing-report-fold {
-    padding: 4rem 1.5rem;
-  }
-}
-
-.rb-landing-report-title {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
 /* Concentric rotating topographic rings */
 @keyframes rb-spin-extremely-slow {
   from {
@@ -55,72 +36,9 @@
   animation: rb-pulse-subtle 2s ease-in-out infinite;
 }
 
-/* Micro-interaction utility for table rows */
-.rb-table-row-hover {
-  transition: background-color var(--transition-fast);
-}
-
-.rb-table-row-hover:hover {
-  background-color: rgba(6, 78, 75, 0.03);
-}
-
-/* Editorial pill CTA button */
-.rb-btn-vermilion-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  background-color: var(--vermilion);
-  padding: 0.875rem 1.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(232, 93, 74, 0.25);
-  transition: transform var(--transition-normal), background-color var(--transition-fast), box-shadow var(--transition-normal);
-}
-
-.rb-btn-vermilion-pill:hover {
-  background-color: #d84e3b;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(232, 93, 74, 0.35);
-}
-
-.rb-btn-vermilion-pill:active {
-  transform: scale(0.98);
-}
-
-/* Outline light button */
-.rb-btn-outline-light-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background-color: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.875rem 1.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #ffffff;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast);
-}
-
-.rb-btn-outline-light-pill:hover {
-  background-color: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
 /* Reduced motion accessibility overrides */
 @media (prefers-reduced-motion: reduce) {
   .animate-spin-extremely-slow {
     animation: none !important;
-  }
-
-  .rb-btn-vermilion-pill:hover {
-    transform: none !important;
   }
 }

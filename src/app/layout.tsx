@@ -10,7 +10,10 @@ const title = "Rastabaaz";
 const description =
   "Follow the rupee on Mumbai's monsoon roads. Report a pothole, see where each ward's repair money went, and whether the fix held.";
 
+const DEFAULT_SITE_ORIGIN = new URL("https://rastabaaz.in");
+
 const baseMetadata: Metadata = {
+  metadataBase: DEFAULT_SITE_ORIGIN,
   title,
   description,
   openGraph: {
@@ -41,8 +44,8 @@ const baseMetadata: Metadata = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const metadataBase = await siteOrigin();
-  return metadataBase ? { ...baseMetadata, metadataBase } : baseMetadata;
+  const metadataBase = (await siteOrigin()) ?? DEFAULT_SITE_ORIGIN;
+  return { ...baseMetadata, metadataBase };
 }
 
 export const viewport: Viewport = {

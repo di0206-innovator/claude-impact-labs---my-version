@@ -31,17 +31,6 @@ export const ISSUE_TYPE_HINTS: Record<IssueType, string> = {
   other: "Anything else wrong with the road",
 };
 
-/** The work_type a BMC work order uses for each kind, so reports join the money trail. */
-export const ISSUE_TYPE_WORK_TYPE: Record<IssueType, string | null> = {
-  pothole: "Pothole",
-  waterlogging: "Waterlogging",
-  open_manhole: "Open or broken manhole",
-  choked_drain: "Choked drain / nullah overflow",
-  road_cave_in: "Road cave-in",
-  broken_paver_blocks: "Broken paver blocks",
-  other: null,
-};
-
 /** Have you seen anyone hurt or nearly hurt here? */
 export const ACCIDENT_SEEN = ["injury", "near_miss", "none", "not_sure"] as const;
 

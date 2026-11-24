@@ -1,12 +1,12 @@
 import type { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
 import { MATCH_METERS, metersBetween } from "@/lib/geo";
 import { nid } from "@/lib/id";
 import { isInsideCity } from "@/lib/city";
 import { getDocClient, getTableName } from "@/lib/repo/dynamo-client";
 import {
-  getConsistent, photoUpdateOp, putItem, putSeedMarkerVersion,
-  reportEditOp, reportEditRejected, transactWrite,
+  getConsistent, putItem, putSeedMarkerVersion,
+  reportEditRejected, transactWrite,
 } from "@/lib/repo/dynamo-write";
 import { writeSeedItems } from "@/lib/repo/dynamo-seed";
 import { putVerification, queryVerificationsForComplaint } from "@/lib/repo/dynamo-verification";
@@ -21,7 +21,10 @@ import {
   reportListProjection, sortByNoticed, toNoteItem, toPhotoItem, toReportItem,
   type DynamoItem,
 } from "@/lib/repo/mappers";
-import { ExtraRejectedError, resolvePlace, type PlaceContext } from "@/lib/repo/place-resolve";
+import { resolvePlace, type PlaceContext } from "@/lib/repo/place-resolve";
+import {
+  moveToPlaceFor, putExistingLocationReport, writeReportEdit,
+} from "@/lib/repo/dynamo-edit";
 import {
   toListItem, type RastabaazRepository, type SeedItem,
   type VerificationInput, type VerificationRecord,
@@ -52,8 +55,6 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
       ExpressionAttributeValues: { ":pk": slugLockPk(slug), ":sk": "LOC" },
     });
     if (items[0]) return fromLocationItem(items[0]);
-    // gsi1 can trail a new place that byType already shows on the map. The
-    // slug lock sits on the main table, so a consistent read names its place.
     const lock = await getConsistent(this.client, this.table, slugLockPk(slug), "LOCK");
     return typeof lock?.locationId === "string" ? this.getLocation(lock.locationId) : null;
   }
@@ -106,7 +107,6 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
   }
 
   async getReportPhoto(id: string): Promise<string | null> {
-    // A report page opened the moment after submit must not 404 its image.
     const photo = await getConsistent(this.client, this.table, reportPk(id), "PHOTO");
     if (typeof photo?.photo === "string") return photo.photo;
     const meta = await getConsistent(this.client, this.table, reportPk(id), "META");
@@ -137,7 +137,15 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
       report = buildCitizenReport(input, locationId);
       return [{ put: toReportItem(report) }, { put: toPhotoItem(report.id, input.photo) }];
     });
-    if (!place.created || !report) return this.putExistingLocationReport(input, place.location);
+    if (!place.created || !report) {
+      return putExistingLocationReport(
+        this.client,
+        this.table,
+        input,
+        place.location,
+        (locId) => this.listReportsForLocation(locId),
+      );
+    }
     return { report, location: place.location, connectedCount: 0 };
   }
 
@@ -153,70 +161,20 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
       issueType: input.issueType ?? current.issueType,
       description: input.description === undefined ? current.description : input.description,
       recurs: input.recurs ?? current.recurs,
-      // A seeded report shows an illustration until the desk gives it a real
-      // photo; from then on its image is a photo and must not be captioned as one.
       isSample: input.photo === undefined ? current.isSample : SAMPLE_PHOTO_PATTERN.test(input.photo),
     };
-    // A place is one problem at one spot, so changing the problem moves the
-    // report to the place for the new one. Leaving it put would strand it under
-    // a place named for the old problem, which no later report can join.
     if (next.issueType !== current.issueType) {
-      const settled = await this.moveToPlaceFor(next, input.photo);
-      // Anything but "join" is already decided: written, or nothing to write.
+      const settled = await moveToPlaceFor(this.placeContext, next, input.photo);
       if (settled !== "join") return settled;
     }
     guardItemSize(toReportItem(next));
     try {
-      await this.writeReportEdit(next, input.photo);
+      await writeReportEdit(this.client, this.table, next, input.photo);
     } catch (error) {
       if (reportEditRejected(error)) return null;
       throw error;
     }
     return next;
-  }
-
-  /** The report edit, and a photo replacement when there is one, in one write. */
-  private async writeReportEdit(next: ReportRecord, photo?: string): Promise<void> {
-    const edit = reportEditOp(next);
-    if (photo === undefined) {
-      await this.client.send(
-        new UpdateCommand({
-          TableName: this.table,
-          Key: edit.update.key,
-          UpdateExpression: edit.update.set,
-          ExpressionAttributeValues: edit.update.values,
-          ConditionExpression: edit.update.condition,
-        }),
-      );
-      return;
-    }
-    await transactWrite(this.client, this.table, [edit, photoUpdateOp(next.id, photo)]);
-  }
-
-  /**
-   * Points `next` at the place for its new problem.
-   *
-   * A place that has to be created carries the report's move inside its own
-   * transact, so a failed move cannot leave a place behind with no report in
-   * it. Returns `"join"` when the destination already existed and the caller
-   * still owes the report its write.
-   */
-  private async moveToPlaceFor(next: ReportRecord, photo?: string): Promise<ReportRecord | null | "join"> {
-    guardItemSize(toReportItem({ ...next, locationId: "loc_size_check" }));
-    try {
-      const place = await resolvePlace(this.placeContext, next, (locationId) => {
-        next.locationId = locationId;
-        const ops = [reportEditOp(next)];
-        if (photo !== undefined) ops.push(photoUpdateOp(next.id, photo));
-        return ops;
-      });
-      next.locationId = place.location.id;
-      return place.created ? next : "join";
-    } catch (error) {
-      // The report went away between the read and the move.
-      if (error instanceof ExtraRejectedError) return null;
-      throw error;
-    }
   }
 
   async addDeskNote(reportId: string, body: string): Promise<DeskNote> {
@@ -245,25 +203,6 @@ export class DynamoRastabaazRepository implements RastabaazRepository {
 
   async putSeedItems(items: SeedItem[]): Promise<void> {
     await writeSeedItems(this.client, this.table, items);
-  }
-
-  private async putExistingLocationReport(input: CreateReportInput, location: LocationRecord): Promise<CreateReportResult> {
-    const report = buildCitizenReport(input, location.id);
-    const meta = toReportItem(report);
-    const photo = toPhotoItem(report.id, input.photo);
-    guardItemSize(meta);
-    guardItemSize(photo);
-    await transactWrite(this.client, this.table, [{ put: meta }, { put: photo }]);
-    // The report is already stored. If the count read throws, reporting failure
-    // makes the person retry and record a second copy.
-    let connectedCount = 0;
-    try {
-      const siblings = await this.listReportsForLocation(location.id);
-      connectedCount = siblings.filter((row) => row.id !== report.id).length;
-    } catch {
-      connectedCount = 0;
-    }
-    return { report, location, connectedCount };
   }
 
   private placeContext: PlaceContext = {

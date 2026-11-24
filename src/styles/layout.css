@@ -69,16 +69,10 @@
     list-style: none;
   }
 
-  .rb-home h1,
-  .rb-cited-link {
+  .rb-home h1 {
     overflow-wrap: anywhere;
     max-width: 100%;
     text-wrap: balance;
-  }
-
-  .rb-cited-link {
-    display: inline;
-    white-space: normal;
   }
 
   @media (min-width: 64rem) {
@@ -133,23 +127,6 @@
   outline-offset: 2px;
 }
 
-.rb-navbar-wordmark {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  font-size: 0.9375rem;
-  line-height: 1.15;
-}
-
-.rb-wrap-link {
-  display: block;
-  max-width: 100%;
-  min-width: 0;
-  overflow-wrap: anywhere;
-  white-space: normal;
-}
-
 /* ---- Rastabaaz chrome: UX4G navbar and footer, plus the lane marking. ---- */
 .rb-header {
   position: sticky;
@@ -199,13 +176,6 @@
   gap: 0.5rem;
 }
 
-/* Two columns of links on phones, one row on wide screens. */
-.rb-footer-links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 1rem;
-}
-
 .rb-footer-note {
   max-width: 60rem;
   opacity: 0.7;
@@ -216,13 +186,6 @@
     grid-template-columns: auto 1fr;
     align-items: center;
     column-gap: 2rem;
-  }
-
-  .rb-footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    column-gap: 1.125rem;
   }
 
   .rb-footer-note {

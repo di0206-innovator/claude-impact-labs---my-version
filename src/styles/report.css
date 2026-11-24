@@ -4,15 +4,6 @@
  * a round Back plus a wide pill at the bottom. UX4G supplies type, colour
  * tokens and the form controls; this file lays them out for one hand. */
 
-.rb-flow-title {
-  margin-top: var(--ux4g-margin-s);
-  text-align: center;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.25rem;
-  color: var(--ux4g-text-neutral-primary);
-}
-
 .rb-report {
   display: flex;
   flex-direction: column;

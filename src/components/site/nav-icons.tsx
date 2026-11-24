@@ -39,24 +39,6 @@ export function MapTabIcon(props: Props) {
   );
 }
 
-export function WardsTabIcon(props: Props) {
-  return (
-    <Svg {...props}>
-      <path d="M4 20h16" />
-      <path d="M6.5 16v-5M12 16V6M17.5 16v-8" />
-    </Svg>
-  );
-}
-
-export function ContractorsTabIcon(props: Props) {
-  return (
-    <Svg {...props}>
-      <rect x="5" y="4" width="14" height="17" rx="2" />
-      <path d="M9 4.5V3h6v1.5M8.5 10.5l1.5 1.5 3-3M8.5 16h7" />
-    </Svg>
-  );
-}
-
 export function AskTabIcon(props: Props) {
   return (
     <Svg {...props}>
@@ -78,15 +60,6 @@ export function OverviewTabIcon(props: Props) {
   return (
     <Svg {...props}>
       <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" />
-    </Svg>
-  );
-}
-
-export function AuditTabIcon(props: Props) {
-  return (
-    <Svg {...props}>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
     </Svg>
   );
 }

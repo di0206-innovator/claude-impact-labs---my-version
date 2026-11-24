@@ -88,8 +88,6 @@
   padding: 0 var(--gutter) 0.5rem;
 }
 
-.rb-sheet-note { padding: 0 var(--gutter) 0.5rem; }
-
 .rb-sheet-selected {
   flex: 1;
   min-height: 0;

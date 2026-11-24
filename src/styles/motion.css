@@ -55,15 +55,6 @@
     border-radius: 9999px;
   }
 
-  .rb-glass-pill-dark {
-    background: rgba(6, 78, 75, 0.9);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 8px 32px -4px rgba(4, 57, 55, 0.3);
-    border-radius: 9999px;
-  }
-
   /* Micro-interactions & card lift */
   .rb-interactive-card,
   .rb-stat-card,
@@ -111,8 +102,7 @@
   }
 
   /* Scroll-reveal and entry animations */
-  .rb-motion-fade-in,
-  .rb-scroll-reveal {
+  .rb-motion-fade-in {
     animation: rb-fade-in-up 400ms var(--ease-spring) both;
   }
 
@@ -154,8 +144,7 @@
     animation: rb-pulse-subtle 2s ease-in-out infinite;
   }
 
-  .rb-pulse-vermilion,
-  .rb-pulse-dot-vermilion {
+  .rb-pulse-vermilion {
     display: inline-block;
     width: 0.5rem;
     height: 0.5rem;
@@ -182,12 +171,6 @@
 
   .rb-parallax-slow {
     animation: rb-parallax-shift-slow linear both;
-    animation-timeline: view();
-    animation-range: entry 0% exit 100%;
-  }
-
-  .rb-parallax-fast {
-    animation: rb-parallax-shift-fast linear both;
     animation-timeline: view();
     animation-range: entry 0% exit 100%;
   }
@@ -237,7 +220,6 @@
 /* Reduced motion accessibility contract */
 @media (prefers-reduced-motion: reduce) {
   .rb-motion-fade-in,
-  .rb-scroll-reveal,
   .rb-interactive-card,
   .rb-stat-card,
   .rb-action-item,
@@ -245,8 +227,7 @@
   .rb-glass-floating,
   .rb-parallax-hero,
   .rb-parallax-card,
-  .rb-parallax-slow,
-  .rb-parallax-fast {
+  .rb-parallax-slow {
     animation: none !important;
     transition: none !important;
     transform: none !important;
@@ -255,7 +236,6 @@
   .rb-pulse-beacon::after,
   .rb-pulse-dot,
   .rb-pulse-vermilion,
-  .rb-pulse-dot-vermilion,
   .rb-accordion details[open] > .ux4g-accordion__body,
   .ux4g-accordion details[open] > .ux4g-accordion__body {
     animation: none !important;

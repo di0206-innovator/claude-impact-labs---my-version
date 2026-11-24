@@ -41,20 +41,3 @@ export function matchSocialPostsForRoad(
 export function hasHighSocialDistress(posts: SocialPostSummary[]): boolean {
   return posts.some((p) => p.likes > 200 || DISTRESS_KEYWORDS.test(p.text));
 }
-
-/**
- * Returns summary statistics for civic social corroboration.
- */
-export function summarizeSocialEvidence(posts: SocialPostSummary[]) {
-  const highDistressPosts = posts.filter((p) => p.likes > 200 || DISTRESS_KEYWORDS.test(p.text));
-  const maxLikes = posts.reduce((max, p) => Math.max(max, p.likes), 0);
-  const mediaCount = posts.filter((p) => p.hasMedia).length;
-
-  return {
-    totalPosts: posts.length,
-    highDistressCount: highDistressPosts.length,
-    hasSevereDistress: highDistressPosts.length > 0,
-    maxLikes,
-    mediaCount,
-  };
-}

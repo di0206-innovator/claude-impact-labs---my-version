@@ -11,8 +11,3 @@ export type ExportResult = {
   mimeType: string;
   data: Uint8Array | string;
 };
-
-export type EvidencePackExportOptions = {
-  format?: ExportFormat;
-  generatedBy?: string;
-};

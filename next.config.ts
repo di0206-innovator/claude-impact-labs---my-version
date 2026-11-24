@@ -24,6 +24,12 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "1mb",
     },
+    optimizePackageImports: [
+      "@anthropic-ai/sdk",
+      "@aws-sdk/client-dynamodb",
+      "@aws-sdk/lib-dynamodb",
+      "maplibre-gl",
+    ],
   },
   async headers() {
     return [

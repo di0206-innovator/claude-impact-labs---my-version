@@ -4,14 +4,6 @@
 
 export type AssistantLanguage = "en" | "hi" | "mr";
 
-export type AssistantSessionContext = {
-  sessionId: string;
-  complaintId?: string | null;
-  issueId?: string | null;
-  preferredLanguage?: AssistantLanguage;
-  clientIp?: string;
-};
-
 export type AssistantQueryRequest = {
   query: string;
   complaintId?: string | null;
