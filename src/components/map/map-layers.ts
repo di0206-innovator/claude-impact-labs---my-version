@@ -76,9 +76,10 @@ export function ensureReportLayers(map: MapLibreMap) {
         8,
         mark.oxide,
       ],
-      "circle-radius": ["step", ["get", "point_count"], 14, 4, 18, 8, 22],
-      "circle-stroke-width": 2,
-      "circle-stroke-color": mark.marking,
+      "circle-radius": ["step", ["get", "point_count"], 15, 4, 19, 8, 23],
+      "circle-stroke-width": 2.5,
+      "circle-stroke-color": "#ffffff",
+      "circle-stroke-opacity": 0.95,
     },
   });
 
